@@ -5,13 +5,14 @@ import "firebase/firestore";
 // https://blog.jscrambler.com/getting-started-with-firestore-and-react-native/
 
 var firebaseConfig = {
-  apiKey: "AIzaSyDhMiIi1lgsH5S2eY_7bH9KktMo92KH93A",
-  authDomain: "musalla-test.firebaseapp.com",
-  databaseURL: "https://musalla-test.firebaseio.com",
-  projectId: "musalla-test",
-  storageBucket: "musalla-test.appspot.com",
-  messagingSenderId: "1066496733378",
-  appId: "1:1066496733378:web:2c228b90c276dfa3f48b5b",
+  apiKey: "AIzaSyAz7kUCB102_eT2R0F7diW47wczPlqCtck",
+  authDomain: "musalla-ea1ab.firebaseapp.com",
+  databaseURL: "https://musalla-ea1ab.firebaseio.com",
+  projectId: "musalla-ea1ab",
+  storageBucket: "musalla-ea1ab.appspot.com",
+  messagingSenderId: "239388429818",
+  appId: "1:239388429818:web:33ff0293e7b54e6e7b6843",
+  measurementId: "G-XX7D5YSDS3",
 };
 
 const fb = firebase.initializeApp(firebaseConfig);
