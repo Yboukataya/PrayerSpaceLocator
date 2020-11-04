@@ -40,33 +40,34 @@ export default function AddSpaceScreen(props) {
           label="Space Name"
           name="spaceName"
           placeholder="Space Name"
-          bg="yellow"
         />
         <AppFormEntry
           label="Building Name"
           name="bldgName"
           placeholder="Building Name"
-          bg="red"
         />
         <AppFormEntry
           label="Building Address"
           name="bldgAddress"
           placeholder="Building Address"
-          bg="dodgerblue"
         />
-        {/* <AppFormField name="spaceName" placeholder="Space Name" />
-        <AppFormField name="" placeholder="Building Name" />
-        <AppFormField name="bldgAddress" placeholder="Building Address" />
-        <AppFormField
+        <AppFormEntry
+          label="Instructions"
           name="instructions"
-          placeholder="How do you get there from building entrance?"
+          placeholder="How do you get to space?"
         />
-        <AppFormField
+        <AppFormEntry
+          label="Capacity"
           name="capacity"
-          placeholder="Capacity"
           keyboardType="number-pad"
-        /> */}
-        <SubmitButton title="Add New Space" />
+          placeholder=""
+        />
+        <AppFormEntry
+          label="Daily Hours"
+          name="dailyHours"
+          placeholder="When is this space open?"
+        />
+        <SubmitButton title="Submit!" />
       </AppForm>
       {/* </View> */}
     </Screen>

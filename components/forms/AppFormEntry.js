@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 import AppText from "../AppText";
 import AppFormField from "./AppFormField";
 
-function AppFormEntry({ label, bg, ...otherProps }) {
+function AppFormEntry({ label, ...otherProps }) {
   return (
     <View style={styles.container}>
       <View style={styles.label}>
@@ -18,26 +18,17 @@ function AppFormEntry({ label, bg, ...otherProps }) {
 }
 const styles = StyleSheet.create({
   container: {
+    alignItems: "center",
     flex: 1,
     flexDirection: "row",
-    // backgroundColor: bg,
-
     width: "100%",
-    // justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  entryElt: {
-    flex: 1,
   },
   field: {
-    flex: 3,
-    // width: "60%",
+    flex: 7,
   },
   label: {
+    flex: 3,
     paddingRight: 10,
-
-    // width: "40%",
-    flex: 2,
   },
 });
 export default AppFormEntry;
