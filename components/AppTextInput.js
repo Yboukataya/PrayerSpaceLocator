@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     backgroundColor: defaultStyles.colors.light,
     borderRadius: 25,
     flexDirection: "row", // for icon + text
-    width: "100%",
+    // width: "100%",
     padding: 15,
     marginVertical: 10,
   },

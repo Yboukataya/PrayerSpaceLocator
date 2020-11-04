@@ -5,6 +5,7 @@ import { Formik, Field, Form } from "formik";
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
+import AppFormEntry from "../components/forms/AppFormEntry";
 
 const spaceProperties = ["Name", "Address", "YoKiddo"];
 
@@ -12,7 +13,7 @@ export default function AddSpaceScreen(props) {
   const renderAttribute = ({ item }) => <AppText>{item}</AppText>;
 
   return (
-    <Screen>
+    <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
         <AppText customStyle={styles.title}>Add New Space</AppText>
       </View>
@@ -35,8 +36,26 @@ export default function AddSpaceScreen(props) {
         onSubmit={(values) => console.log(values)}
         style={styles.bList}
       >
-        <AppFormField name="spaceName" placeholder="Space Name" />
-        <AppFormField name="bldgName" placeholder="Building Name" />
+        <AppFormEntry
+          label="Space Name"
+          name="spaceName"
+          placeholder="Space Name"
+          bg="yellow"
+        />
+        <AppFormEntry
+          label="Building Name"
+          name="bldgName"
+          placeholder="Building Name"
+          bg="red"
+        />
+        <AppFormEntry
+          label="Building Address"
+          name="bldgAddress"
+          placeholder="Building Address"
+          bg="dodgerblue"
+        />
+        {/* <AppFormField name="spaceName" placeholder="Space Name" />
+        <AppFormField name="" placeholder="Building Name" />
         <AppFormField name="bldgAddress" placeholder="Building Address" />
         <AppFormField
           name="instructions"
@@ -46,7 +65,7 @@ export default function AddSpaceScreen(props) {
           name="capacity"
           placeholder="Capacity"
           keyboardType="number-pad"
-        />
+        /> */}
         <SubmitButton title="Add New Space" />
       </AppForm>
       {/* </View> */}
@@ -55,20 +74,11 @@ export default function AddSpaceScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  attrList: {
-    flex: 0.5,
-  },
-  bList: {
-    flex: 0.5,
-  },
   container: {
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
     marginBottom: 40,
-  },
-  sideBySide: {
-    flexDirection: "row",
   },
   title: {
     fontSize: 48,
