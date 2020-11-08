@@ -18,14 +18,6 @@ export default function AddSpaceScreen(props) {
         <AppText customStyle={styles.title}>Add New Space</AppText>
       </View>
 
-      {/* <View style={styles.sideBySide}>
-        <FlatList
-          data={spaceProperties}
-          keyExtractor={(attribute) => attribute}
-          renderItem={renderAttribute}
-          style={styles.attrList}
-        /> */}
-
       <AppForm
         initialValues={{
           spaceName: "",
