@@ -7,7 +7,9 @@ import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 
 import AddSpaceScreen from "./screens/AddSpaceScreen.js";
+import AppSpaceList from "./components/AppSpaceList.js";
 import SpaceDetailScreen from "./screens/SpaceDetailScreen.js";
+import Screen from "./components/Screen.js";
 
 export default function App() {
   const sampleSpace = {
@@ -18,5 +20,10 @@ export default function App() {
     capacity: 8,
     dailyHours: "M-F 9-5",
   };
-  return <SpaceDetailScreen space={sampleSpace} />;
+  return (
+    <Screen style={{ flex: 1, padding: 20 }}>
+      <AppSpaceList />
+    </Screen>
+  );
+  // return <SpaceDetailScreen space={sampleSpace} />;
 }
