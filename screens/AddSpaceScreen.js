@@ -10,8 +10,6 @@ import AppFormEntry from "../components/forms/AppFormEntry";
 const spaceProperties = ["Name", "Address", "YoKiddo"];
 
 export default function AddSpaceScreen(props) {
-  const renderAttribute = ({ item }) => <AppText>{item}</AppText>;
-
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
@@ -24,6 +22,8 @@ export default function AddSpaceScreen(props) {
           bldgName: "",
           bldgAddress: "",
           instructions: "",
+          capacity: "",
+          dailyHours: "",
         }}
         onSubmit={(values) => console.log(values)}
         style={styles.bList}
