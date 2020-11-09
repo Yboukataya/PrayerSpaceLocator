@@ -42,7 +42,7 @@ function SpaceDetailScreen({ space }) {
       </View>
       <View style={styles.container}>
         <AppButton
-          title="Edit Space"
+          title="Go Back"
           onPress={() => console.log("Edit!")}
           customStyle={styles.editBtn}
         ></AppButton>

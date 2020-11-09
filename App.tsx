@@ -21,9 +21,10 @@ export default function App() {
     dailyHours: "M-F 9-5",
   };
   return (
-    <Screen style={{ flex: 1, padding: 20 }}>
-      <AppSpaceList />
-    </Screen>
+    <AddSpaceScreen />
+    // <Screen style={{ flex: 1, padding: 20 }}>
+    //   <AppSpaceList />
+    // </Screen>
   );
   // return <SpaceDetailScreen space={sampleSpace} />;
 }
