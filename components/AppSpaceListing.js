@@ -22,7 +22,7 @@ function AppSpaceListing({ space, distance }) {
       {/* for the icon */}
       <View>
         <TouchableOpacity onPress={() => console.log(space)}>
-          <AntDesign name="rightcircle" size="40" />
+          <AntDesign name="rightcircle" size={40} />
         </TouchableOpacity>
       </View>
     </View>
