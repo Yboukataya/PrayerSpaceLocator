@@ -42,7 +42,7 @@ export default function AddSpaceScreen(props) {
           placeholder="Building Name"
         />
         <AppFormEntry
-          label="Building Address"
+          label="Building Address: 123 Main St, Philadelphia, PA 19104"
           name="bldgAddress"
           placeholder="Building Address"
         />
