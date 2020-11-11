@@ -5,6 +5,13 @@ import AppSpaceListing from "./AppSpaceListing";
 import ListItemSeparator from "./ListItemSeparator";
 import Screen from "./Screen";
 
+/**
+ * This component defines a list of prayer spaces for the View Spaces page.
+ * It uses the AppSpaceListing component to render each individual space in
+ * the table.
+ * @param {*} props
+ */
+
 function AppSpaceList(props) {
   const data = [
     {

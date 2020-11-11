@@ -5,6 +5,12 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 import AppText from "./AppText";
 
+/**
+ * This component defines how each prayer space in the list on the View Spaces
+ * screen is rendered.
+ * @param {*} param0
+ */
+
 function AppSpaceListing({ space, distance }) {
   return (
     <View style={styles.listingContainer}>
@@ -37,7 +43,6 @@ const styles = StyleSheet.create({
   distStyle: {
     color: "green",
   },
-  //   iconStyle: {},
   listingContainer: {
     flexDirection: "row",
     flex: 1,
@@ -45,6 +50,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
-  //   primaryRow: {},
 });
+
 export default AppSpaceListing;
