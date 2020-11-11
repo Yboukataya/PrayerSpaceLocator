@@ -7,7 +7,11 @@ import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 import AppFormEntry from "../components/forms/AppFormEntry";
 
-const spaceProperties = ["Name", "Address", "YoKiddo"];
+/**
+ * This component defines the form that shows up asking a user to add a new
+ * prayer space to the database
+ * @param {*} props
+ */
 
 export default function AddSpaceScreen(props) {
   return (
@@ -26,7 +30,6 @@ export default function AddSpaceScreen(props) {
           dailyHours: "",
         }}
         onSubmit={(values) => console.log(values)}
-        style={styles.bList}
       >
         <AppFormEntry
           label="Space Name"

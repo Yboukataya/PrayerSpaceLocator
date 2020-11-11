@@ -3,14 +3,22 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 
 import AppButton from "../components/AppButton";
 import AppSpaceDetail from "../components/AppSpaceDetail";
+import AppTitle from "../components/AppTitle.js";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
+
+/**
+ * This component specifies appearance of the screen that shows attributes
+ * about a prayer. For each attribute, it uses an AppSpaceDetail component
+ * to render that attribute on its own line.
+ * @param {*} param0
+ */
 
 function SpaceDetailScreen({ space }) {
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
-        <AppText customStyle={styles.title}>{space.spaceName}</AppText>
+        <AppTitle>{space.spaceName}</AppTitle>
       </View>
 
       <View>
@@ -61,10 +69,6 @@ const styles = StyleSheet.create({
     width: "50%",
     alignItems: "center",
     justifyContent: "center",
-  },
-  title: {
-    fontSize: 48,
-    fontWeight: "600",
   },
 });
 export default SpaceDetailScreen;

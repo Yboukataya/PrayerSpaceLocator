@@ -4,6 +4,12 @@ import { StyleSheet, View } from "react-native";
 import AppText from "../AppText";
 import AppFormField from "./AppFormField";
 
+/**
+ * This component is for our Formik forms. It creates a row in a form with a
+ * label aligned on the left and a form field on the right.
+ * @param {*} param0
+ */
+
 function AppFormEntry({ label, ...otherProps }) {
   return (
     <View style={styles.container}>
