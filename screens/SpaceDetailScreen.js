@@ -14,36 +14,37 @@ import Screen from "../components/Screen";
  * @param {*} param0
  */
 
-function SpaceDetailScreen({ space }) {
+function SpaceDetailScreen(props) {
+  console.log(props);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
-        <AppTitle>{space.spaceName}</AppTitle>
+        <AppTitle>{props.route.params.values.spaceName}</AppTitle>
       </View>
 
       <View>
         <AppSpaceDetail
-          space={space}
+          space={props.route.params.values}
           detailTitle="Building"
           detailKey="bldgName"
         />
         <AppSpaceDetail
-          space={space}
+          space={props.route.params.values}
           detailTitle="Address"
           detailKey="bldgAddress"
         />
         <AppSpaceDetail
-          space={space}
+          space={props.route.params.values}
           detailTitle="Instructions"
           detailKey="instructions"
         />
         <AppSpaceDetail
-          space={space}
+          space={props.route.params.values}
           detailTitle="Capacity"
           detailKey="capacity"
         />
         <AppSpaceDetail
-          space={space}
+          space={props.route.params.values}
           detailTitle="Daily Hours"
           detailKey="dailyHours"
         />
@@ -51,7 +52,7 @@ function SpaceDetailScreen({ space }) {
       <View style={styles.container}>
         <AppButton
           title="Go Back"
-          onPress={() => console.log("Edit!")}
+          onPress={() => props.navigation.popToTop()}
           customStyle={styles.editBtn}
         ></AppButton>
       </View>
