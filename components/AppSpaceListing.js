@@ -11,7 +11,7 @@ import AppText from "./AppText";
  * @param {*} param0
  */
 
-function AppSpaceListing({ space, distance }) {
+function AppSpaceListing({ space, distance, props }) {
   return (
     <View style={styles.listingContainer}>
       {/* for the text information */}
@@ -27,7 +27,14 @@ function AppSpaceListing({ space, distance }) {
 
       {/* for the icon */}
       <View>
-        <TouchableOpacity onPress={() => console.log(space)}>
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate("SpaceDetail", {
+              values: space,
+              source: "list",
+            })
+          }
+        >
           <AntDesign name="rightcircle" size={40} />
         </TouchableOpacity>
       </View>

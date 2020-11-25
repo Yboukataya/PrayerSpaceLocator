@@ -224,59 +224,165 @@
 // // });
 
 import React from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Callout, CalloutSubview } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
+import AppText from "../components/AppText";
+import AppButton from "../components/AppButton";
 
 // STATIC DATA
-var arr = [
+var arr1 = [
+  // {
+  //   Carpet: true,
+  //   Notes: '"Anything"',
+  //   accessibility: '"Penn Ok"',
+  //   building_address: {
+  //     city: '"Philadelphia"',
+  //     state: '"Pennsylvania"',
+  //     street: '"3800 Walnut Street"',
+  //   },
+  //   building_address_city: '"Philadelphia"',
+  //   building_address_street: '"3800 Walnut Street"',
+  //   building_address_zip: '"19104"',
+  //   building_name: '"Huntsman Hall"',
+  //   capacity: "10",
+  //   cleanliness: 3,
+  //   instructions: '"Go up Walnut. It is the great red building."',
+  //   latitude: "39.95289",
+  //   longitude: "-75.1982",
+  //   nearby_wudhu: '"around the corner - the washrooms"',
+  //   passers_by: '"none"',
+  //   space_name: '"huntsman"',
+  // },
   {
-    Carpet: true,
-    Notes: '"Anything"',
-    accessibility: '"Penn Ok"',
-    building_address: {
-      city: '"Philadelphia"',
-      state: '"Pennsylvania"',
-      street: '"3800 Walnut Street"',
-    },
-    building_address_city: '"Philadelphia"',
-    building_address_street: '"3800 Walnut Street"',
-    building_address_zip: '"19104"',
-    building_name: '"Huntsman Hall"',
-    capacity: "10",
-    cleanliness: 3,
-    instructions: '"Go up Walnut. It is the great red building."',
-    latitude: "39.95339",
-    longitude: "-75.19966",
-    nearby_wudhu: '"around the corner - the washrooms"',
-    passers_by: '"none"',
-    space_name: '"huntsman"',
-  },
-  {
-    building_address_city: '"Philadelphia"',
-    building_address_street: '"3417 Spruce Street"',
-    building_address_zip: '"19104"',
-    building_name: '"Houston Hall"',
+    building_address_city: "Philadelphia",
+    building_address_street: "3417 Spruce Street",
+    building_address_zip: "19104",
+    building_name: "Houston Hall",
+    bldgName: "Houston Hall",
+    bldgAddress: "3417 Spruce Street, Philadelphia, PA 19104",
     latitude: "39.95052",
     longitude: "-75.192920",
     capacity: "2",
+    dailyHours: "2PM - 5PM",
+    instructions:
+      "Inside Houston Hall, go up to the second floor and you will see SPARC.",
+    spaceName: "SPARC",
   },
+];
+var arr2 = [
+  {
+    Carpet: true,
+    Notes: "Anything",
+    accessibility: "Penn Ok",
+    building_address: {
+      city: "Philadelphia",
+      state: "Pennsylvania",
+      street: "3800 Walnut Street",
+    },
+    bldgAddress: "3800 Walnut Street, Philadelphia, PA 19104",
+    building_address_city: "Philadelphia",
+    building_address_street: "3800 Walnut Street",
+    building_address_zip: "19104",
+    building_name: "Huntsman Hall",
+    bldgName: "Huntsman Hall",
+    capacity: "10",
+    cleanliness: 3,
+    instructions: "Go up Walnut. It is the great red building.",
+    latitude: "39.95289",
+    longitude: "-75.1982",
+    nearby_wudhu: "around the corner - the washrooms",
+    passers_by: "none",
+    space_name: "huntsman",
+    dailyHours: "10AM - 10PM",
+    spaceName: "Huntsman",
+  },
+  // {
+  //   building_address_city: '"Philadelphia"',
+  //   building_address_street: '"3417 Spruce Street"',
+  //   building_address_zip: '"19104"',
+  //   building_name: '"Houston Hall"',
+  //   latitude: "39.95052",
+  //   longitude: "-75.192920",
+  //   capacity: "2",
+  // },
 ];
 
 export default class MapViewScreen extends React.Component {
-  mapMarkers = () => {
-    return arr.map((report) => (
+  constructor(props) {
+    super(props);
+    console.log(props);
+    this.state = { navigation: props.navigation };
+  }
+  mapMarkersClosed = () => {
+    return arr2.map((report) => (
       <Marker
         key={report.building_name}
-        coordinate={{ latitude: report.latitude, longitude: report.longitude }}
+        coordinate={{
+          latitude: Number(report.latitude),
+          longitude: Number(report.longitude),
+        }}
+        pinColor={"green"}
         title={report.building_name}
-        description={report.capacity}
-      ></Marker>
+        description={"Open"}
+        // onCalloutPress={this.state.navigation.navigate("SpaceDetail", {
+        // values: arr2[0],
+        // })}
+        // onPress={console.log("WHAT's GOOD")}
+      >
+        <Callout tooltip>
+          <CalloutSubview
+            onPress={() =>
+              this.state.navigation.navigate("SpaceDetail", {
+                values: arr2[0],
+                source: "map",
+              })
+            }
+          >
+            <View>
+              <View style={styles.callout}>
+                <Text>{report.building_name}</Text>
+              </View>
+            </View>
+          </CalloutSubview>
+        </Callout>
+      </Marker>
+    ));
+  };
+  mapMarkers = () => {
+    return arr1.map((report) => (
+      <Marker
+        key={report.building_name}
+        coordinate={{
+          latitude: Number(report.latitude),
+          longitude: Number(report.longitude),
+        }}
+        title={report.building_name}
+        description={"Closed"}
+      >
+        <Callout tooltip>
+          <CalloutSubview
+            onPress={() =>
+              this.state.navigation.navigate("SpaceDetail", {
+                values: arr1[0],
+                source: "map",
+              })
+            }
+          >
+            <View>
+              <View style={styles.callout}>
+                <Text>{report.building_name}</Text>
+              </View>
+            </View>
+          </CalloutSubview>
+        </Callout>
+      </Marker>
     ));
   };
 
   render() {
     return (
       <View style={styles.container}>
+        <AppText customStyle={styles.title}>Prayer Spaces Map</AppText>
         <MapView
           style={styles.mapStyle}
           //   style={{ flex: 1 }}
@@ -289,21 +395,71 @@ export default class MapViewScreen extends React.Component {
           showsUserLocation={true}
         >
           {this.mapMarkers()}
+          {this.mapMarkersClosed()}
         </MapView>
+        <View>
+          {/* <AppButton
+            title="Home"
+            onPress={() => this.state.navigation.popToTop()}
+            // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
+            //   console.log(
+            //     props.navigation.goBack.equals(
+            //       props.navigation.navigate("MapView")
+            //     )
+            //   )
+            // }
+            // onPress={() => props.navigation.popToTop()}
+            customStyle={styles.editBtn}
+          ></AppButton> */}
+          <AppButton
+            title="List View"
+            onPress={() => this.state.navigation.navigate("ListView")}
+            // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
+            //   console.log(
+            //     props.navigation.goBack.equals(
+            //       props.navigation.navigate("MapView")
+            //     )
+            //   )
+            // }
+            // onPress={() => props.navigation.popToTop()}
+            customStyle={styles.editBtn}
+          ></AppButton>
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 40,
+    fontWeight: "600",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    // paddingTop: 200,
   },
   mapStyle: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    height: 600,
+  },
+  editBtn: {
+    width: "50%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  callout: {
+    flexDirection: "row",
+    alignSelf: "flex-start",
+    backgroundColor: "#fff",
+    borderRadius: 6,
+    borderColor: "#ccc",
+    borderWidth: 0.5,
+    padding: 15,
   },
 });

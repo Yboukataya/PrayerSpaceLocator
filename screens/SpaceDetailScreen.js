@@ -14,50 +14,72 @@ import Screen from "../components/Screen";
  * @param {*} param0
  */
 
-function SpaceDetailScreen(props) {
-  console.log(props);
-  return (
-    <Screen style={{ flex: 1, padding: 20 }}>
-      <View style={styles.container}>
-        <AppTitle>{props.route.params.values.spaceName}</AppTitle>
-      </View>
+export default class SpaceDetailScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { props: props };
+  }
 
-      <View>
-        <AppSpaceDetail
-          space={props.route.params.values}
-          detailTitle="Building"
-          detailKey="bldgName"
-        />
-        <AppSpaceDetail
-          space={props.route.params.values}
-          detailTitle="Address"
-          detailKey="bldgAddress"
-        />
-        <AppSpaceDetail
-          space={props.route.params.values}
-          detailTitle="Instructions"
-          detailKey="instructions"
-        />
-        <AppSpaceDetail
-          space={props.route.params.values}
-          detailTitle="Capacity"
-          detailKey="capacity"
-        />
-        <AppSpaceDetail
-          space={props.route.params.values}
-          detailTitle="Daily Hours"
-          detailKey="dailyHours"
-        />
-      </View>
-      <View style={styles.container}>
-        <AppButton
-          title="Go Back"
-          onPress={() => props.navigation.popToTop()}
-          customStyle={styles.editBtn}
-        ></AppButton>
-      </View>
-    </Screen>
-  );
+  handleOnPress = () => {
+    if (this.state.props.route.params.source == "add") {
+      this.state.props.navigation.popToTop();
+    } else {
+      this.state.props.navigation.pop();
+    }
+  };
+
+  render() {
+    return (
+      <Screen style={{ flex: 1, padding: 20 }}>
+        <View style={styles.container}>
+          <AppTitle>{this.state.props.route.params.values.spaceName}</AppTitle>
+        </View>
+
+        <View>
+          <AppSpaceDetail
+            space={this.state.props.route.params.values}
+            detailTitle="Building"
+            detailKey="bldgName"
+          />
+          <AppSpaceDetail
+            space={this.state.props.route.params.values}
+            detailTitle="Address"
+            detailKey="bldgAddress"
+          />
+          <AppSpaceDetail
+            space={this.state.props.route.params.values}
+            detailTitle="Instructions"
+            detailKey="instructions"
+          />
+          <AppSpaceDetail
+            space={this.state.props.route.params.values}
+            detailTitle="Capacity"
+            detailKey="capacity"
+          />
+          <AppSpaceDetail
+            space={this.state.props.route.params.values}
+            detailTitle="Daily Hours"
+            detailKey="dailyHours"
+          />
+        </View>
+        <View style={styles.container}>
+          <AppButton
+            title="Go Back"
+            onPress={this.handleOnPress}
+            // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
+            //   console.log(
+            //     props.navigation.goBack.equals(
+            //       props.navigation.navigate("MapView")
+            //     )
+            //   )
+            // }
+            // onPress={() => props.navigation.popToTop()}
+            customStyle={styles.editBtn}
+          ></AppButton>
+        </View>
+      </Screen>
+    );
+  }
 }
 const styles = StyleSheet.create({
   container: {
@@ -72,4 +94,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-export default SpaceDetailScreen;
+// export default SpaceDetailScreen;
