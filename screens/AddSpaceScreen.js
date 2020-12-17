@@ -14,6 +14,7 @@ import AppFormEntry from "../components/forms/AppFormEntry";
  */
 
 export default function AddSpaceScreen(props) {
+  // console.log(props);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
@@ -29,7 +30,9 @@ export default function AddSpaceScreen(props) {
           capacity: "",
           dailyHours: "",
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) =>
+          props.navigation.navigate("SpaceDetail", { values, source: "add" })
+        }
       >
         <AppFormEntry
           label="Space Name"
