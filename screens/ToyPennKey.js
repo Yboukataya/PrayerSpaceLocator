@@ -1,81 +1,66 @@
-import React from "react";
-import {
-  Alert,
-  Linking,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState } from "react";
+import { Alert, Linking, StyleSheet, View, Text } from "react-native";
 
-import { InAppBrowser } from "react-native-inappbrowser-reborn";
-// import * as firebase from "firebase";
-import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-google-app-auth";
 
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 
-const loginUrl =
-  "https://weblogin.pennkey.upenn.edu/idp/profile/SAML2/Redirect/SSO?execution=e1s1";
-
-async function openLink() {
+async function signInWithGoogleAsync() {
+  // setUserName, setUserEmail, setAccessToken
   try {
-    const url = "https://www.google.com";
-    if (await InAppBrowser.isAvailable()) {
-      const result = await InAppBrowser.open(url, {
-        // iOS Properties
-        dismissButtonStyle: "cancel",
-        preferredBarTintColor: "#453AA4",
-        preferredControlTintColor: "white",
-        readerMode: false,
-        animated: true,
-        modalPresentationStyle: "fullScreen",
-        modalTransitionStyle: "coverVertical",
-        modalEnabled: true,
-        enableBarCollapsing: false,
-        // Android Properties
-        showTitle: true,
-        toolbarColor: "#6200EE",
-        secondaryToolbarColor: "black",
-        enableUrlBarHiding: true,
-        enableDefaultShare: true,
-        forceCloseOnRedirection: false,
-        // Specify full animation resource identifier(package:anim/name)
-        // or only resource name(in case of animation bundled with app).
-        animations: {
-          startEnter: "slide_in_right",
-          startExit: "slide_out_left",
-          endEnter: "slide_in_left",
-          endExit: "slide_out_right",
-        },
-        headers: {
-          "my-custom-header": "my custom header value",
-        },
-      });
-      Alert.alert(JSON.stringify(result));
-    } else Linking.openURL(url);
-  } catch (error) {
-    Alert.alert(error.message);
+    const result = await Google.logInAsync({
+      androidClientId: "toBeImplemented",
+      iosClientId: "checkNabeelEmailForClientId",
+      scopes: ["profile", "email"],
+    });
+
+    if (result.type === "success") {
+      console.log("accessToken: " + result.accessToken);
+      console.log("name: " + result.user.name);
+      console.log("fName: " + result.user.givenName);
+      console.log("email: " + result.user.email + "\n");
+
+      // call the state hooks passed in the argument
+      let _ = setAccessToken(result.accessToken);
+      let _2 = setUserName(result.user.name);
+      let _3 = setUserEmail(result.user.email);
+
+      // make sure that the state hook
+      console.log("OK");
+      return result.accessToken;
+    } else {
+      return { cancelled: true };
+    }
+  } catch (e) {
+    return { error: true };
   }
 }
 
-async function handlePressButtonAsync() {
-  let result = await WebBrowser.openAuthSessionAsync(loginUrl);
-  return { result };
-}
-
-function startLogin() {
-  console.log("hey");
+async function signOutWithGoogleAsync() {
+  await Google.logOutAsync();
 }
 
 function ToyPennKey(props) {
+  // TODO: do we really need useState here? or can we just use a plain string?
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [accessToken, setAccessToken] = useState("");
+
   return (
     <View style={styles.container}>
+      <AppText>Here's what you can do:</AppText>
       <AppButton
-        title="login with PennKey"
-        onPress={handlePressButtonAsync}
+        title="login with Penn email"
+        onPress={signInWithGoogleAsync(
+          setUserName,
+          setUserEmail,
+          setAccessToken
+        )}
       ></AppButton>
-      <AppText></AppText>
+      <AppButton title="log out" onPress={signOutWithGoogleAsync}></AppButton>
+      <AppText>Email: {userEmail}</AppText>
+      <AppText>Name: {userName}</AppText>
     </View>
   );
 }
