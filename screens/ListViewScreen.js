@@ -7,6 +7,7 @@ import {
   Platform,
 } from "react-native";
 import { Link } from "react-router";
+
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import AppSpaceListing from "../components/AppSpaceListing";
@@ -154,8 +155,8 @@ export default class PrayerSpaceLocation extends React.Component {
   //   }
   render() {
     return (
-      <SafeAreaView /*style={props.styles.container}*/>
-        <View>
+      <Screen style={{ flex: 1 }}>
+        <View style={styles.container}>
           <AppText customStyle={styles.title}>Prayer Spaces</AppText>
           <FlatList
             data={this.state.locations}
@@ -168,38 +169,16 @@ export default class PrayerSpaceLocation extends React.Component {
               />
             )}
             ItemSeparatorComponent={ListItemSeparator}
+            style={styles.spaceListStyle}
           />
 
-          <View style={styles.situation}>
-            {/* <AppButton
-            title="Home"
-            onPress={() => this.state.navigation.popToTop()}
-            // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-            //   console.log(
-            //     props.navigation.goBack.equals(
-            //       props.navigation.navigate("MapView")
-            //     )
-            //   )
-            // }
-            // onPress={() => props.navigation.popToTop()}
+          <AppButton
+            title="Map View"
+            onPress={() => this.state.props.navigation.navigate("MapView")}
             customStyle={styles.editBtn}
-          ></AppButton> */}
-            <AppButton
-              title="Map View"
-              onPress={() => this.state.props.navigation.navigate("MapView")}
-              // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-              //   console.log(
-              //     props.navigation.goBack.equals(
-              //       props.navigation.navigate("MapView")
-              //     )
-              //   )
-              // }
-              // onPress={() => props.navigation.popToTop()}
-              customStyle={styles.editBtn}
-            ></AppButton>
-          </View>
+          ></AppButton>
         </View>
-      </SafeAreaView>
+      </Screen>
     );
   }
 }
@@ -208,6 +187,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    borderColor: "blue",
+    padding: 10,
+    // margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+  editBtn: {
+    width: "50%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -220,25 +208,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     alignItems: "center",
     justifyContent: "center",
-    paddingLeft: 35,
   },
-  situation: {
-    paddingTop: 450,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  editBtn: {
-    width: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  callout: {
-    flexDirection: "row",
-    alignSelf: "flex-start",
-    backgroundColor: "#fff",
-    borderRadius: 6,
-    borderColor: "#ccc",
-    borderWidth: 0.5,
-    padding: 15,
+  spaceListStyle: {
+    width: "90%",
   },
 });

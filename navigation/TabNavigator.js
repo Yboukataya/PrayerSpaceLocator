@@ -2,8 +2,13 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 
+// screen imports
 import ListViewScreen from "../screens/ListViewScreen";
+import MapViewScreen from "../screens/MapViewScreen";
 import WelcomeScreen from "../screens/Welcome";
+
+// import ScreenNavigator, for nested navigation
+import HomeNavigator from "./HomeNavigator";
 
 /**
  *
@@ -12,15 +17,16 @@ import WelcomeScreen from "../screens/Welcome";
  * and Settings (a screen yet to be implemented).
  */
 
-function TabNavigator(props) {
-  const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
+function TabNavigator(props) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
+          // define which icons to use for each tab
           if (route.name === "Home") {
             iconName = "home";
           } else if (route.name === "Spaces") {
@@ -38,7 +44,7 @@ function TabNavigator(props) {
         inactiveTintColor: "gray",
       }}
     >
-      <Tab.Screen name="Home" component={WelcomeScreen} />
+      <Tab.Screen name="Home" component={HomeNavigator} />
       <Tab.Screen name="Spaces" component={ListViewScreen} />
       <Tab.Screen name="Settings" component={ListViewScreen} />
     </Tab.Navigator>

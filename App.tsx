@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-import ScreenNavigator from "./navigation/ScreenNavigator.js";
+import HomeNavigator from "./navigation/HomeNavigator.js";
 import TabNavigator from "./navigation/TabNavigator.js";
 
 // const Tweets = ({ navigation }) => (
