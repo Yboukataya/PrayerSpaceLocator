@@ -15,11 +15,6 @@ function WelcomeScreen({ navigation }) {
       <AppText customStyle={styles.titleOne}>Musallah</AppText>
 
       <AppButton
-        title="Login"
-        onPress={() => navigation.navigate("Login")}
-        customStyle={styles.editBtn}
-      ></AppButton>
-      <AppButton
         title="Add a new Prayer Space"
         onPress={() => navigation.navigate("AddSpace")}
         // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())

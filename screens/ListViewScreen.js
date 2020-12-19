@@ -211,5 +211,8 @@ const styles = StyleSheet.create({
   },
   spaceListStyle: {
     width: "90%",
+    // just for debugging purposes:
+    // borderColor: "blue",
+    // borderWidth: 2,
   },
 });
