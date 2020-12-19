@@ -60,6 +60,7 @@ import Screen from "./components/Screen.js";
 // firebase.initializeApp(firebaseConfig);
 // firebase.analytics();
 
+import MapViewScreen from "./screens/MapViewScreen";
 import ViewSpacesScreen from "./screens/ViewSpacesScreen";
 import ListViewScreen from "./screens/ListViewScreen";
 
@@ -82,6 +83,7 @@ export default function App() {
     //   <ScreenNavigator />
     // </NavigationContainer>
     <ViewSpacesScreen />
+    // <MapViewScreen />
     // <ListViewScreen />
   );
   // return <SpaceDetailScreen space={sampleSpace} />;
