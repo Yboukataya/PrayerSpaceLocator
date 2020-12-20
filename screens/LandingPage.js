@@ -31,7 +31,7 @@ const get_user_location = async () => {
   }
 };
 
-function WelcomeScreen({ navigation }) {
+function LandingScreen({ navigation }) {
   // const result = await sortDistances();
   // const handlePress = async () => {
   // }
@@ -48,8 +48,8 @@ function WelcomeScreen({ navigation }) {
         <Text>Logout</Text>
       </TouchableOpacity> */}
       <AppButton
-        title="Add a new Prayer Space"
-        onPress={() => navigation.navigate("AddSpace")}
+        title="Login"
+        // onPress={() => navigation.navigate("AddSpace")}
         // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
         //   console.log(
         //     props.navigation.goBack.equals(
@@ -62,25 +62,11 @@ function WelcomeScreen({ navigation }) {
       ></AppButton>
 
       <AppButton
-        title="List of Prayer Spaces"
+        title="Continue as Guest"
         onPress={() => {
           get_user_location();
           navigation.navigate("ListView");
         }}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
-        customStyle={styles.editBtn}
-      ></AppButton>
-
-      <AppButton
-        title="Map of Prayer Spaces"
-        onPress={() => navigation.navigate("MapView")}
         // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
         //   console.log(
         //     props.navigation.goBack.equals(
@@ -106,7 +92,21 @@ function WelcomeScreen({ navigation }) {
         customStyle={styles.editBtn}
       ></AppButton> */}
 
-      {one == 1 && (
+      {/* <AppButton
+        title="Map of Prayer Spaces"
+        onPress={() => navigation.navigate("MapView")}
+        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
+        //   console.log(
+        //     props.navigation.goBack.equals(
+        //       props.navigation.navigate("MapView")
+        //     )
+        //   )
+        // }
+        // onPress={() => props.navigation.popToTop()}
+        customStyle={styles.editBtn}
+      ></AppButton> */}
+
+      {/* {one == 1 && (
         <AppButton
           title="Approval needed"
           onPress={() => navigation.navigate("MapView")}
@@ -120,7 +120,7 @@ function WelcomeScreen({ navigation }) {
           // onPress={() => props.navigation.popToTop()}
           customStyle={styles.editBtn}
         ></AppButton>
-      )}
+      )} */}
 
       {/* <TouchableOpacity
         style={{ marginTop: 40 }}
