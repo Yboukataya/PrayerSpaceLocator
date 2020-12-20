@@ -16,8 +16,101 @@ import ListItemSeparator from "../components/ListItemSeparator";
 import Screen from "../components/Screen";
 import * as firebase from "firebase";
 import AppButton from "../components/AppButton";
+// import SyncStorage from "sync-storage";
+// import GetLocation from "react-native-get-location";
 // import firebase from "../config/firebase";
 
+// const get_user_location = async () => {
+//   if ("geolocation" in navigator) {
+//     navigator.geolocation.getCurrentPosition(
+//       (position) => {
+//         console.log(
+//           `Lat: ${position.coords.latitude} Lng: ${position.coords.longitude}`
+//         );
+//         SyncStorage.set(origin, {
+//           lat: position.coords.latitude,
+//           lng: position.coords.longitude,
+//         });
+//         return {
+//           // lat: position.coords.latitude,
+//           // lng: position.coords.longitude,
+//         };
+//       },
+//       (err) => {
+//         return [];
+//       }
+//     );
+//   } else {
+//     return [];
+//   }
+// };
+
+// var googleMapsClient = require("react-native-google-maps-services").createClient(
+//   {
+//     key: "AIzaSyAU6aosyLmkC7HZadYSlDE5MBp2wy7jxW0",
+//   }
+// );
+
+// function initMap() {
+//   // API CALL to get latitude
+//   const destinationsARR = [
+//     { lat: 39.9528, lng: -75.1924 },
+//     { lat: 39.954178, lng: -75.201751 },
+//     { lat: 39.95217, lng: -75.19007 },
+//   ]; // API CALL to get longitude
+//   const space_names = ["VanPelt Library", "Huntsman Hall", " DRL"];
+//   const space_ids = [1, 2, 3];
+
+//   const service = new googleMapsClient.google.maps.DistanceMatrixService();
+
+//   const origin1 = { lat: 39.95128, lng: -75.19255 }; // change this to user location
+//   googleMapsClient.service.getDistanceMatrix(
+//     {
+//       origins: [origin1],
+//       destinations: destinationsARR,
+//       travelMode: google.maps.TravelMode.WALKING,
+//       unitSystem: google.maps.UnitSystem.METRIC,
+//       avoidHighways: false,
+//       avoidTolls: false,
+//     },
+//     (response, status) => {
+//       if (status !== "OK") {
+//         alert("Error was: " + status);
+//       } else {
+//         const originList = response.originAddresses;
+//         const destinationList =
+//           response.destinationAddresses; /*  const outputDiv = document.getElementById("output");
+//         outputDiv.innerHTML = "";
+//         deleteMarkers(markersArray);
+//          */
+//         console.log(response);
+
+//         for (let i = 0; i < originList.length; i++) {
+//           const results = response.rows[i].elements;
+
+//           var len = destinationsARR.length;
+//           var indices = new Array(len);
+//           for (let x = 0; x < len; ++x) {
+//             indices[x] = x;
+//           }
+
+//           indices.sort(function (a, b) {
+//             return results[b].duration.value - results[a].duration.value;
+//           });
+//           console.log(
+//             indices
+//           ); /*  results.sort(function(a,b){
+//           return a.duration.value - b.duration.value;
+//           }); */
+//           console.log("THIS IS RESULTS");
+//           console.log(results);
+
+//           return [results, indices];
+//         }
+//       }
+//     }
+//   );
+// }
 // THIS FUNCTION USED TO INTERACT WITH DB.
 const getEntries = async () => {
   var entries = [];
@@ -139,8 +232,49 @@ const arr = [
 export default class PrayerSpaceLocation extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { locations: arr, props: props };
+    this.state = {
+      locations: arr,
+      props: props,
+      // location: null,
+      // loading: false,
+    };
+    // initMap  ();
   }
+
+  // _requestLocation = () => {
+  //   this.setState({ loading: true, location: null });
+
+  //   GetLocation.getCurrentPosition({
+  //     enableHighAccuracy: true,
+  //     timeout: 150000,
+  //   })
+  //     .then((location) => {
+  //       this.setState({
+  //         location,
+  //         loading: false,
+  //       });
+  //     })
+  //     .catch((ex) => {
+  //       const { code, message } = ex;
+  //       console.warn(code, message);
+  //       if (code === "CANCELLED") {
+  //         Alert.alert("Location cancelled by user or by another request");
+  //       }
+  //       if (code === "UNAVAILABLE") {
+  //         Alert.alert("Location service is disabled or unavailable");
+  //       }
+  //       if (code === "TIMEOUT") {
+  //         Alert.alert("Location request timed out");
+  //       }
+  //       if (code === "UNAUTHORIZED") {
+  //         Alert.alert("Authorization denied");
+  //       }
+  //       this.setState({
+  //         location: null,
+  //         loading: false,
+  //       });
+  //     });
+  // };
 
   // This part we will need when we use data from firebase
 
@@ -154,6 +288,9 @@ export default class PrayerSpaceLocation extends React.Component {
   //       });
   //   }
   render() {
+    // const { location, loading } = this.state;
+    // let origin = await get_user_location();
+    // console.log(SyncStorage.get(origin));
     return (
       <Screen style={{ flex: 1 }}>
         <View style={styles.container}>
