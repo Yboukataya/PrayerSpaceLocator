@@ -67,87 +67,10 @@ function LandingScreen({ navigation }) {
         title="Continue as Guest"
         onPress={() => {
           get_user_location();
-          navigation.navigate("ListView");
+          navigation.navigate("ViewSpaces");
         }}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
         customStyle={styles.editBtn}
       ></AppButton>
-
-      {/* <AppButton
-        title="Map of Prayer Spaces"
-        onPress={() => navigation.navigate("MapView")}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
-        customStyle={styles.editBtn}
-      ></AppButton> */}
-
-      {/* <AppButton
-        title="Map of Prayer Spaces"
-        onPress={() => navigation.navigate("MapView")}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
-        customStyle={styles.editBtn}
-      ></AppButton> */}
-
-      {/* {one == 1 && (
-        <AppButton
-          title="Approval needed"
-          onPress={() => navigation.navigate("MapView")}
-          // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-          //   console.log(
-          //     props.navigation.goBack.equals(
-          //       props.navigation.navigate("MapView")
-          //     )
-          //   )
-          // }
-          // onPress={() => props.navigation.popToTop()}
-          customStyle={styles.editBtn}
-        ></AppButton>
-      )} */}
-
-      {/* <TouchableOpacity
-        style={{ marginTop: 40 }}
-        onPress={() => {
-          navigation.navigate("AddSpace");
-        }}
-      >
-        <Text>Add a new Prayer Space</Text>
-      </TouchableOpacity> */}
-      {/* <TouchableOpacity
-        style={{ marginTop: 40 }}
-        onPress={() => {
-          navigation.navigate("ListView");
-        }}
-      >
-        <Text>ListView!</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{ marginTop: 40 }}
-        onPress={() => {
-          navigation.navigate("MapView");
-        }}
-      >
-        <Text>Map View!</Text>
-      </TouchableOpacity> */}
     </View>
   );
 }
