@@ -1,10 +1,19 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import * as firebase from "firebase";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import SyncStorage from "sync-storage";
 
+import * as Google from "expo-google-app-auth";
+import getEnvVars from "../environment";
+
+const IOS_AUTH_ID = getEnvVars().ios_auth_key;
+// TODO: set android in environment.js
+//const ANDROID_AUTH_ID = getEnvVars().android_auth_key;
+let userName = "";
+let userEmail = "";
+let accessToken = "";
 // MOVE THIS TO THE LOCATION SCREEN WITH NABEEL TOMORROW ET.
 const get_user_location = async () => {
   if ("geolocation" in navigator) {
@@ -31,35 +40,75 @@ const get_user_location = async () => {
   }
 };
 
-function LandingScreen({ navigation }) {
-  // const result = await sortDistances();
-  // const handlePress = async () => {
-  // }
+async function signOutWithGoogleAsync() {
+  userName = "";
+  userEmail = "";
+  accessToken = "";
+  await Google.logOutAsync();
+}
 
+async function signInWithGoogleAsync(props) {
+  try {
+    const result = await Google.logInAsync({
+      androidClientId: "TODO",
+      iosClientId: IOS_AUTH_ID,
+      scopes: ["profile", "email"],
+    });
+
+    if (result.type === "success") {
+      console.log("accessToken: " + result.accessToken);
+      console.log("name: " + result.user.name);
+      console.log("fName: " + result.user.givenName);
+      console.log("email: " + result.user.email + "\n");
+      if (!result.user.email.endsWith("upenn.edu")) {
+        console.log("error");
+        signOutWithGoogleAsync();
+        throw "Not a Penn email";
+      }
+
+      userName = result.user.givenName;
+      userEmail = result.user.email;
+      accessToken = result.user.accessToken;
+
+      props.navigation.navigate("Welcome", {
+        userName: { userName },
+        userEmail: { userEmail },
+      });
+      console.log("OK");
+      return result.accessToken;
+    } else {
+      Alert.alert(
+        "Login Error",
+        "Hmm, looks like your login didn't go through :(",
+        [{ text: "Ok" }]
+      );
+      return { cancelled: true };
+    }
+  } catch (e) {
+    if (e == "Not a Penn email") {
+      Alert.alert(
+        "Login Error",
+        "Whoops! This service is only for Penn students.",
+        [{ text: "Ok" }]
+      );
+      console.log("Nice try, sucker");
+    }
+    return { error: true };
+  }
+}
+
+function LandingScreen(props) {
   one = 1;
+  console.log(props);
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome to</AppText>
       <AppText customStyle={styles.titleOne}>Musallah</AppText>
-      {/* <TouchableOpacity
-        style={{ marginTop: 32 }}
-        onPress={() => this.signOutuser()}
-      >
-        <Text>Logout</Text>
-      </TouchableOpacity> */}
 
       <AppButton
         title="Login"
-        onPress={() => navigation.navigate("Welcome")}
-        // onPress={() => navigation.navigate("AddSpace")}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
+        // onPress={() => navigation.navigate("Welcome")}
+        onPress={signInWithGoogleAsync(props)}
         customStyle={styles.editBtn}
       ></AppButton>
 

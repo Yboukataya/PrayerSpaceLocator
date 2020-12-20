@@ -31,16 +31,19 @@ const get_user_location = async () => {
   }
 };
 
-function WelcomeScreen({ navigation }) {
+function WelcomeScreen(props) {
   one = 2048;
+  console.log("WelcomeScreen: ", props);
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
-      <AppText customStyle={styles.titleOne}>{one}</AppText>
+      <AppText customStyle={styles.titleOne}>
+        {props.route.params.userName.userName}!
+      </AppText>
 
       <AppButton
         title="Add a new Prayer Space"
-        onPress={() => navigation.navigate("AddSpace")}
+        onPress={() => props.navigation.navigate("AddSpace")}
         // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
         //   console.log(
         //     props.navigation.goBack.equals(
@@ -56,7 +59,7 @@ function WelcomeScreen({ navigation }) {
         title="List of Prayer Spaces"
         onPress={() => {
           get_user_location();
-          navigation.navigate("ViewSpaces");
+          props.navigation.navigate("ViewSpaces");
         }}
         // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
         //   console.log(
