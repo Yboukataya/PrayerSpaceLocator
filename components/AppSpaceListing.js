@@ -11,7 +11,7 @@ import AppText from "./AppText";
  * @param {*} param0
  */
 
-function AppSpaceListing({ space, distance, props }) {
+function AppSpaceListing({ space, distance, ...navProps }) {
   return (
     <View style={styles.listingContainer}>
       {/* for the text information */}
@@ -29,7 +29,7 @@ function AppSpaceListing({ space, distance, props }) {
       <View>
         <TouchableOpacity
           onPress={() =>
-            props.navigation.navigate("SpaceDetail", {
+            navProps.navigation.navigate("SpaceDetail", {
               values: space,
               source: "list",
             })

@@ -31,16 +31,27 @@ const get_user_location = async () => {
   }
 };
 
-function WelcomeScreen({ navigation }) {
-  one = 2048;
+function LandingScreen({ navigation }) {
+  // const result = await sortDistances();
+  // const handlePress = async () => {
+  // }
+
+  one = 1;
   return (
     <View style={styles.container}>
-      <AppText customStyle={styles.title}>Welcome</AppText>
-      <AppText customStyle={styles.titleOne}>{one}</AppText>
+      <AppText customStyle={styles.title}>Welcome to</AppText>
+      <AppText customStyle={styles.titleOne}>Musallah</AppText>
+      {/* <TouchableOpacity
+        style={{ marginTop: 32 }}
+        onPress={() => this.signOutuser()}
+      >
+        <Text>Logout</Text>
+      </TouchableOpacity> */}
 
       <AppButton
-        title="Add a new Prayer Space"
-        onPress={() => navigation.navigate("AddSpace")}
+        title="Login"
+        onPress={() => navigation.navigate("Welcome")}
+        // onPress={() => navigation.navigate("AddSpace")}
         // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
         //   console.log(
         //     props.navigation.goBack.equals(
@@ -53,37 +64,13 @@ function WelcomeScreen({ navigation }) {
       ></AppButton>
 
       <AppButton
-        title="List of Prayer Spaces"
+        title="Continue as Guest"
         onPress={() => {
           get_user_location();
           navigation.navigate("ViewSpaces");
         }}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
         customStyle={styles.editBtn}
       ></AppButton>
-
-      {one == 1 && (
-        <AppButton
-          title="Approval needed"
-          onPress={() => navigation.navigate("MapView")}
-          // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-          //   console.log(
-          //     props.navigation.goBack.equals(
-          //       props.navigation.navigate("MapView")
-          //     )
-          //   )
-          // }
-          // onPress={() => props.navigation.popToTop()}
-          customStyle={styles.editBtn}
-        ></AppButton>
-      )}
     </View>
   );
 }
@@ -113,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+export default LandingScreen;

@@ -21,11 +21,12 @@ export default class SpaceDetailScreen extends React.Component {
   }
 
   handleOnPress = () => {
-    if (this.state.props.route.params.source == "add") {
-      this.state.props.navigation.popToTop();
-    } else {
-      this.state.props.navigation.pop();
-    }
+    this.state.props.navigation.navigate("ViewSpaces");
+    // if (this.state.props.route.params.source == "add") {
+    //   this.state.props.navigation.popToTop();
+    // } else {
+    //   this.state.props.navigation.pop();
+    // }
   };
 
   render() {

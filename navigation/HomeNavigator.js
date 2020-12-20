@@ -5,19 +5,22 @@ import AddSpaceScreen from "../screens/AddSpaceScreen";
 import SpaceDetailScreen from "../screens/SpaceDetailScreen";
 import ListViewScreen from "../screens/ListViewScreen";
 import MapViewScreen from "../screens/MapViewScreen";
+import LandingScreen from "../screens/LandingPage";
 import ToyPennKey from "../screens/ToyPennKey";
+import ViewSpacesScreen from "../screens/ViewSpacesScreen";
 
 const Stack = createStackNavigator();
 
-const ScreenNavigator = () => (
+const HomeNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Landing" component={LandingScreen} />
     <Stack.Screen name="Welcome" component={WelcomeScreen} />
     <Stack.Screen name="AddSpace" component={AddSpaceScreen} />
     <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
+    <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
     <Stack.Screen name="ListView" component={ListViewScreen} />
-    <Stack.Screen name="MapView" component={MapViewScreen} />
     <Stack.Screen name="Login" component={ToyPennKey} />
   </Stack.Navigator>
 );
 
-export default ScreenNavigator;
+export default HomeNavigator;
