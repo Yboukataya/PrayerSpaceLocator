@@ -31,14 +31,13 @@ function AppSpaceList(props) {
       dailyHours: "M-F 9-5",
     },
   ];
-
   return (
     <View style={styles.container}>
       <FlatList
         data={data}
         keyExtractor={(listing) => listing.spaceName}
         renderItem={({ item }) => (
-          <AppSpaceListing space={item} distance="0.4" />
+          <AppSpaceListing space={item} distance="0.4" {...props} />
         )}
         ItemSeparatorComponent={ListItemSeparator}
       />

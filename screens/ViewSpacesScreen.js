@@ -18,7 +18,6 @@ import AppMapView from "../components/AppMapView";
 
 function ViewSpacesScreen(props) {
   const [mapVisible, setMapVisible] = useState(false);
-
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.headingContainer}>
@@ -31,7 +30,7 @@ function ViewSpacesScreen(props) {
           <AppMapView />
         ) : (
           <View style={styles.spaceListContainer}>
-            <AppSpaceList />
+            <AppSpaceList {...props} />
           </View>
         )}
       </View>
@@ -50,8 +49,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 20,
     marginBottom: 40,
-    borderColor: "blue",
-    borderWidth: 2,
   },
   headingContainer: {
     alignItems: "center",
