@@ -6,6 +6,7 @@ import SpaceDetailScreen from "../screens/SpaceDetailScreen";
 import ListViewScreen from "../screens/ListViewScreen";
 import MapViewScreen from "../screens/MapViewScreen";
 import ToyPennKey from "../screens/ToyPennKey";
+import ViewSpacesScreen from "../screens/ViewSpacesScreen";
 
 const Stack = createStackNavigator();
 
@@ -14,8 +15,8 @@ const HomeNavigator = () => (
     <Stack.Screen name="Welcome" component={WelcomeScreen} />
     <Stack.Screen name="AddSpace" component={AddSpaceScreen} />
     <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
+    <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
     <Stack.Screen name="ListView" component={ListViewScreen} />
-    <Stack.Screen name="MapView" component={MapViewScreen} />
     <Stack.Screen name="Login" component={ToyPennKey} />
   </Stack.Navigator>
 );

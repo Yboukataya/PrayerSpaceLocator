@@ -29,14 +29,8 @@ function WelcomeScreen({ navigation }) {
       ></AppButton>
 
       <AppButton
-        title="List of Prayer Spaces"
-        onPress={() => navigation.navigate("ListView")}
-        customStyle={styles.editBtn}
-      ></AppButton>
-
-      <AppButton
-        title="Map of Prayer Spaces"
-        onPress={() => navigation.navigate("MapView")}
+        title="See Prayer Spaces"
+        onPress={() => navigation.navigate("ViewSpaces")}
         customStyle={styles.editBtn}
       ></AppButton>
     </View>

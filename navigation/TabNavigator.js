@@ -5,6 +5,7 @@ import { FontAwesome } from "@expo/vector-icons";
 // screen imports
 import ListViewScreen from "../screens/ListViewScreen";
 import MapViewScreen from "../screens/MapViewScreen";
+import ViewSpacesScreen from "../screens/ViewSpacesScreen";
 import WelcomeScreen from "../screens/Welcome";
 
 // import ScreenNavigator, for nested navigation
@@ -13,7 +14,7 @@ import HomeNavigator from "./HomeNavigator";
 /**
  *
  * This component sets up a persistent tab bar at the bottom of the screen.
- * Right now, it's only listing 3 entries: Home, Spaces (list of spaces),
+ * Right now, it's only listing 2 entries: Home, Spaces (list of spaces),
  * and Settings (a screen yet to be implemented).
  */
 
