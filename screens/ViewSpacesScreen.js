@@ -27,7 +27,7 @@ function ViewSpacesScreen(props) {
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
         {mapVisible ? (
-          <AppMapView />
+          <AppMapView {...props} />
         ) : (
           <View style={styles.spaceListContainer}>
             <AppSpaceList {...props} />

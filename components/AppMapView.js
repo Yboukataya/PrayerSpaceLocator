@@ -26,10 +26,10 @@ function AppMapView(props) {
     },
   ];
 
-  function mapMarkersClosed(spaceList) {
+  function mapMarkersClosed(spaceList, navigation) {
     return spaceList.map((report) => (
       <Marker
-        key={report.building_name}
+        key={report.spaceName}
         coordinate={{
           latitude: Number(report.latitude),
           longitude: Number(report.longitude),
@@ -45,9 +45,9 @@ function AppMapView(props) {
         <Callout tooltip>
           <CalloutSubview
             onPress={() =>
-              this.state.navigation.navigate("SpaceDetail", {
+              navigation.navigate("SpaceDetail", {
                 // TODO: fix this "arr2" here?
-                values: arr2[0],
+                values: closedSpacesList[0],
                 source: "map",
               })
             }
@@ -62,7 +62,7 @@ function AppMapView(props) {
       </Marker>
     ));
   }
-
+  console.log("MapProps: ", props);
   return (
     <MapView
       style={styles.mapStyle}
@@ -74,7 +74,7 @@ function AppMapView(props) {
       }}
       showsUserLocation={true}
     >
-      {mapMarkersClosed(closedSpacesList)}
+      {mapMarkersClosed(closedSpacesList, props.navigation)}
     </MapView>
   );
 }
