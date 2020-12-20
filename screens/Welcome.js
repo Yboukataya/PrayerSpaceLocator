@@ -36,17 +36,18 @@ function WelcomeScreen({ navigation }) {
   // const handlePress = async () => {
   // }
 
-  one = 1;
+  one = 2;
   return (
     <View style={styles.container}>
-      <AppText customStyle={styles.title}>Welcome to</AppText>
-      <AppText customStyle={styles.titleOne}>Musallah</AppText>
+      <AppText customStyle={styles.title}>Welcome</AppText>
+      <AppText customStyle={styles.titleOne}>{one}</AppText>
       {/* <TouchableOpacity
         style={{ marginTop: 32 }}
         onPress={() => this.signOutuser()}
       >
         <Text>Logout</Text>
       </TouchableOpacity> */}
+
       <AppButton
         title="Add a new Prayer Space"
         onPress={() => navigation.navigate("AddSpace")}

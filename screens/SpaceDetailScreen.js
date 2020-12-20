@@ -9,7 +9,7 @@ import Screen from "../components/Screen";
 
 /**
  * This component specifies appearance of the screen that shows attributes
- * about a prayer. For each attribute, it uses an AppSpaceDetail component
+ * about a prayer space. For each attribute, it uses an AppSpaceDetail component
  * to render that attribute on its own line.
  * @param {*} param0
  */

@@ -47,8 +47,10 @@ function LandingScreen({ navigation }) {
       >
         <Text>Logout</Text>
       </TouchableOpacity> */}
+
       <AppButton
         title="Login"
+        onPress={() => navigation.navigate("Welcome")}
         // onPress={() => navigation.navigate("AddSpace")}
         // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
         //   console.log(
@@ -175,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+export default LandingScreen;
