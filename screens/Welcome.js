@@ -13,17 +13,7 @@ function WelcomeScreen({ navigation }) {
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome to</AppText>
       <AppText customStyle={styles.titleOne}>Musallah</AppText>
-      {/* <TouchableOpacity
-        style={{ marginTop: 32 }}
-        onPress={() => this.signOutuser()}
-      >
-        <Text>Logout</Text>
-      </TouchableOpacity> */}
-      <AppButton
-        title="Login"
-        onPress={() => navigation.navigate("Login")}
-        customStyle={styles.editBtn}
-      ></AppButton>
+
       <AppButton
         title="Add a new Prayer Space"
         onPress={() => navigation.navigate("AddSpace")}
@@ -39,57 +29,10 @@ function WelcomeScreen({ navigation }) {
       ></AppButton>
 
       <AppButton
-        title="List of Prayer Spaces"
-        onPress={() => navigation.navigate("ListView")}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
+        title="See Prayer Spaces"
+        onPress={() => navigation.navigate("ViewSpaces")}
         customStyle={styles.editBtn}
       ></AppButton>
-
-      <AppButton
-        title="Map of Prayer Spaces"
-        onPress={() => navigation.navigate("MapView")}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
-        customStyle={styles.editBtn}
-      ></AppButton>
-
-      {/* <TouchableOpacity
-        style={{ marginTop: 40 }}
-        onPress={() => {
-          navigation.navigate("AddSpace");
-        }}
-      >
-        <Text>Add a new Prayer Space</Text>
-      </TouchableOpacity> */}
-      {/* <TouchableOpacity
-        style={{ marginTop: 40 }}
-        onPress={() => {
-          navigation.navigate("ListView");
-        }}
-      >
-        <Text>ListView!</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{ marginTop: 40 }}
-        onPress={() => {
-          navigation.navigate("MapView");
-        }}
-      >
-        <Text>Map View!</Text>
-      </TouchableOpacity> */}
     </View>
   );
 }
