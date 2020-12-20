@@ -54,6 +54,9 @@ async function signInWithGoogleAsync() {
 }
 
 async function signOutWithGoogleAsync() {
+  userName = "";
+  userEmail = "";
+  accessToken = "";
   await Google.logOutAsync();
 }
 
