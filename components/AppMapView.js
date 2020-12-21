@@ -5,26 +5,28 @@ import MapView, { Marker, Callout, CalloutSubview } from "react-native-maps";
 // import * from "../constants/dummySpaces";
 // import { mapMarkersClosed, mapMarkersOpen } from "../functions/MapMarkers";
 
-function AppMapView(props) {
+function AppMapView({ locations, props }) {
   // TODO Can't figure out how to define this dummy data in a separate
   //  file and import, unfortunately
-  let closedSpacesList = [
-    {
-      building_address_city: "Philadelphia",
-      building_address_street: "3417 Spruce Street",
-      building_address_zip: "19104",
-      building_name: "Houston Hall",
-      bldgName: "Houston Hall",
-      bldgAddress: "3417 Spruce Street, Philadelphia, PA 19104",
-      latitude: "39.95052",
-      longitude: "-75.192920",
-      capacity: "2",
-      dailyHours: "2PM - 5PM",
-      instructions:
-        "Inside Houston Hall, go up to the second floor and you will see SPARC.",
-      spaceName: "SPARC",
-    },
-  ];
+  let closedSpacesList = locations;
+  console.log(" APP MAP VIEW HELLO: " + JSON.stringify(locations));
+  // [
+  //   {
+  //     building_address_city: "Philadelphia",
+  //     building_address_street: "3417 Spruce Street",
+  //     building_address_zip: "19104",
+  //     building_name: "Houston Hall",
+  //     bldgName: "Houston Hall",
+  //     bldgAddress: "3417 Spruce Street, Philadelphia, PA 19104",
+  //     latitude: "39.95052",
+  //     longitude: "-75.192920",
+  //     capacity: "2",
+  //     dailyHours: "2PM - 5PM",
+  //     instructions:
+  //       "Inside Houston Hall, go up to the second floor and you will see SPARC.",
+  //     spaceName: "SPARC",
+  //   },
+  // ];
 
   function mapMarkersClosed(spaceList, navigation) {
     return spaceList.map((report) => (

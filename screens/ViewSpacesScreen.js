@@ -29,7 +29,7 @@ function ViewSpacesScreen(props) {
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
         {mapVisible ? (
-          <AppMapView {...props} />
+          <AppMapView locations={locations} props={props} />
         ) : (
           <View style={styles.spaceListContainer}>
             <AppSpaceList locations={locations} props={props} />
