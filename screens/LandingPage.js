@@ -7,6 +7,7 @@ import SyncStorage from "sync-storage";
 
 import * as Google from "expo-google-app-auth";
 import getEnvVars from "../environment";
+import { isUnparsedPrepend } from "typescript";
 
 const IOS_AUTH_ID = getEnvVars().ios_auth_key;
 // TODO: set android in environment.js
@@ -47,6 +48,37 @@ async function signOutWithGoogleAsync() {
   await Google.logOutAsync();
 }
 
+async function addUser(userEmail, isAdmin) {
+  // console.log(bldgName);
+  const axios = require("axios");
+  let data = {
+    email: userEmail,
+    is_admin: false,
+  };
+  let url = `http://localhost:8080/user/`;
+  let res = await axios
+    .post(url, data, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .catch(function (error) {
+      console.log("This is the error: ", error);
+    });
+  console.log("THIS IS RES" + res);
+  return res;
+}
+
+async function isAdmin(userEmail) {
+  const axios = require("axios");
+  let url = `http://localhost:8080/user?email=` + userEmail;
+  let res = await axios.get(url).catch(function (error) {
+    console.log("This is the error: ", error);
+  });
+  console.log("THIS IS RES" + res);
+  return res;
+}
+
 async function signInWithGoogleAsync(props) {
   try {
     const result = await Google.logInAsync({
@@ -70,6 +102,8 @@ async function signInWithGoogleAsync(props) {
       userEmail = result.user.email;
       accessToken = result.user.accessToken;
 
+      await addUser(userEmail, false);
+      await isAdmin(userEmail);
       props.navigation.navigate("Welcome", {
         userName: { userName },
         userEmail: { userEmail },
@@ -96,7 +130,8 @@ async function signInWithGoogleAsync(props) {
     return { error: true };
   }
 }
-
+userName = "Fatih";
+userEmail = "1234@upenn.edu";
 function LandingScreen(props) {
   one = 1;
   console.log(props);
@@ -109,6 +144,13 @@ function LandingScreen(props) {
         title="Login"
         // onPress={() => navigation.navigate("Welcome")}
         onPress={signInWithGoogleAsync(props)}
+        // onPress={
+        //   (props.navigation.navigate("Welcome"),
+        //   {
+        //     userName: { userName },
+        //     userEmail: { userEmail },
+        //   })
+        // }
         customStyle={styles.editBtn}
       ></AppButton>
 
@@ -116,7 +158,7 @@ function LandingScreen(props) {
         title="Continue as Guest"
         onPress={() => {
           get_user_location();
-          navigation.navigate("ViewSpaces");
+          props.navigation.navigate("ViewSpaces");
         }}
         customStyle={styles.editBtn}
       ></AppButton>

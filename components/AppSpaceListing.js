@@ -11,14 +11,14 @@ import AppText from "./AppText";
  * @param {*} param0
  */
 
-function AppSpaceListing({ space, distance, ...navProps }) {
+function AppSpaceListing({ space, distance, props, ...navProps }) {
   return (
     <View style={styles.listingContainer}>
       {/* for the text information */}
       <View>
         <AppText customStyle={{ flex: 1, width: "100%", borderColor: "blue" }}>
           {space.spaceName} :
-          <AppText customStyle={styles.distStyle}> {distance}mi</AppText>
+          <AppText customStyle={styles.distStyle}> {distance}</AppText>
         </AppText>
         <AppText customStyle={styles.capacityStyle}>
           Capacity: {space.capacity}
@@ -28,12 +28,14 @@ function AppSpaceListing({ space, distance, ...navProps }) {
       {/* for the icon */}
       <View>
         <TouchableOpacity
-          onPress={() =>
-            navProps.navigation.navigate("SpaceDetail", {
+          onPress={() => {
+            console.log(space);
+            console.log(navProps.navigation);
+            props.navigation.navigate("SpaceDetail", {
               values: space,
               source: "list",
-            })
-          }
+            });
+          }}
         >
           <AntDesign name="rightcircle" size={40} />
         </TouchableOpacity>

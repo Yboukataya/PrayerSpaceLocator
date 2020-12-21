@@ -228,6 +228,7 @@ import MapView, { Marker, Callout, CalloutSubview } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
+import "localstorage-polyfill";
 
 // STATIC DATA
 var arr1 = [
@@ -311,10 +312,14 @@ export default class MapViewScreen extends React.Component {
   constructor(props) {
     super(props);
     console.log(props);
-    this.state = { navigation: props.navigation };
+    this.state = {
+      navigation: props.navigation,
+      locations: JSON.parse(localStorage.getItem("mapinfo")),
+    };
   }
   mapMarkersClosed = () => {
-    return arr2.map((report) => (
+    console.log(this.state.locations);
+    return this.state.locations.map((report) => (
       <Marker
         key={report.building_name}
         coordinate={{
@@ -322,7 +327,7 @@ export default class MapViewScreen extends React.Component {
           longitude: Number(report.longitude),
         }}
         pinColor={"green"}
-        title={report.building_name}
+        title={report.bldgName}
         description={"Open"}
         // onCalloutPress={this.state.navigation.navigate("SpaceDetail", {
         // values: arr2[0],
@@ -333,14 +338,14 @@ export default class MapViewScreen extends React.Component {
           <CalloutSubview
             onPress={() =>
               this.state.navigation.navigate("SpaceDetail", {
-                values: arr2[0],
+                values: this.state.locations,
                 source: "map",
               })
             }
           >
             <View>
               <View style={styles.callout}>
-                <Text>{report.building_name}</Text>
+                <Text>{report.bldgName}</Text>
               </View>
             </View>
           </CalloutSubview>

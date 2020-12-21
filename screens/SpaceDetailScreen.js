@@ -20,8 +20,64 @@ export default class SpaceDetailScreen extends React.Component {
     this.state = { props: props };
   }
 
+  addSpace = async (
+    bldgName,
+    bldgAddress,
+    instructions,
+    capacity,
+    daily_hours,
+    spaceName
+  ) => {
+    console.log(bldgName);
+    const axios = require("axios");
+    let data = {
+      bldgName: bldgName,
+      bldgAddress: bldgAddress,
+      instructions: instructions,
+      capacity: capacity,
+      daily_hours: daily_hours,
+      spaceName: spaceName,
+      approval: false,
+    };
+    let url = `http://localhost:8080/space/`;
+    // let res = await axios({
+    //   method: "post",
+    //   url: `http://localhost:8080/space/`,
+    //   data: JSON.stringify({
+    //     bldgName: bldgName,
+    //     bldgAddress: bldgAddress,
+    //     instructions: instructions,
+    //     capacity: capacity,
+    //     daily_hours: daily_hours,
+    //     spaceName: spaceName,
+    //   }),
+    //   headers: { "Content-Type": "application/json" },
+    // })
+    let res = await axios
+      .post(url, data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
+      .catch(function (error) {
+        console.log("This is the error: ", error);
+      });
+    console.log("THIS IS RES" + res);
+    return res;
+  };
+
   handleOnPress = () => {
+    console.log(this.state.props.route.params.values.spaceName);
+    this.addSpace(
+      this.state.props.route.params.values.bldgName,
+      this.state.props.route.params.values.bldgAddress,
+      this.state.props.route.params.values.instructions,
+      this.state.props.route.params.values.capacity,
+      this.state.props.route.params.values.dailyHours,
+      this.state.props.route.params.values.spaceName
+    );
     this.state.props.navigation.navigate("ViewSpaces");
+
     // if (this.state.props.route.params.source == "add") {
     //   this.state.props.navigation.popToTop();
     // } else {

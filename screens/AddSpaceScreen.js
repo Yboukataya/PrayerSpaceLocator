@@ -13,6 +13,34 @@ import AppFormEntry from "../components/forms/AppFormEntry";
  * @param {*} props
  */
 
+const addSpace = async (
+  bldgName,
+  bldgAddress,
+  instructions,
+  capacity,
+  daily_hours,
+  spaceName
+) => {
+  console.log(bldgName);
+  const axios = require("axios");
+  let res = await axios({
+    method: "post",
+    url: `http://localhost:8080/space/`,
+    data: {
+      bldgName: bldgName,
+      bldgAddress: bldgAddress,
+      instructions: instructions,
+      capacity: capacity,
+      daily_hours: daily_hours,
+      spaceName: spaceName,
+    },
+  }).catch(function (error) {
+    console.log("This is the error: ", error);
+  });
+  console.log("THIS IS RES" + res);
+  return res;
+};
+
 export default function AddSpaceScreen(props) {
   // console.log(props);
   return (
@@ -30,9 +58,11 @@ export default function AddSpaceScreen(props) {
           capacity: "",
           dailyHours: "",
         }}
-        onSubmit={(values) =>
-          props.navigation.navigate("SpaceDetail", { values, source: "add" })
-        }
+        onSubmit={(values) => {
+          console.log("THIS IS VALUES: " + values.bldgName);
+
+          props.navigation.navigate("SpaceDetail", { values, source: "add" });
+        }}
       >
         <AppFormEntry
           label="Space Name"
