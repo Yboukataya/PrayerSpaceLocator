@@ -47,6 +47,37 @@ async function signOutWithGoogleAsync() {
   await Google.logOutAsync();
 }
 
+async function addUser(userEmail, isAdmin) {
+  // console.log(bldgName);
+  const axios = require("axios");
+  let data = {
+    email: userEmail,
+    is_admin: false,
+  };
+  let url = `http://localhost:8080/user/`;
+  let res = await axios
+    .post(url, data, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .catch(function (error) {
+      console.log("This is the error: ", error);
+    });
+  console.log("THIS IS RES" + res);
+  return res;
+}
+
+async function isAdmin(userEmail) {
+  const axios = require("axios");
+  let url = `http://localhost:8080/user?email=` + userEmail;
+  let res = await axios.get(url).catch(function (error) {
+    console.log("This is the error: ", error);
+  });
+  console.log("THIS IS RES" + res);
+  return res;
+}
+
 async function signInWithGoogleAsync(props) {
   try {
     const result = await Google.logInAsync({
@@ -69,6 +100,9 @@ async function signInWithGoogleAsync(props) {
       userName = result.user.givenName;
       userEmail = result.user.email;
       accessToken = result.user.accessToken;
+
+      await addUser(userEmail, false);
+      // await isAdmin(userEmail);
 
       props.navigation.navigate("Welcome", {
         userName: { userName },
