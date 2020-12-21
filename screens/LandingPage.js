@@ -47,7 +47,7 @@ async function signOutWithGoogleAsync() {
   await Google.logOutAsync();
 }
 
-async function addUser(userEmail, isAdmin) {
+async function addOrFindUser(userEmail, isAdmin) {
   // console.log(bldgName);
   const axios = require("axios");
   let data = {
@@ -72,10 +72,10 @@ async function isAdmin(userEmail) {
   const axios = require("axios");
   let url = `http://localhost:8080/user?email=` + userEmail;
   let res = await axios.get(url).catch(function (error) {
-    console.log("This is the error: ", error);
+    console.log("This is the error for CHECKING ADMIN: ", error);
   });
-  console.log("THIS IS RES" + res);
-  return res;
+  console.log("THIS IS RES for ADMIN " + res.data.admin);
+  return res.data.admin;
 }
 
 async function signInWithGoogleAsync(props) {
@@ -101,12 +101,14 @@ async function signInWithGoogleAsync(props) {
       userEmail = result.user.email;
       accessToken = result.user.accessToken;
 
-      await addUser(userEmail, false);
-      // await isAdmin(userEmail);
+      // create function to check if user exists in db, this is a waste but ok for demo
+      await addOrFindUser(userEmail, false);
+      let is_admin = await isAdmin(userEmail);
 
       props.navigation.navigate("Welcome", {
         userName: { userName },
         userEmail: { userEmail },
+        is_admin: { is_admin },
       });
       console.log("OK");
       return result.accessToken;

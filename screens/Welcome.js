@@ -72,7 +72,7 @@ function WelcomeScreen(props) {
         customStyle={styles.editBtn}
       ></AppButton>
 
-      {one == 1 && (
+      {props.route.params.is_admin.is_admin && (
         <AppButton
           title="Approval needed"
           onPress={() => navigation.navigate("MapView")}
