@@ -19,6 +19,7 @@ import AppMapView from "../components/AppMapView";
 
 function ViewSpacesScreen(props) {
   let locations = JSON.parse(localStorage.getItem("computed"));
+  let locationsMap = JSON.parse(localStorage.getItem("mapinfo"));
   const [mapVisible, setMapVisible] = useState(false);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
@@ -29,7 +30,7 @@ function ViewSpacesScreen(props) {
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
         {mapVisible ? (
-          <AppMapView locations={locations} props={props} />
+          <AppMapView locations={locationsMap} props={props} />
         ) : (
           <View style={styles.spaceListContainer}>
             <AppSpaceList locations={locations} props={props} />

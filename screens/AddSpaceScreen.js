@@ -13,6 +13,52 @@ import AppFormEntry from "../components/forms/AppFormEntry";
  * @param {*} props
  */
 
+addSpace = async (
+  bldgName,
+  bldgAddress,
+  instructions,
+  capacity,
+  daily_hours,
+  spaceName
+) => {
+  console.log(bldgName);
+  const axios = require("axios");
+  let data = {
+    bldgName: bldgName,
+    bldgAddress: bldgAddress,
+    instructions: instructions,
+    capacity: capacity,
+    daily_hours: daily_hours,
+    spaceName: spaceName,
+    approval: false,
+  };
+  let url = `http://localhost:8080/space/`;
+  // let res = await axios({
+  //   method: "post",
+  //   url: `http://localhost:8080/space/`,
+  //   data: JSON.stringify({
+  //     bldgName: bldgName,
+  //     bldgAddress: bldgAddress,
+  //     instructions: instructions,
+  //     capacity: capacity,
+  //     daily_hours: daily_hours,
+  //     spaceName: spaceName,
+  //   }),
+  //   headers: { "Content-Type": "application/json" },
+  // })
+  let res = await axios
+    .post(url, data, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .catch(function (error) {
+      console.log("This is the error: ", error);
+    });
+  console.log("THIS IS RES" + res);
+  return res;
+};
+
 export default function AddSpaceScreen(props) {
   // console.log(props);
   return (
@@ -30,9 +76,18 @@ export default function AddSpaceScreen(props) {
           capacity: "",
           dailyHours: "",
         }}
-        onSubmit={(values) =>
-          props.navigation.navigate("SpaceDetail", { values, source: "add" })
-        }
+        onSubmit={(values) => {
+          console.log(values.spaceName);
+          this.addSpace(
+            values.bldgName,
+            values.bldgAddress,
+            values.instructions,
+            values.capacity,
+            values.dailyHours,
+            values.spaceName
+          );
+          props.navigation.navigate("SpaceDetail", { values, source: "add" });
+        }}
       >
         <AppFormEntry
           label="Space Name"
