@@ -7,7 +7,8 @@ import AppTitle from "../components/AppTitle.js";
 import AppText from "../components/AppText";
 import MapViewScreen from "./MapViewScreen";
 import Screen from "../components/Screen";
-
+import "localstorage-polyfill";
+import axios from "axios";
 import AppMapView from "../components/AppMapView";
 
 /**
@@ -17,6 +18,7 @@ import AppMapView from "../components/AppMapView";
  */
 
 function ViewSpacesScreen(props) {
+  let locations = JSON.parse(localStorage.getItem("computed"));
   const [mapVisible, setMapVisible] = useState(false);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
@@ -30,7 +32,7 @@ function ViewSpacesScreen(props) {
           <AppMapView {...props} />
         ) : (
           <View style={styles.spaceListContainer}>
-            <AppSpaceList {...props} />
+            <AppSpaceList locations={locations} {...props} />
           </View>
         )}
       </View>
