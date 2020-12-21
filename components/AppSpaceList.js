@@ -39,7 +39,11 @@ function AppSpaceList({ locations, props }) {
         data={data}
         keyExtractor={(listing) => listing.spaceName}
         renderItem={({ item }) => (
-          <AppSpaceListing space={item} distance="0.4" {...props} />
+          <AppSpaceListing
+            space={item}
+            distance={item.distance}
+            props={props}
+          />
         )}
         ItemSeparatorComponent={ListItemSeparator}
       />

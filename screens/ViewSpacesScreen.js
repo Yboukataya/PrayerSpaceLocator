@@ -32,7 +32,7 @@ function ViewSpacesScreen(props) {
           <AppMapView {...props} />
         ) : (
           <View style={styles.spaceListContainer}>
-            <AppSpaceList locations={locations} {...props} />
+            <AppSpaceList locations={locations} props={props} />
           </View>
         )}
       </View>
