@@ -183,7 +183,7 @@ function WelcomeScreen(props) {
       <AppButton
         title="List of Prayer Spaces"
         onPress={() => {
-          // initMap();
+          initMap();
           get_user_location();
           props.navigation.navigate("ViewSpaces");
         }}

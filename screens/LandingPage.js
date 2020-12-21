@@ -279,7 +279,7 @@ function LandingScreen(props) {
         title="Continue as Guest"
         onPress={() => {
           get_user_location();
-          navigation.navigate("ViewSpaces");
+          props.navigation.navigate("ViewSpaces");
         }}
         customStyle={styles.editBtn}
       ></AppButton>
