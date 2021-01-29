@@ -270,8 +270,7 @@ function LandingScreen(props) {
 
       <AppButton
         title="Login"
-        // onPress={() => navigation.navigate("Welcome")}
-        onPress={signInWithGoogleAsync(props)}
+        onPress={() => signInWithGoogleAsync(props)}
         customStyle={styles.editBtn}
       ></AppButton>
 
