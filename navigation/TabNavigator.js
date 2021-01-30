@@ -48,7 +48,7 @@ function TabNavigator(props) {
       <Tab.Screen name="Home" component={HomeNavigator} />
       {/* TODO: should we keep this tab? Kind of complicates navigation */}
       {/* <Tab.Screen name="Spaces" component={ListViewScreen} /> */}
-      <Tab.Screen name="Settings" component={ListViewScreen} />
+      {/* <Tab.Screen name="Settings" component={ListViewScreen} /> */}
     </Tab.Navigator>
   );
 }

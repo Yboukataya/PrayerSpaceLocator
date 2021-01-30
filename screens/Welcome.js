@@ -8,127 +8,128 @@ import "localstorage-polyfill";
 global.localStorage;
 import axios from "axios";
 
-const get_spaces = async () => {
-  let res = await axios({
-    method: "get",
-    url: `http://localhost:8080/spaces`,
-  }).catch(function (error) {
-    console.log("This is the error: ", error);
-  });
-  console.log(res.data.data);
-  localStorage.setItem("mapinfo", JSON.stringify(res.data.data));
-  return JSON.stringify(res.data.data);
-};
+// const get_spaces = async () => {
+//   let res = await axios({
+//     method: "get",
+//     url: `http://node-env.eba-myjteg7z.us-east-1.elasticbeanstalk.com/spaces`,
+//   }).catch(function (error) {
+//     console.log("This is the error: ", error);
+//   });
+//   console.log("Behold, AWS!\n", res.data.data);
+//   localStorage.setItem("mapinfo", JSON.stringify(res.data.data));
+//   return JSON.stringify(res.data.data);
+// };
 
-initMap = async () => {
-  // Get user address from lat and long
+// initMap = async () => {
+//   // Get user address from lat and long
 
-  // Get all location addresses in db
+//   // Get all location addresses in db
 
-  // Get all space names, ids, capacity from db
-  var http_request2 = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=3335+Woodland+Walk,+Philadelphia,+PA+19104&destinations=`;
-  var http_end = `&mode=walking&departure_time=now&key=AIzaSyAU6aosyLmkC7HZadYSlDE5MBp2wy7jxW0`;
-  var http_request = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=3335+Woodland+Walk,+Philadelphia,+PA+19104&destinations=3420+Walnut+St,+Philadelphia,+PA+19104|209+S+33rd+St,+Philadelphia,+PA+19104|3730+Walnut+St,+Philadelphia,+PA+19104&mode=walking&departure_time=now&key=AIzaSyAU6aosyLmkC7HZadYSlDE5MBp2wy7jxW0`;
+//   // Get all space names, ids, capacity from db
+//   var http_request2 = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=3335+Woodland+Walk,+Philadelphia,+PA+19104&destinations=`;
+//   var http_end = `&mode=walking&departure_time=now&key=AIzaSyAU6aosyLmkC7HZadYSlDE5MBp2wy7jxW0`;
+//   var http_request = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=3335+Woodland+Walk,+Philadelphia,+PA+19104&destinations=3420+Walnut+St,+Philadelphia,+PA+19104|209+S+33rd+St,+Philadelphia,+PA+19104|3730+Walnut+St,+Philadelphia,+PA+19104&mode=walking&departure_time=now&key=AIzaSyAU6aosyLmkC7HZadYSlDE5MBp2wy7jxW0`;
 
-  // console.log(
-  //   "THIS IS THE RES INSIDE THE INIT MAP FUNCTION: " +
-  //     JSON.parse(res)[0].bldgName
-  // );
-  const space_names = [];
-  const space_ids = [];
-  const capacity = [];
-  const addresses = [];
-  const instructions = [];
-  const dailyHours = [];
-  var destinations = "";
-  let res = await get_spaces().then((response) => {
-    let x = JSON.parse(response);
+//   // console.log(
+//   //   "THIS IS THE RES INSIDE THE INIT MAP FUNCTION: " +
+//   //     JSON.parse(res)[0].bldgName
+//   // );
+//   const space_names = [];
+//   const space_ids = [];
+//   const capacity = [];
+//   const addresses = [];
+//   const instructions = [];
+//   const dailyHours = [];
+//   var destinations = "";
+//   let res = await get_spaces().then((response) => {
+//     console.log("Response OK!");
+//     let x = JSON.parse(response);
 
-    for (var i = 0; i < x.length; i++) {
-      var cur = x[i];
-      space_names.push(cur.spaceName);
-      space_ids.push(cur.id);
-      capacity.push(cur.capacity);
-      addresses.push(cur.bldgAddress);
-      instructions.push(cur.instructions);
-      dailyHours.push(cur.daily_hours);
-    }
+//     for (var i = 0; i < x.length; i++) {
+//       var cur = x[i];
+//       space_names.push(cur.spaceName);
+//       space_ids.push(cur.id);
+//       capacity.push(cur.capacity);
+//       addresses.push(cur.bldgAddress);
+//       instructions.push(cur.instructions);
+//       dailyHours.push(cur.daily_hours);
+//     }
 
-    for (var i = 0; i < addresses.length; i++) {
-      if (i === addresses.length - 1) {
-        destinations = destinations.concat(addresses[i].replace(" ", "+"));
-      } else {
-        destinations = destinations.concat(
-          addresses[i].replace(" ", "+") + "|"
-        );
-      }
-    }
-    destinations = destinations.replaceAll(" ", "+");
-    http_request2 = http_request2 + destinations + http_end;
-    // console.log(
-    // "THIS IS THE RES INSIDE THE INIT MAP FUNCTION: " + http_request2
-    // );
-  });
-  // console.log("COMPLETED");
-  await axios
-    .post(http_request2)
-    .then((response) => {
-      //console.log("THIS IS RESPONCE",response.data["rows"][0]["elements"][1].duration.text);
-      var origins = response.data["origin_addresses"];
-      var destinations = response.data["destination_addresses"]; // API CALL to get this info
+//     for (var i = 0; i < addresses.length; i++) {
+//       if (i === addresses.length - 1) {
+//         destinations = destinations.concat(addresses[i].replace(" ", "+"));
+//       } else {
+//         destinations = destinations.concat(
+//           addresses[i].replace(" ", "+") + "|"
+//         );
+//       }
+//     }
+//     destinations = destinations.replaceAll(" ", "+");
+//     http_request2 = http_request2 + destinations + http_end;
+//     // console.log(
+//     // "THIS IS THE RES INSIDE THE INIT MAP FUNCTION: " + http_request2
+//     // );
+//   });
+//   // console.log("COMPLETED");
+//   await axios
+//     .post(http_request2)
+//     .then((response) => {
+//       //console.log("THIS IS RESPONCE",response.data["rows"][0]["elements"][1].duration.text);
+//       var origins = response.data["origin_addresses"];
+//       var destinations = response.data["destination_addresses"]; // API CALL to get this info
 
-      // const space_names = ["VanPelt Library", "DRL", "Huntsman Hall"];
-      // const space_ids = [1, 2, 3];
-      // const capacity = ["10", "3", "5"];
-      // const addresses = [
-      //   "3420 Walnut St, Philadelphia, PA 19104",
-      //   "209 S 33rd St, Philadelphia, PA 19104",
-      //   "3730 Walnut St, Philadelphia, PA 19104",
-      // ];
-      // const instructions = [
-      //   "Go up to the 4th floor, study room 403",
-      //   "Go to classroom A40",
-      //   "Go up walnut it is red building",
-      // ]; // Sort the results
-      for (var i = 0; i < origins.length; i++) {
-        var results = response.data["rows"][0]["elements"];
-        var len = destinations.length;
-        var indices = new Array(len);
-        for (let x = 0; x < len; ++x) {
-          indices[x] = x;
-        }
-        indices.sort(function (a, b) {
-          return results[a].duration.value - results[b].duration.value;
-        });
-        var sorted_results = [];
-        var sorted_capacity_results = [];
-        var sorted_name_results = [];
-        var sorted_ids = [];
-        var arr3 = [];
-        for (var j = 0; j < results.length; j++) {
-          sorted_results.push(results[indices[j]].duration.text);
-          sorted_capacity_results.push(capacity[indices[j]]);
-          sorted_name_results.push(space_names[indices[j]]);
-          sorted_ids.push(instructions[indices[j]]);
-          arr3.push({
-            building_name: space_names[indices[j]],
-            bldgName: space_names[indices[j]],
-            spaceName: space_names[indices[j]],
-            distance: results[indices[j]].duration.text,
-            capacity: capacity[indices[j]],
-            instructions: instructions[indices[j]],
-            dailyHours: dailyHours[indices[j]],
-          });
-        }
-      }
-      // console.log("THIS IS ARR3", arr3);
-      localStorage.setItem("computed", JSON.stringify(arr3));
-      return; //return [sorted_results, sorted_capacity_results, sorted_name_results, sorted_ids];
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+//       // const space_names = ["VanPelt Library", "DRL", "Huntsman Hall"];
+//       // const space_ids = [1, 2, 3];
+//       // const capacity = ["10", "3", "5"];
+//       // const addresses = [
+//       //   "3420 Walnut St, Philadelphia, PA 19104",
+//       //   "209 S 33rd St, Philadelphia, PA 19104",
+//       //   "3730 Walnut St, Philadelphia, PA 19104",
+//       // ];
+//       // const instructions = [
+//       //   "Go up to the 4th floor, study room 403",
+//       //   "Go to classroom A40",
+//       //   "Go up walnut it is red building",
+//       // ]; // Sort the results
+//       for (var i = 0; i < origins.length; i++) {
+//         var results = response.data["rows"][0]["elements"];
+//         var len = destinations.length;
+//         var indices = new Array(len);
+//         for (let x = 0; x < len; ++x) {
+//           indices[x] = x;
+//         }
+//         indices.sort(function (a, b) {
+//           return results[a].duration.value - results[b].duration.value;
+//         });
+//         var sorted_results = [];
+//         var sorted_capacity_results = [];
+//         var sorted_name_results = [];
+//         var sorted_ids = [];
+//         var arr3 = [];
+//         for (var j = 0; j < results.length; j++) {
+//           sorted_results.push(results[indices[j]].duration.text);
+//           sorted_capacity_results.push(capacity[indices[j]]);
+//           sorted_name_results.push(space_names[indices[j]]);
+//           sorted_ids.push(instructions[indices[j]]);
+//           arr3.push({
+//             building_name: space_names[indices[j]],
+//             bldgName: space_names[indices[j]],
+//             spaceName: space_names[indices[j]],
+//             distance: results[indices[j]].duration.text,
+//             capacity: capacity[indices[j]],
+//             instructions: instructions[indices[j]],
+//             dailyHours: dailyHours[indices[j]],
+//           });
+//         }
+//       }
+//       console.log("THIS IS ARR3", arr3);
+//       localStorage.setItem("computed", JSON.stringify(arr3));
+//       return; //return [sorted_results, sorted_capacity_results, sorted_name_results, sorted_ids];
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
 
 // MOVE THIS TO THE LOCATION SCREEN WITH NABEEL TOMORROW ET.
 const get_user_location = async () => {
@@ -183,8 +184,8 @@ function WelcomeScreen(props) {
       <AppButton
         title="List of Prayer Spaces"
         onPress={() => {
-          initMap();
-          get_user_location();
+          // initMap();
+          // get_user_location();
           props.navigation.navigate("ViewSpaces");
         }}
         // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
