@@ -6,6 +6,7 @@ import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 import AppFormEntry from "../components/forms/AppFormEntry";
+import { PennBuildings } from "../constants/Buildings.js";
 
 /**
  * This component defines the form that shows up asking a user to add a new
@@ -60,7 +61,6 @@ addSpace = async (
 };
 
 export default function AddSpaceScreen(props) {
-  // console.log(props);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>

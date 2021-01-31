@@ -9,9 +9,7 @@ import Navigation from "./navigation";
 import HomeNavigator from "./navigation/HomeNavigator.js";
 import TabNavigator from "./navigation/TabNavigator.js";
 
-import MapViewScreen from "./screens/MapViewScreen";
 import ViewSpacesScreen from "./screens/ViewSpacesScreen";
-import ListViewScreen from "./screens/ListViewScreen";
 
 export default function App() {
   const sampleSpace = {
