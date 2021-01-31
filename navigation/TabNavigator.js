@@ -3,8 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 
 // screen imports
-import ListViewScreen from "../screens/ListViewScreen";
-import MapViewScreen from "../screens/MapViewScreen";
 import ViewSpacesScreen from "../screens/ViewSpacesScreen";
 import WelcomeScreen from "../screens/Welcome";
 

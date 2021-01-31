@@ -3,8 +3,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import WelcomeScreen from "../screens/Welcome";
 import AddSpaceScreen from "../screens/AddSpaceScreen";
 import SpaceDetailScreen from "../screens/SpaceDetailScreen";
-import ListViewScreen from "../screens/ListViewScreen";
-import MapViewScreen from "../screens/MapViewScreen";
 import LandingScreen from "../screens/LandingPage";
 import ToyPennKey from "../screens/ToyPennKey";
 import ViewSpacesScreen from "../screens/ViewSpacesScreen";
@@ -18,7 +16,6 @@ const HomeNavigator = () => (
     <Stack.Screen name="AddSpace" component={AddSpaceScreen} />
     <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
     <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
-    <Stack.Screen name="ListView" component={ListViewScreen} />
     <Stack.Screen name="Login" component={ToyPennKey} />
   </Stack.Navigator>
 );

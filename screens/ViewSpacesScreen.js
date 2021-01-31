@@ -5,7 +5,6 @@ import AppButton from "../components/AppButton";
 import AppSpaceList from "../components/AppSpaceList";
 import AppTitle from "../components/AppTitle.js";
 import AppText from "../components/AppText";
-import MapViewScreen from "./MapViewScreen";
 import Screen from "../components/Screen";
 import "localstorage-polyfill";
 import axios from "axios";
