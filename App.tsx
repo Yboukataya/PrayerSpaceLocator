@@ -10,6 +10,7 @@ import HomeNavigator from "./navigation/HomeNavigator.js";
 import TabNavigator from "./navigation/TabNavigator.js";
 import AddSpaceScreen from "./screens/AddSpaceScreen";
 import ViewSpacesScreen from "./screens/ViewSpacesScreen";
+import SentToApprovalScreen from "./screens/SentToApproval"
 
 export default function App() {
   const sampleSpace = {
@@ -21,7 +22,8 @@ export default function App() {
     dailyHours: "M-F 9-5",
   };
   return (
-    <AddSpaceScreen />
+    <SentToApprovalScreen />
+    // <AddSpaceScreen />
   );
   // return <SpaceDetailScreen space={sampleSpace} />;
 }

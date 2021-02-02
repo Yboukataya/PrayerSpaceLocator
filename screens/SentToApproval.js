@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import AppButton from "../components/AppButton";
-import AppSpaceList from "../components/AppSpaceList";
-import AppTitle from "../components/AppTitle.js";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
+import { MaterialIcons, Ionicons , AntDesign} from "@expo/vector-icons";
 
 /**
  * This component specifies appearance of the screen that shows both list of
@@ -17,7 +16,7 @@ import Screen from "../components/Screen";
 
 
 
-function SentToApproval(props) {
+function SentToApprovalScreen(props) {
   
   
   return (
@@ -28,7 +27,7 @@ function SentToApproval(props) {
 
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
-        
+        <AntDesign name="checkcircleo" size={300} color="green" />
       </View>
       <AppButton
         title="Back to Home"
@@ -57,6 +56,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "bold",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

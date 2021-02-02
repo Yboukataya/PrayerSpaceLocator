@@ -64,6 +64,18 @@ addSpace = async (
 };
 
 export default function AddSpaceScreen(props) {
+  let buildings = []
+
+  for (const [name] of Object.entries(PennBuildings)) {
+    let bldgName = name;
+    let bldgDropdown = {
+      label: bldgName,
+      value: bldgName,
+    }
+    // console.log(bldgDropdown);
+    buildings.push(bldgDropdown);
+  }
+  console.log(buildings);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
@@ -81,14 +93,14 @@ export default function AddSpaceScreen(props) {
         }}
         onSubmit={(values) => {
           console.log(values.spaceName);
-          this.addSpace(
-            values.bldgName,
-            values.bldgAddress,
-            values.instructions,
-            values.capacity,
-            values.dailyHours,
-            values.spaceName
-          );
+          // this.addSpace(
+          //   values.bldgName,
+          //   values.bldgAddress,
+          //   values.instructions,
+          //   values.capacity,
+          //   values.dailyHours,
+          //   values.spaceName
+          // );
           props.navigation.navigate("SpaceDetail", { values, source: "add" });
         }}
       >
@@ -96,11 +108,6 @@ export default function AddSpaceScreen(props) {
           label="Space Name"
           name="spaceName"
           placeholder="Space Name"
-        />
-        <AppFormEntry
-          label="Building Name"
-          name="bldgName"
-          placeholder="Building Name"
         />
         
         <View style={{  alignItems: "center",
@@ -113,30 +120,20 @@ export default function AddSpaceScreen(props) {
           </View>
           <View style={{flex: 7}}>
           <DropDownPicker
-            items={[
-                {label: 'USA', value: 'usa', hidden: true},
-                {label: 'UK', value: 'uk'},
-                {label: 'Turkey', value: 'turkiye'},
-            ]}
-            defaultValue='turkiye'
-            containerStyle={{zIndex: 20, height: 40}}
+            items={buildings}
+            defaultValue='CA'
+            containerStyle={{height: 40}}
             style={{backgroundColor: '#fafafa'}}
             itemStyle={{
                 justifyContent: 'flex-start'
             }}
-            dropDownStyle={{zIndex: 20, backgroundColor: '#fafafa'}}
-            onChangeItem={item => this.setState({
-                country: item.value
-            })}
+            dropDownStyle={{backgroundColor: '#fafafa'}}
+            // TODO: fix this to update some kind of form state
+            onChangeItem={item => console.log("hey")}
         />
           </View>
         </View>
 
-        <AppFormEntry
-          label="Building Address: 123 Main St, Philadelphia, PA 19104"
-          name="bldgAddress"
-          placeholder="Building Address"
-        />
         <AppFormEntry
           label="Instructions"
           name="instructions"
