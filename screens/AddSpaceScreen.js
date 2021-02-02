@@ -109,7 +109,7 @@ export default function AddSpaceScreen(props) {
           name="spaceName"
           placeholder="Space Name"
         />
-        
+        {/* TODO: export this to a separate component */}
         <View style={{  alignItems: "center",
                         flex: 1,
                         flexDirection: "row",
