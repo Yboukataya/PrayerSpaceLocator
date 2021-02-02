@@ -8,7 +8,7 @@ import Navigation from "./navigation";
 
 import HomeNavigator from "./navigation/HomeNavigator.js";
 import TabNavigator from "./navigation/TabNavigator.js";
-
+import AddSpaceScreen from "./screens/AddSpaceScreen";
 import ViewSpacesScreen from "./screens/ViewSpacesScreen";
 
 export default function App() {
@@ -21,9 +21,7 @@ export default function App() {
     dailyHours: "M-F 9-5",
   };
   return (
-    <NavigationContainer>
-      <TabNavigator />
-    </NavigationContainer>
+    <AddSpaceScreen />
   );
   // return <SpaceDetailScreen space={sampleSpace} />;
 }

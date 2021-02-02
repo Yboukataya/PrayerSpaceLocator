@@ -2,6 +2,9 @@ import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Formik, Field, Form } from "formik";
 
+import {Picker} from '@react-native-picker/picker';
+
+
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
@@ -34,7 +37,7 @@ addSpace = async (
     approval: false,
   };
   let url = `http://localhost:8080/space/`;
-  // let res = await axios({
+  /* let res = await axios({
   //   method: "post",
   //   url: `http://localhost:8080/space/`,
   //   data: JSON.stringify({
@@ -47,6 +50,7 @@ addSpace = async (
   //   }),
   //   headers: { "Content-Type": "application/json" },
   // })
+  */
   let res = await axios
     .post(url, data, {
       headers: {
@@ -99,6 +103,22 @@ export default function AddSpaceScreen(props) {
           name="bldgName"
           placeholder="Building Name"
         />
+        
+        <View style={{alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    width: "100%",}}>
+          <View style={{flex: 3,}}>
+            <AppText>Building</AppText>
+          </View>
+          <View style={{flex: 7,}}>
+            <Picker>
+              <Picker.Item label="Huntsman" value="huntsman" />
+              <Picker.Item label="CA" value="ca" />
+          </Picker>
+          </View>
+        </View>
+
         <AppFormEntry
           label="Building Address: 123 Main St, Philadelphia, PA 19104"
           name="bldgAddress"
