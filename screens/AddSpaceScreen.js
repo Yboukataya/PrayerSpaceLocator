@@ -2,8 +2,7 @@ import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Formik, Field, Form } from "formik";
 
-import {Picker} from '@react-native-picker/picker';
-
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import AppText from "../components/AppText";
@@ -104,18 +103,32 @@ export default function AddSpaceScreen(props) {
           placeholder="Building Name"
         />
         
-        <View style={{alignItems: "center",
-    flex: 1,
-    flexDirection: "row",
-    width: "100%",}}>
+        <View style={{  alignItems: "center",
+                        flex: 1,
+                        flexDirection: "row",
+                        width: "100%",
+                        zIndex: 200,}}>
           <View style={{flex: 3,}}>
             <AppText>Building</AppText>
           </View>
-          <View style={{flex: 7,}}>
-            <Picker>
-              <Picker.Item label="Huntsman" value="huntsman" />
-              <Picker.Item label="CA" value="ca" />
-          </Picker>
+          <View style={{flex: 7}}>
+          <DropDownPicker
+            items={[
+                {label: 'USA', value: 'usa', hidden: true},
+                {label: 'UK', value: 'uk'},
+                {label: 'Turkey', value: 'turkiye'},
+            ]}
+            defaultValue='turkiye'
+            containerStyle={{zIndex: 20, height: 40}}
+            style={{backgroundColor: '#fafafa'}}
+            itemStyle={{
+                justifyContent: 'flex-start'
+            }}
+            dropDownStyle={{zIndex: 20, backgroundColor: '#fafafa'}}
+            onChangeItem={item => this.setState({
+                country: item.value
+            })}
+        />
           </View>
         </View>
 

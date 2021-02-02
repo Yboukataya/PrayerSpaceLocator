@@ -6,6 +6,7 @@ import SpaceDetailScreen from "../screens/SpaceDetailScreen";
 import LandingScreen from "../screens/LandingPage";
 import ToyPennKey from "../screens/ToyPennKey";
 import ViewSpacesScreen from "../screens/ViewSpacesScreen";
+import SentToApprovalScreen from "../screens/SentToApproval";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ const HomeNavigator = () => (
     <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
     <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
     <Stack.Screen name="Login" component={ToyPennKey} />
+    <Stack.Screen name="SubmitConfirm" component={SentToApprovalScreen} />
   </Stack.Navigator>
 );
 
