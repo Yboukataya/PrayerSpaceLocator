@@ -22,8 +22,8 @@ export default function App() {
     dailyHours: "M-F 9-5",
   };
   return (
-    <SentToApprovalScreen />
-    // <AddSpaceScreen />
+    // <SentToApprovalScreen />
+    <AddSpaceScreen />
   );
   // return <SpaceDetailScreen space={sampleSpace} />;
 }

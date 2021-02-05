@@ -16,52 +16,52 @@ import { PennBuildings } from "../constants/Buildings.js";
  * @param {*} props
  */
 
-addSpace = async (
-  bldgName,
-  bldgAddress,
-  instructions,
-  capacity,
-  daily_hours,
-  spaceName
-) => {
-  console.log(bldgName);
-  const axios = require("axios");
-  let data = {
-    bldgName: bldgName,
-    bldgAddress: bldgAddress,
-    instructions: instructions,
-    capacity: capacity,
-    daily_hours: daily_hours,
-    spaceName: spaceName,
-    approval: false,
-  };
-  let url = `http://localhost:8080/space/`;
-  /* let res = await axios({
-  //   method: "post",
-  //   url: `http://localhost:8080/space/`,
-  //   data: JSON.stringify({
-  //     bldgName: bldgName,
-  //     bldgAddress: bldgAddress,
-  //     instructions: instructions,
-  //     capacity: capacity,
-  //     daily_hours: daily_hours,
-  //     spaceName: spaceName,
-  //   }),
-  //   headers: { "Content-Type": "application/json" },
-  // })
-  */
-  let res = await axios
-    .post(url, data, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-    .catch(function (error) {
-      console.log("This is the error: ", error);
-    });
-  console.log("THIS IS RES" + res);
-  return res;
-};
+// addSpace = async (
+//   bldgName,
+//   bldgAddress,
+//   instructions,
+//   capacity,
+//   daily_hours,
+//   spaceName
+// ) => {
+//   console.log(bldgName);
+//   const axios = require("axios");
+//   let data = {
+//     bldgName: bldgName,
+//     bldgAddress: bldgAddress,
+//     instructions: instructions,
+//     capacity: capacity,
+//     daily_hours: daily_hours,
+//     spaceName: spaceName,
+//     approval: false,
+//   };
+//   let url = `http://localhost:8080/space/`;
+//   /* let res = await axios({
+//   //   method: "post",
+//   //   url: `http://localhost:8080/space/`,
+//   //   data: JSON.stringify({
+//   //     bldgName: bldgName,
+//   //     bldgAddress: bldgAddress,
+//   //     instructions: instructions,
+//   //     capacity: capacity,
+//   //     daily_hours: daily_hours,
+//   //     spaceName: spaceName,
+//   //   }),
+//   //   headers: { "Content-Type": "application/json" },
+//   // })
+//   */
+//   let res = await axios
+//     .post(url, data, {
+//       headers: {
+//         "Content-Type": "application/x-www-form-urlencoded",
+//       },
+//     })
+//     .catch(function (error) {
+//       console.log("This is the error: ", error);
+//     });
+//   console.log("THIS IS RES" + res);
+//   return res;
+// };
 
 export default function AddSpaceScreen(props) {
   let buildings = []
@@ -72,10 +72,9 @@ export default function AddSpaceScreen(props) {
       label: bldgName,
       value: bldgName,
     }
-    // console.log(bldgDropdown);
     buildings.push(bldgDropdown);
   }
-  console.log(buildings);
+  buildings.sort((a, b) => (a.label > b.label) ? 1 : -1);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
@@ -120,8 +119,8 @@ export default function AddSpaceScreen(props) {
           </View>
           <View style={{flex: 7}}>
           <DropDownPicker
-            items={buildings}
-            defaultValue='CA'
+            items={buildings.sort()}
+            placeholder="Select a building"
             containerStyle={{height: 40}}
             style={{backgroundColor: '#fafafa'}}
             itemStyle={{
