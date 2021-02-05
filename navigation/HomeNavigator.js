@@ -18,7 +18,7 @@ const HomeNavigator = () => (
     <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
     <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
     <Stack.Screen name="Login" component={ToyPennKey} />
-    <Stack.Screen name="SubmitConfirm" component={SentToApprovalScreen} />
+    <Stack.Screen name="SentToApproval" component={SentToApprovalScreen} />
   </Stack.Navigator>
 );
 

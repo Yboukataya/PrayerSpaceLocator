@@ -1,6 +1,5 @@
 import React from "react";
 import { Alert, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import * as firebase from "firebase";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 
@@ -271,6 +270,11 @@ function LandingScreen(props) {
       <AppButton
         title="Login"
         onPress={() => signInWithGoogleAsync(props)}
+        // onPress={() => props.navigation.navigate("Welcome", {
+        //   userName: "mrozer",
+        //   userEmail: "ozer@upenn.edu" ,
+        //   is_admin: true
+        // })}
         customStyle={styles.editBtn}
       ></AppButton>
 

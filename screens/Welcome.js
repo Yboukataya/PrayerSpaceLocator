@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import * as firebase from "firebase";
+
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import SyncStorage from "sync-storage";

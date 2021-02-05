@@ -32,7 +32,7 @@ function SentToApprovalScreen(props) {
       <AppButton
         title="Back to Home"
         // TODO: patch up this navigation to the welcome screen
-        onPress={() => console.log(props)}
+        onPress={() => props.navigation.navigate("Welcome")}
       />
     </Screen>
   );

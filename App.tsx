@@ -12,6 +12,7 @@ import AddSpaceScreen from "./screens/AddSpaceScreen";
 import ViewSpacesScreen from "./screens/ViewSpacesScreen";
 import SentToApprovalScreen from "./screens/SentToApproval"
 
+
 export default function App() {
   const sampleSpace = {
     spaceName: "SPARC",
@@ -22,8 +23,9 @@ export default function App() {
     dailyHours: "M-F 9-5",
   };
   return (
-    // <SentToApprovalScreen />
-    <AddSpaceScreen />
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
   );
   // return <SpaceDetailScreen space={sampleSpace} />;
 }

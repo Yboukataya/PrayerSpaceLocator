@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Formik, Field, Form } from "formik";
 
@@ -65,6 +65,7 @@ import { PennBuildings } from "../constants/Buildings.js";
 
 export default function AddSpaceScreen(props) {
   let buildings = []
+  let [selectedBuilding, setBuilding] = useState("");
 
   for (const [name] of Object.entries(PennBuildings)) {
     let bldgName = name;
@@ -89,9 +90,14 @@ export default function AddSpaceScreen(props) {
           instructions: "",
           capacity: "",
           dailyHours: "",
+          selectedBuilding: ""
         }}
+        
         onSubmit={(values) => {
-          console.log(values.spaceName);
+          console.log("spaceData: " + values.spaceName)
+          console.log("spaceBldg: " + selectedBuilding)
+
+          // console.log(selectedBuidling)
           // this.addSpace(
           //   values.bldgName,
           //   values.bldgAddress,
@@ -99,8 +105,9 @@ export default function AddSpaceScreen(props) {
           //   values.capacity,
           //   values.dailyHours,
           //   values.spaceName
+          //    selectedBuilding
           // );
-          props.navigation.navigate("SpaceDetail", { values, source: "add" });
+          props.navigation.navigate("SentToApproval");
         }}
       >
         <AppFormEntry
@@ -114,12 +121,14 @@ export default function AddSpaceScreen(props) {
                         flexDirection: "row",
                         width: "100%",
                         zIndex: 200,}}>
+          
           <View style={{flex: 3,}}>
             <AppText>Building</AppText>
           </View>
+
           <View style={{flex: 7}}>
           <DropDownPicker
-            items={buildings.sort()}
+            items={buildings}
             placeholder="Select a building"
             containerStyle={{height: 40}}
             style={{backgroundColor: '#fafafa'}}
@@ -128,7 +137,7 @@ export default function AddSpaceScreen(props) {
             }}
             dropDownStyle={{backgroundColor: '#fafafa'}}
             // TODO: fix this to update some kind of form state
-            onChangeItem={item => console.log("hey")}
+            onChangeItem={item => {setBuilding(item.label); console.log(selectedBuilding)}}
         />
           </View>
         </View>
@@ -149,7 +158,7 @@ export default function AddSpaceScreen(props) {
           name="dailyHours"
           placeholder="When is this space open?"
         />
-        <SubmitButton title="Submit!" />
+        <SubmitButton title="Submit!" selectedBuilding={selectedBuilding}/>
       </AppForm>
       {/* </View> */}
     </Screen>
