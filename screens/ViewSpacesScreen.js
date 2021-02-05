@@ -18,6 +18,32 @@ import AppMapView from "../components/AppMapView";
 
 // let [spots, setSpots] = useState("");
 
+let usefulInfo = [
+  {
+  "id":1,
+  "bldgName":"VanPelt Library",
+  "bldgAddress":"3420 Walnut St, Philadelphia, PA 19104",
+  "daily_hours":"9AM - 5PM",
+  "instructions":"Go up to the 4th floor, study room 403",
+  "capacity":10,
+  "spaceName":"VanPelt Library",
+  "approval":0,
+  "latitude":39.952801,"longitude":-75.192398
+  },
+  {
+    
+    "id":5,
+    "bldgName":"DRL",
+    "bldgAddress":"209 S 33rd Street, 19104",
+    "daily_hours":"9AM- 5PM",
+    "instructions":"Go to room A40",
+    "capacity":5,
+    "spaceName":"DRL",
+    "approval":0,
+    "latitude":39.95217,
+    "longitude":-75.19007}
+    ]
+
 const get_spaces = async () => {
   let res = await axios({
     method: "get",
@@ -144,11 +170,11 @@ initMap = async () => {
 };
 
 function ViewSpacesScreen(props) {
-  useEffect(() => {initMap}, []);
-  console.log("localStorage: ", localStorage);
-  // let locations = JSON.parse(localStorage.getItem("computed"));
-  let locations = globalLocations;
-  let locationsMap = JSON.parse(localStorage.getItem("mapinfo"));
+  // useEffect(() => {initMap}, []);
+  // console.log("localStorage: ", localStorage);
+  // // let locations = JSON.parse(localStorage.getItem("computed"));
+  // let locations = globalLocations;
+  // let locationsMap = JSON.parse(localStorage.getItem("mapinfo"));
   
   const [mapVisible, setMapVisible] = useState(false);
   return (
