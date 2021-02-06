@@ -269,12 +269,12 @@ function LandingScreen(props) {
 
       <AppButton
         title="Login"
-        onPress={() => signInWithGoogleAsync(props)}
-        // onPress={() => props.navigation.navigate("Welcome", {
-        //   userName: "mrozer",
-        //   userEmail: "ozer@upenn.edu" ,
-        //   is_admin: true
-        // })}
+        // onPress={() => signInWithGoogleAsync(props)}
+        onPress={() => props.navigation.navigate("Welcome", {
+          userName: "mrozer",
+          userEmail: "ozer@upenn.edu" ,
+          is_admin: true
+        })}
         customStyle={styles.editBtn}
       ></AppButton>
 

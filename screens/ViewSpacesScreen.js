@@ -18,7 +18,7 @@ import AppMapView from "../components/AppMapView";
 
 // let [spots, setSpots] = useState("");
 
-let usefulInfo = [
+let spots = [
   {
   "id":1,
   "bldgName":"VanPelt Library",
@@ -185,7 +185,7 @@ function ViewSpacesScreen(props) {
 
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
-        {mapVisible ? (
+        {mapVisible && !props.routes.params.viewUnapproved ? (
           <AppMapView locations={locationsMap} props={props} />
         ) : (
           <View style={styles.spaceListContainer}>
@@ -193,10 +193,12 @@ function ViewSpacesScreen(props) {
           </View>
         )}
       </View>
+      {mapVisible && !props.routes.params.viewUnapproved ? 
       <AppButton
-        title={mapVisible ? "List View" : "Map View"}
-        onPress={() => setMapVisible(!mapVisible)}
-      />
+        title={mapVisible  ? "List View" : "Map View"}
+        onPress={() => setMapVisible(!mapVisible)} 
+      /> : <></>
+      }
     </Screen>
   );
 }

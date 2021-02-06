@@ -158,7 +158,8 @@ const get_user_location = async () => {
 };
 
 function WelcomeScreen(props) {
-  one = 2048;
+  console.log("-----------");
+  console.log("WelcomeProps: \n", props);
   // console.log("WelcomeScreen: ", props);
   return (
     <View style={styles.container}>
@@ -199,10 +200,12 @@ function WelcomeScreen(props) {
         customStyle={styles.editBtn}
       ></AppButton>
 
-      {props.route.params.is_admin.is_admin && (
+      {props.route.params.is_admin && (
         <AppButton
           title="Approval needed"
-          onPress={() => navigation.navigate("MapView")}
+          onPress={() => props.navigation.navigate("ViewSpaces", {
+            viewUnapproved: true,
+          })}
           // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
           //   console.log(
           //     props.navigation.goBack.equals(
