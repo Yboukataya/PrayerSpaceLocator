@@ -11,15 +11,15 @@ import AppText from "./AppText";
  * @param {*} param0
  */
 
-function AppSpaceListing({ space, distance, props }) {
-  console.log(props);
+function AppSpaceListing({space, papaProps}) {
+  console.log("APPSPACELISTINGPROPS\n", papaProps);
   return (
     <View style={styles.listingContainer}>
       {/* for the text information */}
       <View>
         <AppText customStyle={{ flex: 1, width: "100%", borderColor: "blue" }}>
           {space.spaceName} :
-          <AppText customStyle={styles.distStyle}> {distance}</AppText>
+          {/* <AppText customStyle={styles.distStyle}> {distance}</AppText> */}
         </AppText>
         <AppText customStyle={styles.capacityStyle}>
           Capacity: {space.capacity}
@@ -30,9 +30,9 @@ function AppSpaceListing({ space, distance, props }) {
       <View>
         <TouchableOpacity
           onPress={() =>
-            props.navigation.navigate("SpaceDetail", {
-              values: space,
-              source: "list",
+            papaProps.navigation.navigate("SpaceDetail", {
+              space: space,
+              props: papaProps,
             })
           }
         >

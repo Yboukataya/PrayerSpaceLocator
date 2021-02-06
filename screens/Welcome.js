@@ -159,7 +159,7 @@ const get_user_location = async () => {
 
 function WelcomeScreen(props) {
   console.log("-----------");
-  console.log("WelcomeProps: \n", props);
+  // console.log("WelcomeProps: \n", props);
   // console.log("WelcomeScreen: ", props);
   return (
     <View style={styles.container}>

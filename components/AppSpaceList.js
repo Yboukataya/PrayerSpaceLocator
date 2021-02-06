@@ -12,37 +12,18 @@ import Screen from "./Screen";
  * @param {*} props
  */
 
-function AppSpaceList({ locations, props }) {
-  console.log("These are our locations: " + JSON.stringify(locations));
-  const data = locations;
-  // const data = [
-  //   {
-  //     spaceName: "SPARC",
-  //     bldgName: "Houston Hall",
-  //     bldgAddress: "123 Main St",
-  //     instructions: "Go east, young man!",
-  //     capacity: 8,
-  //     dailyHours: "M-F 9-5",
-  //   },
-  //   {
-  //     spaceName: "Huntsman",
-  //     bldgName: "Huntsman Hall",
-  //     bldgAddress: "123 Locust St",
-  //     instructions: "Go west, young man!",
-  //     capacity: 2,
-  //     dailyHours: "M-F 9-5",
-  //   },
-  // ];
+function AppSpaceList({ locations, props}) {
+  // console.log("These are our locations: " + JSON.stringify(locations));
+  console.log("APPSPACELISTPROPS\n", "--------------\n", props);
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
+        data={locations}
         keyExtractor={(listing) => listing.spaceName}
         renderItem={({ item }) => (
           <AppSpaceListing
             space={item}
-            distance={item.distance}
-            props={props}
+            papaProps={props}
           />
         )}
         ItemSeparatorComponent={ListItemSeparator}

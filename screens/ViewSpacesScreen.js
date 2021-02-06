@@ -39,7 +39,7 @@ let spots = [
     "instructions":"Go to room A40",
     "capacity":5,
     "spaceName":"DRL",
-    "approval":0,
+    "approval":1,
     "latitude":39.95217,
     "longitude":-75.19007}
     ]
@@ -78,9 +78,9 @@ initMap = async () => {
   const dailyHours = [];
   var destinations = "";
   let res = await get_spaces().then((response) => {
-    console.log("Response OK!");
+    // console.log("Response OK!");
     let x = JSON.parse(response);
-    console.log("The JSON response: ", response);
+    // console.log("The JSON response: ", response);
 
     for (var i = 0; i < x.length; i++) {
       var cur = x[i];
@@ -170,6 +170,7 @@ initMap = async () => {
 };
 
 function ViewSpacesScreen(props) {
+  // console.log(props)
   // useEffect(() => {initMap}, []);
   // console.log("localStorage: ", localStorage);
   // // let locations = JSON.parse(localStorage.getItem("computed"));
@@ -185,7 +186,7 @@ function ViewSpacesScreen(props) {
 
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
-        {mapVisible && !props.routes.params.viewUnapproved ? (
+        {mapVisible && !props.route.params.viewUnapproved ? (
           <AppMapView locations={locationsMap} props={props} />
         ) : (
           <View style={styles.spaceListContainer}>
@@ -193,7 +194,7 @@ function ViewSpacesScreen(props) {
           </View>
         )}
       </View>
-      {mapVisible && !props.routes.params.viewUnapproved ? 
+      {mapVisible && !props.route.params.viewUnapproved ? 
       <AppButton
         title={mapVisible  ? "List View" : "Map View"}
         onPress={() => setMapVisible(!mapVisible)} 

@@ -14,51 +14,53 @@ import Screen from "../components/Screen";
  * @param {*} param0
  */
 
-export default class SpaceDetailScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { props: props };
-  }
+// export default class SpaceDetailScreen extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = { props: props };
+//   }
 
-  handleOnPress = () => {
-    this.state.props.navigation.navigate("ViewSpaces");
-    // if (this.state.props.route.params.source == "add") {
-    //   this.state.props.navigation.popToTop();
-    // } else {
-    //   this.state.props.navigation.pop();
-    // }
-  };
-
-  render() {
+  // handleOnPress = () => {
+  //   this.state.props.navigation.navigate("ViewSpaces");
+  //   // if (this.state.props.route.params.source == "add") {
+  //   //   this.state.props.navigation.popToTop();
+  //   // } else {
+  //   //   this.state.props.navigation.pop();
+  //   // }
+  // };
+  function SpaceDetailScreen( props ) {
+    console.log("SpaceDetailProps:\n", props);
+    // console.log("CHECK SPACE OBJECT: \n", space);
+    // console.log("CHECK VIEWUNAPPROVED: \n", viewUnapproved);
     return (
       <Screen style={{ flex: 1, padding: 20 }}>
         <View style={styles.container}>
-          <AppTitle>{this.state.props.route.params.values.spaceName}</AppTitle>
+          <AppTitle>Hi</AppTitle>
         </View>
 
         <View>
           <AppSpaceDetail
-            space={this.state.props.route.params.values}
+            space={props.space}
             detailTitle="Building"
             detailKey="bldgName"
           />
           <AppSpaceDetail
-            space={this.state.props.route.params.values}
+            space={props.space}
             detailTitle="Address"
             detailKey="bldgAddress"
           />
           <AppSpaceDetail
-            space={this.state.props.route.params.values}
+            space={props.space}
             detailTitle="Instructions"
             detailKey="instructions"
           />
           <AppSpaceDetail
-            space={this.state.props.route.params.values}
+            space={props.space}
             detailTitle="Capacity"
             detailKey="capacity"
           />
           <AppSpaceDetail
-            space={this.state.props.route.params.values}
+            space={props.space}
             detailTitle="Daily Hours"
             detailKey="dailyHours"
           />
@@ -66,22 +68,24 @@ export default class SpaceDetailScreen extends React.Component {
         <View style={styles.container}>
           <AppButton
             title="Go Back"
-            onPress={this.handleOnPress}
+            onPress={props.navigation.navigate("ViewSpaces")}
             // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
             //   console.log(
             //     props.navigation.goBack.equals(
-            //       props.navigation.navigate("MapView")
+            //       props.navigation.navigate("MapView")as
             //     )
             //   )
             // }
             // onPress={() => props.navigation.popToTop()}
             customStyle={styles.editBtn}
           ></AppButton>
+        {props.route.params.viewUnapproved ? <AppText>HELLO</AppText> : <AppText> BYE </AppText>} */}
+
         </View>
       </Screen>
     );
   }
-}
+
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
@@ -95,4 +99,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-// export default SpaceDetailScreen;
+
+export default SpaceDetailScreen;
