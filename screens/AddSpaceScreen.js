@@ -105,7 +105,7 @@ export default function AddSpaceScreen(props) {
           //   values.capacity,
           //   values.dailyHours,
           //   values.spaceName
-          //    selectedBuilding
+          //   selectedBuilding
           // );
           props.navigation.navigate("SentToApproval");
         }}
