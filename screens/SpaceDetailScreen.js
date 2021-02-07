@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -30,9 +30,39 @@ import Screen from "../components/Screen";
   //   //   this.state.props.navigation.pop();
   //   // }
   // };
+
+  const acceptOnPress = () =>
+    Alert.alert(
+      "Accept Space",
+      "I verify that I have visited this space and that I believe Muslim students would be safe praying here.",
+      [
+        {
+          text: "Go Back",
+          onPress: () => {},
+          style: "cancel"
+        },
+        { text: "Yes, Approve!", onPress: () => console.log("Accepting!") /* update database approval value */ }
+      ],
+    );
+
+  const rejectOnPress = () =>
+    Alert.alert(
+      "Reject Space",
+      "Are you sure you want to reject this space?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel"
+        },
+        { text: "Yes, Reject", onPress: () => console.log("Rejecting!") /* make DELETE request for spaces table, ADD request for rejected table */}
+      ],
+    );
+
   function SpaceDetailScreen({route}) {
     console.log("CHECK SPACE OBJECT: \n", route.params.space);
     console.log("CHECK VIEWUNAPPROVED: \n", route.params.viewUnapproved);
+    
     const navigation = useNavigation();
 
     return (
@@ -70,13 +100,13 @@ import Screen from "../components/Screen";
         </View>
          <View style={styles.btnContainer}>
          
-          {route.params.viewUnapproved ? (<AppButton title="Approve" customStyle={styles.btnStyle}/>) : (null)}
-          {route.params.viewUnapproved ? (<AppButton title="Reject"  customStyle={styles.btnStyle}/>) : (null)}
+          {route.params.viewUnapproved ? (<AppButton title="Approve" customStyle={styles.btnStyle} onPress={acceptOnPress}/>) : (null)}
+          {route.params.viewUnapproved ? (<AppButton title="Reject"  customStyle={styles.btnStyle} onPress={rejectOnPress}/>) : (null)}
           {/* {route.params.viewUnapproved ? (<AppButton title="Update"/>) : (<AppButton title="Bye"/>)}
           {route.params.viewUnapproved ? (<AppButton title="Go Back"/>) : (<AppButton title="Bye"/>)} */}
          </View>
          <AppButton title="Update"/>
-         <AppButton title="Go Back"/>
+         <AppButton title="Go Back" onPress={() => navigation.navigate("ViewSpaces")}/>
       </Screen>
     );
 }
