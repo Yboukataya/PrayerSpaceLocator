@@ -31,79 +31,80 @@ import Screen from "../components/Screen";
   //   // }
   // };
   function SpaceDetailScreen({route}) {
-    // console.log("SpaceDetailProps:\n", props);
     console.log("CHECK SPACE OBJECT: \n", route.params.space);
     console.log("CHECK VIEWUNAPPROVED: \n", route.params.viewUnapproved);
-
     const navigation = useNavigation();
-    console.log("SetNavigation OK");
 
     return (
       <Screen style={{ flex: 1, padding: 20 }}>
          <View style={styles.container}>
-            <AppText>Hi</AppText> 
+            <AppTitle>{route.params.space.spaceName}</AppTitle> 
          </View>
-{/*
-    //     <View>
-    //       <AppSpaceDetail
-    //         space={space}
-    //         detailTitle="Building"
-    //         detailKey="bldgName"
-    //       />
-    //       <AppSpaceDetail
-    //         space={space}
-    //         detailTitle="Address"
-    //         detailKey="bldgAddress"
-    //       />
-    //       <AppSpaceDetail
-    //         space={space}
-    //         detailTitle="Instructions"
-    //         detailKey="instructions"
-    //       />
-    //       <AppSpaceDetail
-    //         space={space}
-    //         detailTitle="Capacity"
-    //         detailKey="capacity"
-    //       />
-    //       <AppSpaceDetail
-    //         space={space}
-    //         detailTitle="Daily Hours"
-    //         detailKey="dailyHours"
-    //       /> 
-    //     </View>
-    //     <View style={styles.container}>
-    //       <AppButton
-    //         title="Go Back"
-    //         onPress={() => navigation.navigate("ViewSpaces")}
-    //         // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-    //         //   console.log(
-    //         //     props.navigation.goBack.equals(
-    //         //       props.navigation.navigate("MapView")as
-    //         //     )
-    //         //   )
-    //         // }
-    //         // onPress={() => props.navigation.popToTop()}
-    //         customStyle={styles.editBtn}
-    //       ></AppButton>
-    //      {route.params.viewUnapproved ? <AppText>HELLO</AppText> : <AppText> BYE </AppText>} */} 
-
-         {/* </View> */}
+ 
+        <View style={styles.spaceDetails}>
+          <AppSpaceDetail
+            space={route.params.space}
+            detailTitle="Building"
+            detailKey="bldgName"
+          />
+          <AppSpaceDetail
+            space={route.params.space}
+            detailTitle="Address"
+            detailKey="bldgAddress"
+          />
+          <AppSpaceDetail 
+            space={route.params.space}
+            detailTitle="Instructions"
+            detailKey="instructions"
+          />
+          <AppSpaceDetail
+            space={route.params.space}
+            detailTitle="Capacity"
+            detailKey="capacity"
+          />
+          <AppSpaceDetail
+            space={route.params.space}
+            detailTitle="Daily Hours"
+            detailKey="daily_hours"
+          /> 
+        </View>
+         <View style={styles.btnContainer}>
+         
+          {route.params.viewUnapproved ? (<AppButton title="Approve" customStyle={styles.btnStyle}/>) : (null)}
+          {route.params.viewUnapproved ? (<AppButton title="Reject"  customStyle={styles.btnStyle}/>) : (null)}
+          {/* {route.params.viewUnapproved ? (<AppButton title="Update"/>) : (<AppButton title="Bye"/>)}
+          {route.params.viewUnapproved ? (<AppButton title="Go Back"/>) : (<AppButton title="Bye"/>)} */}
+         </View>
+         <AppButton title="Update"/>
+         <AppButton title="Go Back"/>
       </Screen>
     );
-  }
+}
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    flexDirection: "row",
+    width: "50%",
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  btnStyle: {
+    marginRight: 5,
+  },
   container: {
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    marginBottom: 40,
+    marginBottom: 10,
   },
   editBtn: {
     width: "50%",
     alignItems: "center",
     justifyContent: "center",
   },
+  spaceDetails: {
+    flex: 1,
+  }
 });
 
 export default SpaceDetailScreen;
