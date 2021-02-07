@@ -63,7 +63,8 @@ import { PennBuildings } from "../constants/Buildings.js";
 //   return res;
 // };
 
-export default function AddSpaceScreen(props) {
+export default function AddSpaceScreen({navigation, route}) {
+  
   let buildings = []
   let [selectedBuilding, setBuilding] = useState("");
 
@@ -76,10 +77,12 @@ export default function AddSpaceScreen(props) {
     buildings.push(bldgDropdown);
   }
   buildings.sort((a, b) => (a.label > b.label) ? 1 : -1);
+
+  console.log("RouteParams: ", route.params);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
-        <AppText customStyle={styles.title}>Add New Space</AppText>
+        <AppText customStyle={styles.title}>{route.params.existingSpace ? "Update Space" : "Add New Space"}</AppText>
       </View>
 
       <AppForm
@@ -114,6 +117,7 @@ export default function AddSpaceScreen(props) {
           label="Space Name"
           name="spaceName"
           placeholder="Space Name"
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.spaceName : ""}
         />
         {/* TODO: export this to a separate component */}
         <View style={{  alignItems: "center",
@@ -127,9 +131,11 @@ export default function AddSpaceScreen(props) {
           </View>
 
           <View style={{flex: 7}}>
+          {/* TODO: Fix this dropdown once the database is addressed */}
           <DropDownPicker
             items={buildings}
             placeholder="Select a building"
+            // defaultValue={route.params.existingSpace ? route.params.existingSpace.bldgName : ""}
             containerStyle={{height: 40}}
             style={{backgroundColor: '#fafafa'}}
             itemStyle={{
@@ -142,27 +148,33 @@ export default function AddSpaceScreen(props) {
           </View>
         </View>
 
+            {/* TODO: make this one bigger */}
         <AppFormEntry
           label="Instructions"
           name="instructions"
           placeholder="How do you get to space?"
+          multiline={true}
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.instructions : ""}
         />
         <AppFormEntry
           label="Capacity"
           name="capacity"
           keyboardType="number-pad"
-          placeholder=""
-        />
+          placeholder= ""
+          type="text"
+          pattern="[0-9]*"
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.capacity.toString() : ""}
+          />
         <AppFormEntry
           label="Daily Hours"
           name="dailyHours"
           placeholder="When is this space open?"
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.daily_hours : ""}
         />
         <SubmitButton title="Submit!" selectedBuilding={selectedBuilding}/>
       </AppForm>
       {/* </View> */}
-    </Screen>
-  );
+    </Screen>);
 }
 
 const styles = StyleSheet.create({

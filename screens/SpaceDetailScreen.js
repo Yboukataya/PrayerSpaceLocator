@@ -105,7 +105,7 @@ import Screen from "../components/Screen";
           {/* {route.params.viewUnapproved ? (<AppButton title="Update"/>) : (<AppButton title="Bye"/>)}
           {route.params.viewUnapproved ? (<AppButton title="Go Back"/>) : (<AppButton title="Bye"/>)} */}
          </View>
-         <AppButton title="Update"/>
+         <AppButton title="Update"  onPress={() => navigation.navigate("AddSpace", {existingSpace: route.params.space})}/>
          <AppButton title="Go Back" onPress={() => navigation.navigate("ViewSpaces")}/>
       </Screen>
     );
