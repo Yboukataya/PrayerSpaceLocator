@@ -33,19 +33,19 @@ import Screen from "../components/Screen";
   function SpaceDetailScreen({route}) {
     // console.log("SpaceDetailProps:\n", props);
     console.log("CHECK SPACE OBJECT: \n", route.params.space);
-    // console.log("CHECK VIEWUNAPPROVED: \n", viewUnapproved);
+    console.log("CHECK VIEWUNAPPROVED: \n", route.params.viewUnapproved);
 
     const navigation = useNavigation();
     console.log("SetNavigation OK");
 
-    return (<></>);
-    //   <Screen style={{ flex: 1, padding: 20 }}>
-    //     <View style={styles.container}>
-    //       {/* <AppText>Hi</AppText> */}
-    //     </View>
-
+    return (
+      <Screen style={{ flex: 1, padding: 20 }}>
+         <View style={styles.container}>
+            <AppText>Hi</AppText> 
+         </View>
+{/*
     //     <View>
-    //       {/* <AppSpaceDetail
+    //       <AppSpaceDetail
     //         space={space}
     //         detailTitle="Building"
     //         detailKey="bldgName"
@@ -69,7 +69,7 @@ import Screen from "../components/Screen";
     //         space={space}
     //         detailTitle="Daily Hours"
     //         detailKey="dailyHours"
-    //       /> */}
+    //       /> 
     //     </View>
     //     <View style={styles.container}>
     //       <AppButton
@@ -85,11 +85,11 @@ import Screen from "../components/Screen";
     //         // onPress={() => props.navigation.popToTop()}
     //         customStyle={styles.editBtn}
     //       ></AppButton>
-    //     {/* {route.params.viewUnapproved ? <AppText>HELLO</AppText> : <AppText> BYE </AppText>} */} */}
+    //      {route.params.viewUnapproved ? <AppText>HELLO</AppText> : <AppText> BYE </AppText>} */} 
 
-    //     </View>
-    //   </Screen>
-    // );
+         {/* </View> */}
+      </Screen>
+    );
   }
 
 const styles = StyleSheet.create({

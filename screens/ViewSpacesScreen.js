@@ -51,7 +51,7 @@ const get_spaces = async () => {
   }).catch(function (error) {
     console.log("This is the error: ", error);
   });
-  console.log("Behold, AWS!\n", res.data.data);
+  // console.log("Behold, AWS!\n", res.data.data);
   // localStorage.setItem("mapinfo", JSON.stringify(res.data.data));
   return JSON.stringify(res.data.data);
 };
@@ -181,7 +181,7 @@ function ViewSpacesScreen({navigation, route}) {
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.headingContainer}>
-        <AppText customStyle={styles.title}>View Spaces</AppText>
+        <AppText customStyle={styles.title}>View {route.params.viewUnapproved ? "Unapproved" : ""} Spaces</AppText>
       </View>
 
       <View style={styles.container}>
@@ -191,8 +191,7 @@ function ViewSpacesScreen({navigation, route}) {
           <AppMapView locations={locationsMap} props={navigation, route} />
         ) : (
           <View style={styles.spaceListContainer}>
-            {/* TODO: add support for passing viewUnapproved here */}
-            <AppSpaceList locations={spots} />
+            <AppSpaceList locations={spots} viewUnapproved={route.params.viewUnapproved}/>
           </View>
         )}
       </View>

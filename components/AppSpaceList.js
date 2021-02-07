@@ -14,7 +14,7 @@ import Screen from "./Screen";
  * @param {*} props
  */
 
-function AppSpaceList({ locations }) {
+function AppSpaceList({ locations, viewUnapproved }) {
   // console.log("These are our locations: " + JSON.stringify(locations));
   // console.log("APPSPACELISTPROPS\n", "--------------\n", navigation);
   return (
@@ -25,6 +25,7 @@ function AppSpaceList({ locations }) {
         renderItem={({ item }) => (
           <AppSpaceListing
             space={item}
+            viewUnapproved={viewUnapproved}
           />
         )}
         ItemSeparatorComponent={ListItemSeparator}

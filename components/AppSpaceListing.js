@@ -13,7 +13,7 @@ import AppText from "./AppText";
  * @param {*} param0
  */
 
-function AppSpaceListing({space}) {
+function AppSpaceListing({ space, viewUnapproved}) {
   // console.log("APPSPACELISTINGPROPS\n", papaProps);
   const navigation = useNavigation();
   return (
@@ -34,7 +34,8 @@ function AppSpaceListing({space}) {
         <TouchableOpacity
           onPress={() => 
             navigation.navigate("SpaceDetail", {
-              space: {space},
+              space: space,
+              viewUnapproved: viewUnapproved,
             })
           }
         >
