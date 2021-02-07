@@ -1,6 +1,8 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
+import { useNavigation } from '@react-navigation/native'
+
 import AppSpaceListing from "./AppSpaceListing";
 import ListItemSeparator from "./ListItemSeparator";
 import Screen from "./Screen";
@@ -12,9 +14,9 @@ import Screen from "./Screen";
  * @param {*} props
  */
 
-function AppSpaceList({ locations, props}) {
+function AppSpaceList({ locations }) {
   // console.log("These are our locations: " + JSON.stringify(locations));
-  console.log("APPSPACELISTPROPS\n", "--------------\n", props);
+  // console.log("APPSPACELISTPROPS\n", "--------------\n", navigation);
   return (
     <View style={styles.container}>
       <FlatList
@@ -23,7 +25,6 @@ function AppSpaceList({ locations, props}) {
         renderItem={({ item }) => (
           <AppSpaceListing
             space={item}
-            papaProps={props}
           />
         )}
         ItemSeparatorComponent={ListItemSeparator}

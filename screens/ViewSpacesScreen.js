@@ -169,7 +169,7 @@ initMap = async () => {
     });
 };
 
-function ViewSpacesScreen(props) {
+function ViewSpacesScreen({navigation, route}) {
   // console.log(props)
   // useEffect(() => {initMap}, []);
   // console.log("localStorage: ", localStorage);
@@ -186,15 +186,17 @@ function ViewSpacesScreen(props) {
 
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
-        {mapVisible && !props.route.params.viewUnapproved ? (
-          <AppMapView locations={locationsMap} props={props} />
+        {/* Always hide map view if an admin is here to look at unapproved */}
+        {mapVisible && !route.params.viewUnapproved ? (
+          <AppMapView locations={locationsMap} props={navigation, route} />
         ) : (
           <View style={styles.spaceListContainer}>
-            <AppSpaceList locations={spots} props={props} />
+            {/* TODO: add support for passing viewUnapproved here */}
+            <AppSpaceList locations={spots} />
           </View>
         )}
       </View>
-      {mapVisible && !props.route.params.viewUnapproved ? 
+      {mapVisible && !route.params.viewUnapproved ? 
       <AppButton
         title={mapVisible  ? "List View" : "Map View"}
         onPress={() => setMapVisible(!mapVisible)} 

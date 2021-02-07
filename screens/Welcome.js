@@ -157,7 +157,7 @@ const get_user_location = async () => {
   }
 };
 
-function WelcomeScreen(props) {
+function WelcomeScreen({navigation, route}) {
   console.log("-----------");
   // console.log("WelcomeProps: \n", props);
   // console.log("WelcomeScreen: ", props);
@@ -165,20 +165,20 @@ function WelcomeScreen(props) {
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
       <AppText customStyle={styles.titleOne}>
-        {props.route.params.userName.userName}!
+        {route.params.userName}!
       </AppText>
 
       <AppButton
         title="Add a new Prayer Space"
-        onPress={() => props.navigation.navigate("AddSpace")}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
+        onPress={() => navigation.navigate("AddSpace")}
+        // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
         //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
+        //     navigation.goBack.equals(
+        //       navigation.navigate("MapView")
         //     )
         //   )
         // }
-        // onPress={() => props.navigation.popToTop()}
+        // onPress={() => navigation.popToTop()}
         customStyle={styles.editBtn}
       ></AppButton>
 
@@ -187,33 +187,33 @@ function WelcomeScreen(props) {
         onPress={() => {
           // initMap();
           // get_user_location();
-          props.navigation.navigate("ViewSpaces");
+          navigation.navigate("ViewSpaces");
         }}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
+        // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
         //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
+        //     navigation.goBack.equals(
+        //       navigation.navigate("MapView")
         //     )
         //   )
         // }
-        // onPress={() => props.navigation.popToTop()}
+        // onPress={() => navigation.popToTop()}
         customStyle={styles.editBtn}
       ></AppButton>
 
-      {props.route.params.is_admin && (
+      {route.params.is_admin && (
         <AppButton
           title="Approval needed"
-          onPress={() => props.navigation.navigate("ViewSpaces", {
+          onPress={() => navigation.navigate("ViewSpaces", {
             viewUnapproved: true,
           })}
-          // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
+          // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
           //   console.log(
-          //     props.navigation.goBack.equals(
-          //       props.navigation.navigate("MapView")
+          //     navigation.goBack.equals(
+          //       navigation.navigate("MapView")
           //     )
           //   )
           // }
-          // onPress={() => props.navigation.popToTop()}
+          // onPress={() => navigation.popToTop()}
           customStyle={styles.editBtn}
         ></AppButton>
       )}

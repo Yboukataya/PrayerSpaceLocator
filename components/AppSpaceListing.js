@@ -3,6 +3,8 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
+import { useNavigation } from '@react-navigation/native'
+
 import AppText from "./AppText";
 
 /**
@@ -11,8 +13,9 @@ import AppText from "./AppText";
  * @param {*} param0
  */
 
-function AppSpaceListing({space, papaProps}) {
-  console.log("APPSPACELISTINGPROPS\n", papaProps);
+function AppSpaceListing({space}) {
+  // console.log("APPSPACELISTINGPROPS\n", papaProps);
+  const navigation = useNavigation();
   return (
     <View style={styles.listingContainer}>
       {/* for the text information */}
@@ -29,10 +32,9 @@ function AppSpaceListing({space, papaProps}) {
       {/* for the icon */}
       <View>
         <TouchableOpacity
-          onPress={() =>
-            papaProps.navigation.navigate("SpaceDetail", {
-              space: space,
-              props: papaProps,
+          onPress={() => 
+            navigation.navigate("SpaceDetail", {
+              space: {space},
             })
           }
         >

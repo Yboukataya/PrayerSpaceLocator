@@ -230,7 +230,7 @@ async function signInWithGoogleAsync(props) {
       await addOrFindUser(userEmail, false);
       let is_admin = await isAdmin(userEmail);
 
-      props.navigation.navigate("Welcome", {
+      navigation.navigate("Welcome", {
         userName: { userName },
         userEmail: { userEmail },
         is_admin: { is_admin },
@@ -258,7 +258,7 @@ async function signInWithGoogleAsync(props) {
   }
 }
 
-function LandingScreen(props) {
+function LandingScreen({navigation}) {
   initMap();
   one = 1;
   // console.log(props);
@@ -270,7 +270,7 @@ function LandingScreen(props) {
       <AppButton
         title="Login"
         // onPress={() => signInWithGoogleAsync(props)}
-        onPress={() => props.navigation.navigate("Welcome", {
+        onPress={() => navigation.navigate("Welcome", {
           userName: "mrozer",
           userEmail: "ozer@upenn.edu" ,
           is_admin: true
@@ -282,7 +282,7 @@ function LandingScreen(props) {
         title="Continue as Guest"
         onPress={() => {
           // get_user_location();
-          props.navigation.navigate("ViewSpaces");
+          navigation.navigate("ViewSpaces");
         }}
         customStyle={styles.editBtn}
       ></AppButton>
