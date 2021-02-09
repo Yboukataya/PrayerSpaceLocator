@@ -25,5 +25,17 @@ export const PennBuildings = {
     name: "David Rittenhouse Laboratory",
     address: "209 S 33rd St, Philadelphia, PA 19104",
   },
+  Fisher: {
+    name: "Fisher Fine Arts Library",
+    address: "209 S 33rd St, Philadelphia, PA 19104",
+  },
+  Towne: {
+    name: "Towne",
+    address: "209 S 33rd St, Philadelphia, PA 19104",
+  },
+  Levine: {
+    name: "Levine",
+    address: "209 S 33rd St, Philadelphia, PA 19104",
+  },
 };
 
