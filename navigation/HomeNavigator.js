@@ -8,8 +8,8 @@ import ToyPennKey from "../screens/ToyPennKey";
 import ViewSpacesScreen from "../screens/ViewSpacesScreen";
 import SentToApprovalScreen from "../screens/SentToApproval";
 
-import EventDetailScreen from "./screens/EventDetailScreen.js";
-import AddEventScreen from "./screens/AddEventScreen.js";
+import EventDetailScreen from "../screens/EventDetailScreen.js";
+import AddEventScreen from "../screens/AddEventScreen.js";
 
 const Stack = createStackNavigator();
 

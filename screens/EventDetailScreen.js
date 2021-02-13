@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
 
 import AppButton from "../components/AppButton";
 import AppSpaceDetail from "../components/AppSpaceDetail";
@@ -17,45 +17,38 @@ export default function EventDetailScreen({route}) {
     return (
       <Screen style={{ flex: 1, padding: 20 }}>
          <View style={styles.container}>
-            <AppTitle>{route.params.eventName}</AppTitle> 
+            <AppTitle>{route.params.event.eventName}</AppTitle> 
          </View>
  
         <View style={styles.spaceDetails}>
           <AppSpaceDetail
-            space={route.params.space}
+            space={route.params.event}
             detailTitle="Building"
-            detailKey="bldgName"
+            detailKey="selectedBuilding"
           />
           <AppSpaceDetail
-            space={route.params.space}
-            detailTitle="Address"
-            detailKey="bldgAddress"
+            space={route.params.event}
+            detailTitle="Space"
+            detailKey="selectedSpace"
           />
+          {/* TODO: combine date/time into one entry below */}
           <AppSpaceDetail 
-            space={route.params.space}
-            detailTitle="Instructions"
-            detailKey="instructions"
+            space={route.params.event}
+            detailTitle="Date"
+            detailKey="date"
           />
           <AppSpaceDetail
-            space={route.params.space}
-            detailTitle="Capacity"
-            detailKey="capacity"
+            space={route.params.event}
+            detailTitle="Time"
+            detailKey="time"
           />
-          <AppSpaceDetail
-            space={route.params.space}
-            detailTitle="Daily Hours"
-            detailKey="daily_hours"
-          /> 
+          
         </View>
          <View style={styles.btnContainer}>
          
-          {route.params.viewUnapproved ? (<AppButton title="Approve" customStyle={styles.btnStyle} onPress={acceptOnPress}/>) : (null)}
-          {route.params.viewUnapproved ? (<AppButton title="Reject"  customStyle={styles.btnStyle} onPress={rejectOnPress}/>) : (null)}
-          {/* {route.params.viewUnapproved ? (<AppButton title="Update"/>) : (<AppButton title="Bye"/>)}
-          {route.params.viewUnapproved ? (<AppButton title="Go Back"/>) : (<AppButton title="Bye"/>)} */}
          </View>
-         <AppButton title="Update"  onPress={() => navigation.navigate("AddSpace", {existingSpace: route.params.space})}/>
-         <AppButton title="Go Back" onPress={() => navigation.navigate("ViewSpaces")}/>
+         {/* <AppButton title="Update"  onPress={() => navigation.navigate("AddSpace", {existingSpace: route.params.space})}/> */}
+         <AppButton title="Back To Events" onPress={() => navigation.navigate("ViewEvents")}/>
       </Screen>
     );
 }

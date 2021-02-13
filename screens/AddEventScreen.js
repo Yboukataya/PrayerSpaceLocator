@@ -11,12 +11,6 @@ import Screen from "../components/Screen";
 import AppFormEntry from "../components/forms/AppFormEntry";
 import { PennBuildings } from "../constants/Buildings.js";
 
-const onPickerChange = (event, selectedDate) => {
-  const currentDate = selectedDate || date;
-  setShow(Platform.OS === 'ios');
-  setDate(currentDate);
-};
-
 export default function AddEventScreen({navigation, route}) {
   
   let buildings = []
@@ -54,13 +48,15 @@ export default function AddEventScreen({navigation, route}) {
           console.log("eventDate: " + eventDate)
           console.log("eventTime: " + eventTime)
           // TODO: where do we go after adding a new event?
-          props.navigation.navigate("EventDetailScreen", {event: {
-            eventName: values.eventName,
-            selectedBuilding: selectedBuilding,
-            selectedSpace: selectedSpace,
-            date: eventDate.getUTCMonth() + "/" + eventDate.getUTCDate() + "/" + eventDate.getUTCYear,
-            time: eventTime.get,
-          }});
+          navigation.navigate("EventDetail", {
+            event: {
+              eventName: values.eventName,
+              selectedBuilding: selectedBuilding,
+              selectedSpace: selectedSpace,
+              date: eventDate.getUTCMonth() + "/" + eventDate.getUTCDate() + "/" + eventDate.getUTCFullYear(),
+              time: eventTime.getUTCHours() + ":" + eventTime.getUTCMinutes(),
+            }
+          });
         }}
         >
           {/* EVENT NAME */}
@@ -149,7 +145,7 @@ export default function AddEventScreen({navigation, route}) {
         </View>
 
           {/* TODO: make this one bigger */}
-        <SubmitButton title="Submit!" selectedBuilding={selectedBuilding}/>
+        <SubmitButton title="Submit!" />
       </AppForm>
     </Screen>);
 }
