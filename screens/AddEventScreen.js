@@ -11,13 +11,19 @@ import Screen from "../components/Screen";
 import AppFormEntry from "../components/forms/AppFormEntry";
 import { PennBuildings } from "../constants/Buildings.js";
 
+const onPickerChange = (event, selectedDate) => {
+  const currentDate = selectedDate || date;
+  setShow(Platform.OS === 'ios');
+  setDate(currentDate);
+};
 
 export default function AddEventScreen({navigation, route}) {
   
   let buildings = []
   let [selectedBuilding, setBuilding] = useState("");
-  const [eventDate, setEventDate] = useState(Date.now());
-  const [eventTime, setEventTime] = useState("");
+  let [selectedSpace, setSpace] = useState("");
+  const [eventDate, setEventDate] = useState(new Date(Date.now()));
+  const [eventTime, setEventTime] = useState(new Date(Date.now()));
 
   for (const [name] of Object.entries(PennBuildings)) {
     let bldgName = name;
@@ -38,18 +44,15 @@ export default function AddEventScreen({navigation, route}) {
 
       <AppForm
         initialValues={{
-          spaceName: "",
-          bldgName: "",
-          bldgAddress: "",
-          instructions: "",
-          capacity: "",
-          dailyHours: "",
-          selectedBuilding: ""
+          eventName: "",
         }}
         
         onSubmit={(values) => {
-          console.log("spaceData: " + values.spaceName)
-          console.log("spaceBldg: " + selectedBuilding)
+          console.log("eventName: " + values.eventName)
+          console.log("eventBldg: " + selectedBuilding)
+          console.log("eventSpace: " + selectedSpace)
+          console.log("eventDate: " + eventDate)
+          console.log("eventTime: " + eventTime)
           props.navigation.navigate("SentToApproval");
         }}
         >
@@ -76,13 +79,13 @@ export default function AddEventScreen({navigation, route}) {
                 style={{backgroundColor: '#fafafa'}}
                 itemStyle={{justifyContent: 'flex-start'}}
                 dropDownStyle={{backgroundColor: '#fafafa'}}
-                onChangeItem={item => {setBuilding(item.label); console.log(selectedBuilding)}}
+                onChangeItem={item => {setBuilding(item.label); console.log("Building set!")}}
               />
             </View>
           </View>
 
           {/* SPACE DROPDOWN */}
-          <View style={styles.bldgDropdownStyle}>
+          <View style={styles.dropdownStyle}>
           
           <View style={{flex: 3}}>
             <AppText>Space Name</AppText>
@@ -98,7 +101,7 @@ export default function AddEventScreen({navigation, route}) {
             style={{backgroundColor: '#fafafa'}}
             itemStyle={{justifyContent: 'flex-start'}}
             dropDownStyle={{backgroundColor: '#fafafa'}}
-            onChangeItem={item => {setBuilding(item.label); console.log(selectedBuilding)}}
+            onChangeItem={item => {setSpace(item.label); console.log("Space updated!")}}
         />
           </View>
         </View>
@@ -110,8 +113,12 @@ export default function AddEventScreen({navigation, route}) {
           <View style={{flex: 3,}}>
             <AppText>Date</AppText>
           </View>
-          <View style={{flex: 7, height: "50",}}>
-            <DateTimePicker value={Date.now()} mode="date" display="compact" style={{height: 100,}} />
+          <View style={{flex: 7, height: 50,}}>
+            <DateTimePicker value={eventDate} 
+                            mode='date' 
+                            display="compact"
+                            onChange={(event, date) => {const newDate = date || eventDate; setEventDate(newDate);console.log(new Date(newDate)); /*console.log("Date Set!");*/}} 
+                            style={styles.dateTimePickerComponentStyle} />
           </View>
         </View>
 
@@ -122,12 +129,13 @@ export default function AddEventScreen({navigation, route}) {
             <AppText>Time</AppText>
           </View>
 
-          <View style={{flex: 7, height: "50px",}}>
-          <DateTimePicker value={Date.now()} 
+          <View style={{flex: 7, height: 50,}}>
+          <DateTimePicker value={eventTime} 
                           mode="time"
                           display="compact"
                           minuteInterval={5}
-                          style={{height: 100,}}/>
+                          onChange={(event, time) => {const newTime = time || eventTime; setEventTime(newTime);console.log(new Date(newTime)); /*console.log("Date Set!");*/}} 
+                          style={styles.dateTimePickerComponentStyle}/>
           </View>
          
         </View>
@@ -149,17 +157,27 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: "600",
   },
+  dateTimePickerComponentStyle: {
+    height: 100,
+  },
   dateTimePickerStyle: {
     alignItems: "center",
     flex: 1,
     flexDirection: "row",
     width: "100%",
   },
-  bldgDropdownStyle: {
+  dropdownStyle: {
     alignItems: "center",
     flex: 1,
     flexDirection: "row",
     width: "100%",
     zIndex: 50,
+  },
+  bldgDropdownStyle: {
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    width: "100%",
+    zIndex: 100,
   }
 });
