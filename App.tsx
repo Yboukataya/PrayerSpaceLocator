@@ -7,7 +7,7 @@ import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 
 import TabNavigator from "./navigation/TabNavigator.js";
-import AddEventScreen from "./screens/AddEventScreen.js";
+import EventDetailScreen from "./screens/EventDetailScreen.js";
 
 
 export default function App() {
@@ -20,9 +20,9 @@ export default function App() {
     dailyHours: "M-F 9-5",
   };
   return (
-    // <NavigationContainer>
-    //   <TabNavigator />
-    // </NavigationContainer>
-    <AddEventScreen />
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
+    // <EventDetailScreen />
   );
 }

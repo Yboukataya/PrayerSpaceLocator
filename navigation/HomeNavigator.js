@@ -8,10 +8,15 @@ import ToyPennKey from "../screens/ToyPennKey";
 import ViewSpacesScreen from "../screens/ViewSpacesScreen";
 import SentToApprovalScreen from "../screens/SentToApproval";
 
+import EventDetailScreen from "./screens/EventDetailScreen.js";
+import AddEventScreen from "./screens/AddEventScreen.js";
+
 const Stack = createStackNavigator();
 
 const HomeNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="AddEvent" component={AddEventScreen} />
+    <Stack.Screen name="EventDetail" component={EventDetailScreen} />
     <Stack.Screen name="Landing" component={LandingScreen} />
     <Stack.Screen name="Welcome" component={WelcomeScreen} />
     <Stack.Screen name="AddSpace" component={AddSpaceScreen} />

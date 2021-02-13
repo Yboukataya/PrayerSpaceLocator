@@ -53,7 +53,14 @@ export default function AddEventScreen({navigation, route}) {
           console.log("eventSpace: " + selectedSpace)
           console.log("eventDate: " + eventDate)
           console.log("eventTime: " + eventTime)
-          props.navigation.navigate("SentToApproval");
+          // TODO: where do we go after adding a new event?
+          props.navigation.navigate("EventDetailScreen", {event: {
+            eventName: values.eventName,
+            selectedBuilding: selectedBuilding,
+            selectedSpace: selectedSpace,
+            date: eventDate.getUTCMonth() + "/" + eventDate.getUTCDate() + "/" + eventDate.getUTCYear,
+            time: eventTime.get,
+          }});
         }}
         >
           {/* EVENT NAME */}
@@ -70,7 +77,7 @@ export default function AddEventScreen({navigation, route}) {
             </View>
 
             <View style={{flex: 7}}>
-              {/* TODO: Fix this dropdown once the database is addressed */}
+              {/* TODO: Fix this dropdown once the database can retrieve buildings */}
               <DropDownPicker
                 items={buildings}
                 placeholder="Select a building"
@@ -93,6 +100,7 @@ export default function AddEventScreen({navigation, route}) {
 
           <View style={{flex: 7}}>
           {/* TODO: Disable this dropdown until building is selected */}
+          {/* TODO: wait for integration with database */}
           <DropDownPicker
             items={buildings}
             placeholder="Select a Space"
