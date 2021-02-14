@@ -10,11 +10,13 @@ import SentToApprovalScreen from "../screens/SentToApproval";
 
 import EventDetailScreen from "../screens/EventDetailScreen.js";
 import AddEventScreen from "../screens/AddEventScreen.js";
+import ViewEventsScreen from "../screens/ViewEventsScreen";
 
 const Stack = createStackNavigator();
 
 const HomeNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="ViewEvents" component={ViewEventsScreen} />
     <Stack.Screen name="AddEvent" component={AddEventScreen} />
     <Stack.Screen name="EventDetail" component={EventDetailScreen} />
     <Stack.Screen name="Landing" component={LandingScreen} />
