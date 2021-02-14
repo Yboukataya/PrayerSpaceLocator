@@ -33,26 +33,33 @@ function AppSpaceListing({ event }) {
         </AppText>
       </View>
 
-      {/* for the buttons */}
+      {/* buttons on the right */}
       <View style={styles.buttonsContainer}>
         <View style={styles.pplGoingStyleView}>
           <AppText style={styles.pplGoingStyle}>3 going</AppText>
         </View> 
+
         <TouchableOpacity
           style={styles.btnViewEvent}
-          onPress={console.log("ViewEvent")}
-        >
+          onPress={() => navigation.navigate("EventDetail",  {
+                            event: {
+                              eventName: event.eventName,
+                              selectedSpace: event.space,
+                              selectedBuilding: event.building,
+                              date: event.date.toDateString(),
+                              time: event.date.getHours() + ":" + event.date.getMinutes(),
+                            },
+                          })}>
         <Text style={styles.btnText}>View Event</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.btnJoinEvent}
-          onPress={console.log("ViewEvent")}
-        >
+          onPress={console.log("ViewEvent")} >
         <Text style={styles.btnText}>Join Event</Text>
         </TouchableOpacity>
       </View>
-      </View>
+    </View>
   );
 }
 
