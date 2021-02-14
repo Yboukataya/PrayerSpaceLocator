@@ -53,8 +53,8 @@ export default function AddEventScreen({navigation, route}) {
               eventName: values.eventName,
               selectedBuilding: selectedBuilding,
               selectedSpace: selectedSpace,
-              date: eventDate.getUTCMonth() + "/" + eventDate.getUTCDate() + "/" + eventDate.getUTCFullYear(),
-              time: eventTime.getUTCHours() + ":" + eventTime.getUTCMinutes(),
+              date: eventDate.toDateString(),
+              time: eventTime.getHours() + ":" + eventTime.getMinutes(),
             }
           });
         }}
