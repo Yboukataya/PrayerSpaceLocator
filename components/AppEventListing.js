@@ -18,6 +18,7 @@ function AppSpaceListing({ event }) {
   const navigation = useNavigation();
   return (
     <View style={styles.listingContainer}>
+      <View style={styles.detailContainer}>
       {/* for the text information */}
       <View style={styles.eventDetailTextStyle}> 
         <AppText >
@@ -32,7 +33,7 @@ function AppSpaceListing({ event }) {
           Time: {event.date.getHours() + ":" + event.date.getMinutes()}
         </AppText>
       </View>
-
+      </View>
       {/* buttons on the right */}
       <View style={styles.buttonsContainer}>
         <View style={styles.pplGoingStyleView}>
@@ -85,9 +86,14 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    // width: 100,
+    flex: 3,
   },
   capacityStyle: {
     color: "goldenrod",
+  },
+  detailContainer: {
+    flex: 7,
   },
   distStyle: {
     color: "green",

@@ -17,7 +17,7 @@ export const PennBuildings = {
     name: "Jon M. Huntsman Hall",
     address: "3730 Walnut St, Philadelphia, PA 19104",
   }, 
-  Engineering: {
+  Skirkanich: {
     name: "Skirkanich Hall",
     address: "210 S 33rd St, Philadelphia, PA 19104"
   },
