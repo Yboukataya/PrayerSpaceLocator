@@ -12,6 +12,7 @@ import EventDetailScreen from "../screens/EventDetailScreen.js";
 import AddEventScreen from "../screens/AddEventScreen.js";
 // import ViewBuildingEventsScreen from "../screens/ViewBuildingEventsScreen";
 import ViewEventsScreen from "../screens/ViewEventsScreen";
+import ViewEventsByBuildingScreen from "../screens/ViewEventsByBuildingScreen";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ const HomeNavigator = () => (
     <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
     <Stack.Screen name="Login" component={ToyPennKey} />
     <Stack.Screen name="SentToApproval" component={SentToApprovalScreen} />
+    <Stack.Screen name="ViewEventsByBuilding" component={ViewEventsByBuildingScreen} />
   </Stack.Navigator>
 );
 

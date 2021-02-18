@@ -13,9 +13,10 @@ import AppText from "./AppText";
  * @param {*} param0
  */
 
-function AppBuildingListing({ building }) {
+function AppBuildingListing({ building, events}) {
   // console.log("APPSPACELISTINGPROPS\n", papaProps);
   const navigation = useNavigation();
+
   return (
     <View style={styles.listingContainer}>
       {/* for the text information */}
@@ -24,7 +25,7 @@ function AppBuildingListing({ building }) {
           {building.name}
         </AppText>
         <AppText customStyle={styles.capacityStyle}>
-          {building.numEvents} events today
+          {events.length} events today
         </AppText>
       </View>
 
@@ -33,9 +34,9 @@ function AppBuildingListing({ building }) {
         {/* TODO Fix icon to go to a page with all events in that building */}
         <TouchableOpacity
           onPress={() => 
-            navigation.navigate("SpaceDetail", {
-              space: space,
-              viewUnapproved: viewUnapproved,
+            navigation.navigate("ViewEventsByBuilding", {
+              building: building.name,
+              events: events,  
             })
           }
         >

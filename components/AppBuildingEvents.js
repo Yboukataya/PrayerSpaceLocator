@@ -32,7 +32,7 @@ function AppBuildingEvents({events}) {
     return (
         <View style={styles.container}>
           <View style={styles.buildingListContainer}>
-            <AppBuildingList buildings={buildings}/>
+            <AppBuildingList buildings={buildings} events={events}/>
           </View>
         </View>
     );
@@ -42,8 +42,6 @@ const styles = StyleSheet.create({
   buildingListContainer: {
     flex: 1,
     width: "90%",
-    // borderColor: "blue",
-    // borderWidth: 2,
   },
   container: {
     flex: 1,

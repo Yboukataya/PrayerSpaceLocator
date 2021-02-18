@@ -7,9 +7,9 @@ import AppBuildingListing from "./AppBuildingListing";
 import ListItemSeparator from "./ListItemSeparator";
 import Screen from "./Screen";
 
-function AppBuildingList({ buildings }) {
-  console.log("hi");
-  console.log(buildings);
+function AppBuildingList({ buildings, events }) {
+  // console.log("hi");
+  // console.log(buildings);
   return (
     <View style={styles.container}>
       <FlatList
@@ -18,6 +18,7 @@ function AppBuildingList({ buildings }) {
         renderItem={({ item }) => (
           <AppBuildingListing
             building={item}
+            events={events.filter(event => event.building === item.name)}
           />
         )}
         ItemSeparatorComponent={ListItemSeparator}

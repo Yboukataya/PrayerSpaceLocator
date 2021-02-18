@@ -15,8 +15,7 @@ import Screen from "./Screen";
  */
 
 function AppEventList({ events }) {
-  // console.log("These are our locations: " + JSON.stringify(locations));
-  // console.log("APPSPACELISTPROPS\n", "--------------\n", navigation);
+ 
   return (
     <View style={styles.container}>
       <FlatList
