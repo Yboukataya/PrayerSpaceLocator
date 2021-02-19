@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native'
+import * as Calendar from 'expo-calendar'
 
 import AppButton from "./AppButton";
 import AppText from "./AppText";
@@ -13,9 +14,36 @@ import AppText from "./AppText";
  * @param {*} param0
  */
 
+async function getDefaultCalendarSource() {
+  const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+  const defaultCalendars = calendars.filter(each => each.title === 'Calendar');
+  return defaultCalendars[0];
+}
+
+async function createCalendar(event) {
+  const defaultCalendarSource =
+    Platform.OS === 'ios' ? await getDefaultCalendarSource(): { isLocalAccount: true, name: 'YeRubbishCalendar' };
+
+  await Calendar.createEventAsync(defaultCalendarSource.id, {
+    title: event.eventName,
+    startDate: event.date,
+    endDate: new Date(event.date.getTime() + 15*60000),
+    location: event.selectedSpace + " in " + event.selectedBuilding,
+  });
+}
+
 function AppSpaceListing({ event }) {
-  console.log(event);
+  useEffect(() => {
+    (async () => {
+      const { status } = await Calendar.requestCalendarPermissionsAsync();
+      if (status === 'granted') {
+        const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+      }
+    })();
+  }, []);
+
   const navigation = useNavigation();
+
   return (
     <View style={styles.listingContainer}>
       <View style={styles.detailContainer}>
@@ -28,12 +56,11 @@ function AppSpaceListing({ event }) {
           {event.space + " in " + event.building}
         </AppText>
         <AppText customStyle={styles.capacityStyle}>
-          {/* TODO get time out of the event.date */}
-          {/* Time: {} */}
           Time: {event.date.getHours() + ":" + event.date.getMinutes()}
         </AppText>
       </View>
       </View>
+      
       {/* buttons on the right */}
       <View style={styles.buttonsContainer}>
         <View style={styles.pplGoingStyleView}>
@@ -56,7 +83,12 @@ function AppSpaceListing({ event }) {
 
         <TouchableOpacity
           style={styles.btnJoinEvent}
-          onPress={console.log("ViewEvent")} >
+          onPress={() => createCalendar({
+            eventName: event.eventName,
+            selectedSpace: event.space,
+            selectedBuilding: event.building,
+            date: event.date,
+          })} >
         <Text style={styles.btnText}>Join Event</Text>
         </TouchableOpacity>
       </View>
