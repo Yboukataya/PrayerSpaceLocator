@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, StyleSheet, View } from "react-native";
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -15,21 +15,6 @@ import Screen from "../components/Screen";
  * to render that attribute on its own line.
  * @param {*} param0
  */
-
-// export default class SpaceDetailScreen extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = { props: props };
-//   }
-
-  // handleOnPress = () => {
-  //   this.state.props.navigation.navigate("ViewSpaces");
-  //   // if (this.state.props.route.params.source == "add") {
-  //   //   this.state.props.navigation.popToTop();
-  //   // } else {
-  //   //   this.state.props.navigation.pop();
-  //   // }
-  // };
 
   const acceptOnPress = () =>
     Alert.alert(
@@ -97,7 +82,17 @@ import Screen from "../components/Screen";
             detailTitle="Daily Hours"
             detailKey="daily_hours"
           /> 
+
         </View>
+
+        <View style={styles.imgContainer}>
+          <Image source={{ 
+            height: "100%", 
+            uri: route.params.space.imgUrl,
+            width: "90%", 
+          }}/>
+        </View>
+
          <View style={styles.btnContainer}>
          
           {route.params.viewUnapproved ? (<AppButton title="Approve" customStyle={styles.btnStyle} onPress={acceptOnPress}/>) : (null)}
@@ -120,6 +115,12 @@ const styles = StyleSheet.create({
   },
   btnStyle: {
     marginRight: 5,
+  },
+  imgContainer: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+    paddingTop: 5,
   },
   container: {
     alignItems: "center",

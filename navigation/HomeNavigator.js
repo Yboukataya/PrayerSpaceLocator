@@ -19,16 +19,16 @@ const Stack = createStackNavigator();
 
 const HomeNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Landing" component={LandingScreen} />
+    <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
     <Stack.Screen name="Settings" component={Settings} />
     <Stack.Screen name="AddEvent" component={AddEventScreen} />
     <Stack.Screen name="AddSpace" component={AddSpaceScreen} />
     <Stack.Screen name="EventDetail" component={EventDetailScreen} />
-    <Stack.Screen name="Landing" component={LandingScreen} />
     <Stack.Screen name="SentToApproval" component={SentToApprovalScreen} />
     <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
     <Stack.Screen name="ViewEvents" component={ViewEventsScreen} />
     <Stack.Screen name="ViewEventsByBuilding" component={ViewEventsByBuildingScreen} />
-    <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
     <Stack.Screen name="Welcome" component={WelcomeScreen} />
   </Stack.Navigator>
 );

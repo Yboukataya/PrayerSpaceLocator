@@ -28,7 +28,8 @@ let spots = [
   "capacity":10,
   "spaceName":"VanPelt Library",
   "approval":0,
-  "latitude":39.952801,"longitude":-75.192398
+  "latitude":39.952801,"longitude":-75.192398,
+  "imgUrl": "https://images.unsplash.com/photo-1516836378273-db6cea41d84c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
   },
   {
     
@@ -41,7 +42,9 @@ let spots = [
     "spaceName":"DRL",
     "approval":1,
     "latitude":39.95217,
-    "longitude":-75.19007}
+    "longitude":-75.19007,
+    "imgUrl": "https://images.unsplash.com/photo-1594737660822-97e4807a7533?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1406&q=80",
+  }
     ]
 
 const get_spaces = async () => {

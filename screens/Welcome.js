@@ -187,7 +187,9 @@ function WelcomeScreen({navigation, route}) {
         onPress={() => {
           // initMap();
           // get_user_location();
-          navigation.navigate("ViewSpaces");
+          navigation.navigate("ViewSpaces", {
+            viewUnapproved: false,
+          });
         }}
         // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
         //   console.log(
