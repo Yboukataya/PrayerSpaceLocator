@@ -7,14 +7,7 @@ import AppEventListing from "./AppEventListing";
 import ListItemSeparator from "./ListItemSeparator";
 import Screen from "./Screen";
 
-/**
- * This component defines a list of prayer spaces for the View Spaces page.
- * It uses the AppSpaceListing component to render each individual space in
- * the table.
- * @param {*} props
- */
-
-function AppEventList({ events }) {
+function AppEventList({ events, myEventsState}) {
  
   return (
     <View style={styles.container}>
@@ -24,6 +17,7 @@ function AppEventList({ events }) {
         renderItem={({ item }) => (
           <AppEventListing
             event={item}
+            myEventsState={myEventsState}
           />
         )}
         ItemSeparatorComponent={ListItemSeparator}

@@ -14,14 +14,12 @@ function AppBuildingList({ buildings, events }) {
     <View style={styles.container}>
       <FlatList
         data={buildings}
-        keyExtractor={(listing) => console.log(listing)}
+        keyExtractor={(listing) => listing.name}
         renderItem={({ item }) => (
           <AppBuildingListing
             building={item}
             events={events.filter(event => event.building === item.name)}
-          />
-        )}
-        ItemSeparatorComponent={ListItemSeparator}
+          />        )}
       />
     </View>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 
 import AppButton from "../components/AppButton";
 import AppEventList from "../components/AppEventList";
@@ -9,6 +9,8 @@ import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 import "localstorage-polyfill";
 import axios from "axios";
+
+import AppEventListing from "../components/AppEventListing";
 
 let events = [
   {
@@ -46,8 +48,19 @@ let events = [
 
 function ViewEventsScreen({navigation, route}) {
   const [viewByBuilding, setViewByBuilding] = useState(true);
+  const myEventsState = useState([]);
 
+  const [viewMyEventsOnly, setViewMyEventsOnly] = useState(false);
+  const toggleSwitch = () => {
+    setViewMyEventsOnly(previousState => !previousState)
+    if (viewMyEventsOnly) {
+      events = events.filter(e => myEventsState[0].includes(e.id));
+    }
+  };
+
+  console.log("events: ", myEventsState[0]);
   return (
+    
     <Screen style={{ flex: 1, padding: 20, }}>
 
       <View style={styles.viewSelect}>
@@ -76,9 +89,14 @@ function ViewEventsScreen({navigation, route}) {
         {viewByBuilding ? ( 
           <AppBuildingEvents events={events} otherProps={navigation, route} />
         ) : (
+          <>
+          <View>
+            <Switch onValueChange={toggleSwitch} value={viewMyEventsOnly} />
+          </View>
           <View style={styles.eventListContainer}>
-            <AppEventList events={events} viewUnapproved={false}/>
+            <AppEventList events={events} myEventsState={myEventsState}/>
         </View>
+        </>
         )}
       </View>
   

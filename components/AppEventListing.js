@@ -8,19 +8,13 @@ import * as Calendar from 'expo-calendar'
 import AppButton from "./AppButton";
 import AppText from "./AppText";
 
-/**
- * This component defines how each prayer space in the list on the View Spaces
- * screen is rendered.
- * @param {*} param0
- */
-
 async function getDefaultCalendarSource() {
   const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
   const defaultCalendars = calendars.filter(each => each.title === 'Calendar');
   return defaultCalendars[0];
 }
 
-async function createCalendar(event) {
+async function createEvent(event) {
   const defaultCalendarSource =
     Platform.OS === 'ios' ? await getDefaultCalendarSource(): { isLocalAccount: true, name: 'YeRubbishCalendar' };
 
@@ -32,7 +26,7 @@ async function createCalendar(event) {
   });
 }
 
-function AppSpaceListing({ event }) {
+function AppSpaceListing({ event, myEventsState }) {
   useEffect(() => {
     (async () => {
       const { status } = await Calendar.requestCalendarPermissionsAsync();
@@ -80,17 +74,34 @@ function AppSpaceListing({ event }) {
                           })}>
         <Text style={styles.btnText}>View Event</Text>
         </TouchableOpacity>
-
+      {!myEventsState[0].includes(event.id) ? (
         <TouchableOpacity
           style={styles.btnJoinEvent}
-          onPress={() => createCalendar({
-            eventName: event.eventName,
-            selectedSpace: event.space,
-            selectedBuilding: event.building,
-            date: event.date,
-          })} >
+          onPress={() => {
+            createEvent({
+              eventName: event.eventName,
+              selectedSpace: event.space,
+              selectedBuilding: event.building,
+              date: event.date,
+            });
+            // call setState for myEvents
+            myEventsState[1](oldArray => oldArray.includes(event.id) ? oldArray : [...oldArray, event.id]);
+            }
+          } >
         <Text style={styles.btnText}>Join Event</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>) : 
+        (<TouchableOpacity
+          style={styles.btnJoinEvent}
+          onPress={() => {
+            // TODO: remove the event from the array
+            // myEventsState[1](oldArray => oldArray);
+            console.log("not goin no more!");
+            }
+          } >
+        <Text style={styles.btnText}>Going!</Text>
+        </TouchableOpacity>)
+        }
+        
       </View>
     </View>
   );
