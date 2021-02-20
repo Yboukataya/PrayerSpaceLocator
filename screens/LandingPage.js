@@ -238,29 +238,25 @@ async function signInWithGoogleAsync(props) {
       console.log("OK");
       return result.accessToken;
     } else {
-      Alert.alert(
-        "Login Error",
-        "Hmm, looks like your login didn't go through :(",
-        [{ text: "Ok" }]
-      );
+      Alert.alert("Login Error", "Hmm, looks like your login didn't go through :(", [
+        { text: "Ok" },
+      ]);
       return { cancelled: true };
     }
   } catch (e) {
     if (e == "Not a Penn email") {
-      Alert.alert(
-        "Login Error",
-        "Whoops! This service is only for Penn students.",
-        [{ text: "Ok" }]
-      );
+      Alert.alert("Login Error", "Whoops! This service is only for Penn students.", [
+        { text: "Ok" },
+      ]);
       console.log("Nice try, sucker");
     }
     return { error: true };
   }
 }
 
-function LandingScreen({navigation}) {
-  initMap();
-  one = 1;
+function LandingScreen({ navigation }) {
+  // initMap();
+  // one = 1;
   // console.log(props);
   return (
     <View style={styles.container}>
@@ -270,11 +266,13 @@ function LandingScreen({navigation}) {
       <AppButton
         title="Login"
         // onPress={() => signInWithGoogleAsync(props)}
-        onPress={() => navigation.navigate("Welcome", {
-          userName: "mrozer",
-          userEmail: "ozer@upenn.edu" ,
-          is_admin: true
-        })}
+        onPress={() =>
+          navigation.navigate("Welcome", {
+            userName: "mrozer",
+            userEmail: "ozer@upenn.edu",
+            is_admin: true,
+          })
+        }
         customStyle={styles.editBtn}
       ></AppButton>
 
