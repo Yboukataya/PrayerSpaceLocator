@@ -44,8 +44,11 @@ export default function App() {
           </>
         ) : (
           <>
+            {/*  */}
             <Stack.Screen name="Landing" component={LandingScreen} />
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
+            <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
           </>
         )}
       </Stack.Navigator>
