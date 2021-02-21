@@ -5,11 +5,14 @@ import AppButton from "../components/AppButton";
 
 import SyncStorage from "sync-storage";
 import "localstorage-polyfill";
-global.localStorage;
+// global.localStorage;
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as Google from "expo-google-app-auth";
 import getEnvVars from "../environment";
+
+// TODO: when we move to email password login, use the secureStore expo package :)
 
 const IOS_AUTH_ID = getEnvVars().ios_auth_key;
 // TODO: set android in environment.js
@@ -258,6 +261,27 @@ async function signInWithGoogleAsync(props) {
   }
 }
 
+const storeData = async (key, value) => {
+  console.log(
+    "GOTCHA DATA BOY"
+  );
+  try {
+    await AsyncStorage.setItem(key, value)
+  } catch (e) {
+    // saving error
+  }
+}
+
+const storeObj = async (key, value) => {
+  console.log("GOTCHA JSON BOY");
+  try {
+    const jsonValue = JSON.stringify(value)
+    await AsyncStorage.setItem(key, jsonValue)
+  } catch (e) {
+    // saving error
+  }
+}
+
 function LandingScreen({navigation}) {
   initMap();
   one = 1;
@@ -270,11 +294,17 @@ function LandingScreen({navigation}) {
       <AppButton
         title="Login"
         // onPress={() => signInWithGoogleAsync(props)}
-        onPress={() => navigation.navigate("Welcome", {
-          userName: "mrozer",
-          userEmail: "ozer@upenn.edu" ,
-          is_admin: true
-        })}
+        onPress={() => {
+          // TODO: handle promise rejection?
+          storeData("isSignedIn", "true");
+          storeObj("user", {userName: "señor ozer", userEmail: "ozer@math.upenn.edu", is_admin: true});
+          console.log("Store ok!");
+          navigation.navigate("Welcome", {
+            userName: "mrozer",
+            userEmail: "ozer@upenn.edu" ,
+            is_admin: true
+          })
+        }}
         customStyle={styles.editBtn}
       ></AppButton>
 
