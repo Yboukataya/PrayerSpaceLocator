@@ -19,8 +19,7 @@ let events = [
   "date": new Date(2021, 2, 15, 19, 30, 0,0),
   },
   {
-    
-    "id":2,
+        "id":2,
     "building":"Houston",
     "space":"SPARC",
     "eventName":"ZUHR with bros only",
@@ -49,7 +48,7 @@ let events = [
  * route.params.event:      events happening only in that building     
  */
 function ViewEventsByBuildingScreen({navigation, route}) {
-  console.log("event params:" + route.params.events);
+  // console.log("event params:" + route.params.events);
   return (
     <Screen style={{ flex: 1, padding: 20, }}>
 
