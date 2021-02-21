@@ -158,9 +158,6 @@ const get_user_location = async () => {
 };
 
 function WelcomeScreen({navigation, route}) {
-  console.log("-----------");
-  // console.log("WelcomeProps: \n", props);
-  // console.log("WelcomeScreen: ", props);
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
