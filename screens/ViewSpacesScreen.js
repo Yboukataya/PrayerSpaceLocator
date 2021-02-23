@@ -20,32 +20,34 @@ import AppMapView from "../components/AppMapView";
 
 let spots = [
   {
-  "id":1,
-  "bldgName":"VanPelt Library",
-  "bldgAddress":"3420 Walnut St, Philadelphia, PA 19104",
-  "daily_hours":"9AM - 5PM",
-  "instructions":"Go up to the 4th floor, study room 403",
-  "capacity":10,
-  "spaceName":"VanPelt Library",
-  "approval":0,
-  "latitude":39.952801,"longitude":-75.192398,
-  "imgUrl": "https://images.unsplash.com/photo-1516836378273-db6cea41d84c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
+    id: 1,
+    bldgName: "VanPelt Library",
+    bldgAddress: "3420 Walnut St, Philadelphia, PA 19104",
+    daily_hours: "9AM - 5PM",
+    instructions: "Go up to the 4th floor, study room 403",
+    capacity: 10,
+    spaceName: "VanPelt Library",
+    approval: 0,
+    latitude: 39.952801,
+    longitude: -75.192398,
+    imgUrl:
+      "https://images.unsplash.com/photo-1516836378273-db6cea41d84c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
   },
   {
-    
-    "id":5,
-    "bldgName":"DRL",
-    "bldgAddress":"209 S 33rd Street, 19104",
-    "daily_hours":"9AM- 5PM",
-    "instructions":"Go to room A40",
-    "capacity":5,
-    "spaceName":"DRL",
-    "approval":1,
-    "latitude":39.95217,
-    "longitude":-75.19007,
-    "imgUrl": "https://images.unsplash.com/photo-1594737660822-97e4807a7533?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1406&q=80",
-  }
-    ]
+    id: 5,
+    bldgName: "DRL",
+    bldgAddress: "209 S 33rd Street, 19104",
+    daily_hours: "9AM- 5PM",
+    instructions: "Go to room A40",
+    capacity: 5,
+    spaceName: "DRL",
+    approval: 1,
+    latitude: 39.95217,
+    longitude: -75.19007,
+    imgUrl:
+      "https://images.unsplash.com/photo-1594737660822-97e4807a7533?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1406&q=80",
+  },
+];
 
 const get_spaces = async () => {
   let res = await axios({
@@ -99,9 +101,7 @@ initMap = async () => {
       if (i === addresses.length - 1) {
         destinations = destinations.concat(addresses[i].replace(" ", "+"));
       } else {
-        destinations = destinations.concat(
-          addresses[i].replace(" ", "+") + "|"
-        );
+        destinations = destinations.concat(addresses[i].replace(" ", "+") + "|");
       }
     }
     destinations = destinations.replaceAll(" ", "+");
@@ -172,38 +172,42 @@ initMap = async () => {
     });
 };
 
-function ViewSpacesScreen({navigation, route}) {
+function ViewSpacesScreen({ navigation, route }) {
   // console.log(props)
   // useEffect(() => {initMap}, []);
   // console.log("localStorage: ", localStorage);
   // // let locations = JSON.parse(localStorage.getItem("computed"));
   // let locations = globalLocations;
   // let locationsMap = JSON.parse(localStorage.getItem("mapinfo"));
-  
+
   const [mapVisible, setMapVisible] = useState(false);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.headingContainer}>
-        <AppText customStyle={styles.title}>View {route.params.viewUnapproved ? "Unapproved" : ""} Spaces</AppText>
+        <AppText customStyle={styles.title}>
+          View {route.params.viewUnapproved ? "Unapproved" : ""}Spaces
+        </AppText>
       </View>
 
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
         {/* Always hide map view if an admin is here to look at unapproved */}
         {mapVisible && !route.params.viewUnapproved ? (
-          <AppMapView locations={locationsMap} props={navigation, route} />
+          <AppMapView locations={locationsMap} props={(navigation, route)} />
         ) : (
           <View style={styles.spaceListContainer}>
-            <AppSpaceList locations={spots} viewUnapproved={route.params.viewUnapproved}/>
+            <AppSpaceList locations={spots} viewUnapproved={route.params.viewUnapproved} />
           </View>
         )}
       </View>
-      {mapVisible && !route.params.viewUnapproved ? 
-      <AppButton
-        title={mapVisible  ? "List View" : "Map View"}
-        onPress={() => setMapVisible(!mapVisible)} 
-      /> : <></>
-      }
+      {mapVisible && !route.params.viewUnapproved ? (
+        <AppButton
+          title={mapVisible ? "List View" : "Map View"}
+          onPress={() => setMapVisible(!mapVisible)}
+        />
+      ) : (
+        <></>
+      )}
     </Screen>
   );
 }

@@ -21,17 +21,24 @@ import EventDetailScreen from "./screens/EventDetailScreen.js";
 import ViewEventsByBuildingScreen from "./screens/ViewEventsByBuildingScreen";
 import ViewEventsScreen from "./screens/ViewEventsScreen";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
-  let [isSignedIn, setSignedIn] = useState(true);
+  let [isSignedIn, setSignedIn] = useState(false);
+  // setSignedIn()
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        initialRouteName={isSignedIn ? "Welcome" : "Landing"}
+        screenOptions={{ headerShown: false }}
+      >
         {isSignedIn ? (
           <>
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
             <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
             <Stack.Screen name="AddEvent" component={AddEventScreen} />
             <Stack.Screen name="ViewEvents" component={ViewEventsScreen} />

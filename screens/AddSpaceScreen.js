@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Formik, Field, Form } from "formik";
 
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from "react-native-dropdown-picker";
 
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import AppText from "../components/AppText";
@@ -63,9 +63,8 @@ import { PennBuildings } from "../constants/Buildings.js";
 //   return res;
 // };
 
-export default function AddSpaceScreen({navigation, route}) {
-  
-  let buildings = []
+export default function AddSpaceScreen({ navigation, route }) {
+  let buildings = [];
   let [selectedBuilding, setBuilding] = useState("");
 
   for (const [name] of Object.entries(PennBuildings)) {
@@ -73,16 +72,19 @@ export default function AddSpaceScreen({navigation, route}) {
     let bldgDropdown = {
       label: bldgName,
       value: bldgName,
-    }
+    };
     buildings.push(bldgDropdown);
   }
-  buildings.sort((a, b) => (a.label > b.label) ? 1 : -1);
+  buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
 
   console.log("RouteParams: ", route.params);
+
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
-        <AppText customStyle={styles.title}>{route.params.existingSpace ? "Update Space" : "Add New Space"}</AppText>
+        <AppText customStyle={styles.title}>
+          {route.params.existingSpace ? "Update Space" : "Add New Space"}
+        </AppText>
       </View>
 
       <AppForm
@@ -93,12 +95,11 @@ export default function AddSpaceScreen({navigation, route}) {
           instructions: "",
           capacity: "",
           dailyHours: "",
-          selectedBuilding: ""
+          selectedBuilding: "",
         }}
-        
         onSubmit={(values) => {
-          console.log("spaceData: " + values.spaceName)
-          console.log("spaceBldg: " + selectedBuilding)
+          console.log("spaceData: " + values.spaceName);
+          console.log("spaceBldg: " + selectedBuilding);
 
           // console.log(selectedBuidling)
           // this.addSpace(
@@ -120,35 +121,41 @@ export default function AddSpaceScreen({navigation, route}) {
           defaultValue={route.params.existingSpace ? route.params.existingSpace.spaceName : ""}
         />
         {/* TODO: export this to a separate component */}
-        <View style={{  alignItems: "center",
-                        flex: 1,
-                        flexDirection: "row",
-                        width: "100%",
-                        zIndex: 200,}}>
-          
-          <View style={{flex: 3,}}>
+        <View
+          style={{
+            alignItems: "center",
+            flex: 1,
+            flexDirection: "row",
+            width: "100%",
+            zIndex: 200,
+          }}
+        >
+          <View style={{ flex: 3 }}>
             <AppText>Building</AppText>
           </View>
 
-          <View style={{flex: 7}}>
-          {/* TODO: Fix this dropdown once the database is addressed */}
-          <DropDownPicker
-            items={buildings}
-            placeholder="Select a building"
-            // defaultValue={route.params.existingSpace ? route.params.existingSpace.bldgName : ""}
-            containerStyle={{height: 40}}
-            style={{backgroundColor: '#fafafa'}}
-            itemStyle={{
-                justifyContent: 'flex-start'
-            }}
-            dropDownStyle={{backgroundColor: '#fafafa'}}
-            // TODO: fix this to update some kind of form state
-            onChangeItem={item => {setBuilding(item.label); console.log(selectedBuilding)}}
-        />
+          <View style={{ flex: 7 }}>
+            {/* TODO: Fix this dropdown once the database is addressed */}
+            <DropDownPicker
+              items={buildings}
+              placeholder="Select a building"
+              // defaultValue={route.params.existingSpace ? route.params.existingSpace.bldgName : ""}
+              containerStyle={{ height: 40 }}
+              style={{ backgroundColor: "#fafafa" }}
+              itemStyle={{
+                justifyContent: "flex-start",
+              }}
+              dropDownStyle={{ backgroundColor: "#fafafa" }}
+              // TODO: fix this to update some kind of form state
+              onChangeItem={(item) => {
+                setBuilding(item.label);
+                console.log(selectedBuilding);
+              }}
+            />
           </View>
         </View>
 
-            {/* TODO: make this one bigger */}
+        {/* TODO: make this one bigger */}
         <AppFormEntry
           label="Instructions"
           name="instructions"
@@ -160,21 +167,24 @@ export default function AddSpaceScreen({navigation, route}) {
           label="Capacity"
           name="capacity"
           keyboardType="number-pad"
-          placeholder= ""
+          placeholder=""
           type="text"
           pattern="[0-9]*"
-          defaultValue={route.params.existingSpace ? route.params.existingSpace.capacity.toString() : ""}
-          />
+          defaultValue={
+            route.params.existingSpace ? route.params.existingSpace.capacity.toString() : ""
+          }
+        />
         <AppFormEntry
           label="Daily Hours"
           name="dailyHours"
           placeholder="When is this space open?"
           defaultValue={route.params.existingSpace ? route.params.existingSpace.daily_hours : ""}
         />
-        <SubmitButton title="Submit!" selectedBuilding={selectedBuilding}/>
+        <SubmitButton title="Submit!" selectedBuilding={selectedBuilding} />
       </AppForm>
       {/* </View> */}
-    </Screen>);
+    </Screen>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -277,9 +277,6 @@ const storeObj = async (key, value) => {
 };
 
 function LandingScreen({ navigation }) {
-  initMap();
-  one = 1;
-  // console.log(props);
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome to</AppText>
@@ -309,7 +306,6 @@ function LandingScreen({ navigation }) {
       <AppButton
         title="Continue as Guest"
         onPress={() => {
-          // get_user_location();
           navigation.navigate("ViewSpaces");
         }}
         customStyle={styles.editBtn}

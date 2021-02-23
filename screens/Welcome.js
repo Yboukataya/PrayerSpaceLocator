@@ -6,7 +6,7 @@ import AppButton from "../components/AppButton";
 import SyncStorage from "sync-storage";
 import "localstorage-polyfill";
 global.localStorage;
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
 
@@ -161,73 +161,66 @@ const get_user_location = async () => {
 
 const getData = async (key) => {
   try {
-    const value = await AsyncStorage.getItem(key)
-    if(value !== null) {
+    console.log("key type: ", typeof key);
+    console.log(String(key));
+    const value = await AsyncStorage.getItem(String(key));
+    if (value != undefined) {
       // value previously stored
-      // return value;
+      console.log("AsyncStorage val: ", value);
+      console.log("async type: ", typeof val);
+      return "hello";
     }
-  } catch(e) {
+  } catch (e) {
     // error reading value
+    console.log("couldn't find key");
   }
-}
+};
 
-function WelcomeScreen({navigation, route}) {
+function WelcomeScreen({ navigation, route }) {
+  // In case we get to this page not using navigation
+  let is_admin = route.params == undefined ? false : route.params.is_admin;
+
+  console.log(route);
+  let x = getData("isSignedIn");
+  // console.log("hey");
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
       <AppText customStyle={styles.titleOne}>
         {/* {route.params.userName}! */}
-        {getData("isSignedIn")}
+        Hi
+        {/* {getData("isSignedIn")} */}
       </AppText>
 
       <AppButton
         title="Add a new Prayer Space"
-        onPress={() => navigation.navigate("AddSpace")}
-        // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
-        //   console.log(
-        //     navigation.goBack.equals(
-        //       navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => navigation.popToTop()}
+        onPress={() =>
+          navigation.navigate("AddSpace", {
+            // Not updating an existing space here
+            existingSpace: undefined,
+          })
+        }
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
         title="List of Prayer Spaces"
         onPress={() => {
-          // initMap();
-          // get_user_location();
           navigation.navigate("ViewSpaces", {
             viewUnapproved: false,
           });
         }}
-        // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
-        //   console.log(
-        //     navigation.goBack.equals(
-        //       navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => navigation.popToTop()}
         customStyle={styles.editBtn}
       ></AppButton>
 
-      {route.params.is_admin && (
+      {is_admin && (
         <AppButton
           title="Approval needed"
-          onPress={() => navigation.navigate("ViewSpaces", {
-            viewUnapproved: true,
-          })}
-          // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
-          //   console.log(
-          //     navigation.goBack.equals(
-          //       navigation.navigate("MapView")
-          //     )
-          //   )
-          // }
-          // onPress={() => navigation.popToTop()}
+          onPress={() =>
+            navigation.navigate("ViewSpaces", {
+              viewUnapproved: true,
+            })
+          }
           customStyle={styles.editBtn}
         ></AppButton>
       )}
