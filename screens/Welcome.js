@@ -178,9 +178,9 @@ function WelcomeScreen({navigation, route}) {
       <AppText customStyle={styles.title}>Welcome</AppText>
       <AppText customStyle={styles.titleOne}>
         {/* {route.params.userName}! */}
-        {getData("isSignedIn").then((keyValue) => {
-          console.log(keyValue[0]);
-        })}
+        {/* {getData("isSignedIn").then((keyValue) => {
+          console.log(keyValue)
+        })} */}
       </AppText>
 
       <AppButton

@@ -7,7 +7,7 @@ import SyncStorage from "sync-storage";
 import "localstorage-polyfill";
 // global.localStorage;
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as Google from "expo-google-app-auth";
 import getEnvVars from "../environment";
@@ -241,20 +241,16 @@ async function signInWithGoogleAsync(props) {
       console.log("OK");
       return result.accessToken;
     } else {
-      Alert.alert(
-        "Login Error",
-        "Hmm, looks like your login didn't go through :(",
-        [{ text: "Ok" }]
-      );
+      Alert.alert("Login Error", "Hmm, looks like your login didn't go through :(", [
+        { text: "Ok" },
+      ]);
       return { cancelled: true };
     }
   } catch (e) {
     if (e == "Not a Penn email") {
-      Alert.alert(
-        "Login Error",
-        "Whoops! This service is only for Penn students.",
-        [{ text: "Ok" }]
-      );
+      Alert.alert("Login Error", "Whoops! This service is only for Penn students.", [
+        { text: "Ok" },
+      ]);
       console.log("Nice try, sucker");
     }
     return { error: true };
@@ -262,30 +258,25 @@ async function signInWithGoogleAsync(props) {
 }
 
 const storeData = async (key, value) => {
-  console.log(
-    "GOTCHA DATA BOY"
-  );
+  console.log("GOTCHA DATA BOY");
   try {
-    await AsyncStorage.setItem(key, value)
+    await AsyncStorage.setItem(key, value);
   } catch (e) {
     // saving error
   }
-}
+};
 
 const storeObj = async (key, value) => {
   console.log("GOTCHA JSON BOY");
   try {
-    const jsonValue = JSON.stringify(value)
-    await AsyncStorage.setItem(key, jsonValue)
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem(key, jsonValue);
   } catch (e) {
     // saving error
   }
-}
+};
 
-function LandingScreen({navigation}) {
-  initMap();
-  one = 1;
-  // console.log(props);
+function LandingScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome to</AppText>
@@ -297,13 +288,17 @@ function LandingScreen({navigation}) {
         onPress={() => {
           // TODO: handle promise rejection?
           storeData("isSignedIn", "true");
-          storeObj("user", {userName: "señor ozer", userEmail: "ozer@math.upenn.edu", is_admin: true});
+          storeObj("user", {
+            userName: "señor ozer",
+            userEmail: "ozer@math.upenn.edu",
+            is_admin: true,
+          });
           console.log("Store ok!");
           navigation.navigate("Welcome", {
             userName: "mrozer",
-            userEmail: "ozer@upenn.edu" ,
-            is_admin: true
-          })
+            userEmail: "ozer@upenn.edu",
+            is_admin: true,
+          });
         }}
         customStyle={styles.editBtn}
       ></AppButton>
@@ -311,7 +306,6 @@ function LandingScreen({navigation}) {
       <AppButton
         title="Continue as Guest"
         onPress={() => {
-          // get_user_location();
           navigation.navigate("ViewSpaces");
         }}
         customStyle={styles.editBtn}
