@@ -6,7 +6,7 @@ import AppButton from "../components/AppButton";
 import SyncStorage from "sync-storage";
 import "localstorage-polyfill";
 global.localStorage;
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
 
@@ -161,36 +161,35 @@ const get_user_location = async () => {
 
 const getData = async (key) => {
   try {
-    const value = await AsyncStorage.getItem(key)
-    if(value !== null) {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
       // value previously stored
       // return value;
     }
-  } catch(e) {
+  } catch (e) {
     // error reading value
   }
-}
+};
 
-function WelcomeScreen({navigation, route}) {
+function WelcomeScreen({ navigation, route }) {
+  console.log(navigation);
+  let is_admin = route.params == undefined ? false : route.params.is_admin;
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
       <AppText customStyle={styles.titleOne}>
         {/* {route.params.userName}! */}
-        {getData("isSignedIn")}
+        {/* {getData("isSignedIn")} */}
       </AppText>
 
       <AppButton
         title="Add a new Prayer Space"
-        onPress={() => navigation.navigate("AddSpace")}
-        // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
-        //   console.log(
-        //     navigation.goBack.equals(
-        //       navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => navigation.popToTop()}
+        onPress={() =>
+          navigation.navigate("AddSpace", {
+            // Not updating an existing space here
+            existingSpace: undefined,
+          })
+        }
         customStyle={styles.editBtn}
       ></AppButton>
 
@@ -214,12 +213,14 @@ function WelcomeScreen({navigation, route}) {
         customStyle={styles.editBtn}
       ></AppButton>
 
-      {route.params.is_admin && (
+      {is_admin && (
         <AppButton
           title="Approval needed"
-          onPress={() => navigation.navigate("ViewSpaces", {
-            viewUnapproved: true,
-          })}
+          onPress={() =>
+            navigation.navigate("ViewSpaces", {
+              viewUnapproved: true,
+            })
+          }
           // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
           //   console.log(
           //     navigation.goBack.equals(
