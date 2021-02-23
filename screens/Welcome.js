@@ -174,6 +174,9 @@ const getData = async (key) => {
 function WelcomeScreen({ navigation, route }) {
   console.log(navigation);
   let is_admin = route.params == undefined ? false : route.params.is_admin;
+  // TODO: get this from async storage
+  // let is_signed_in =
+
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
@@ -196,20 +199,18 @@ function WelcomeScreen({ navigation, route }) {
       <AppButton
         title="List of Prayer Spaces"
         onPress={() => {
-          // initMap();
-          // get_user_location();
           navigation.navigate("ViewSpaces", {
             viewUnapproved: false,
           });
         }}
-        // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
-        //   console.log(
-        //     navigation.goBack.equals(
-        //       navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => navigation.popToTop()}
+        customStyle={styles.editBtn}
+      ></AppButton>
+
+      <AppButton
+        title="View Events"
+        onPress={() => {
+          navigation.navigate("ViewEvents");
+        }}
         customStyle={styles.editBtn}
       ></AppButton>
 
