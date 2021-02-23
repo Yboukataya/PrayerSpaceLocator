@@ -53,9 +53,9 @@ function ViewEventsScreen({navigation, route}) {
   const [viewMyEventsOnly, setViewMyEventsOnly] = useState(false);
   const toggleSwitch = () => {
     setViewMyEventsOnly(previousState => !previousState)
-    if (viewMyEventsOnly) {
-      events = events.filter(e => myEventsState[0].includes(e.id));
-    }
+    // if (viewMyEventsOnly) {
+    //   events = events.filter(e => myEventsState[0].includes(e.id));
+    // }
   };
 
   console.log("events: ", myEventsState[0]);
@@ -83,18 +83,17 @@ function ViewEventsScreen({navigation, route}) {
         </AppText>
       </View>
 
+      {/* Toggle switch for my events only / all events */}
       <View style={styles.container}>
-        {/* Render map or list of spaces, based on mapVisible */}
-        {/* Always hide map view if an admin is here to look at unapproved */}
-        {viewByBuilding ? ( 
-          <AppBuildingEvents events={events} otherProps={navigation, route} />
-        ) : (
+        {viewByBuilding ? (
+        <AppBuildingEvents events={events} otherProps={navigation, route} />) : (
           <>
-          <View>
+          <View style={styles.switchContainer}>
+            <AppText customStyle={{paddingRight: 10,}}>View My Events Only</AppText>
             <Switch onValueChange={toggleSwitch} value={viewMyEventsOnly} />
           </View>
           <View style={styles.eventListContainer}>
-            <AppEventList events={events} myEventsState={myEventsState}/>
+            <AppEventList events={!viewMyEventsOnly ? (events) : events.filter(e => myEventsState[0].includes(e.id))} myEventsState={myEventsState}/>
         </View>
         </>
         )}
@@ -131,6 +130,13 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  switchContainer: {
+    // flex: 1,
+    alignItems: "center",
+    flexDirection: "row",
+    // justifyContent: "flex-end",
+    paddingTop: 10,
   },
   title: {
     fontSize: 30,

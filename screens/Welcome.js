@@ -6,6 +6,8 @@ import AppButton from "../components/AppButton";
 import SyncStorage from "sync-storage";
 import "localstorage-polyfill";
 global.localStorage;
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import axios from "axios";
 
 // const get_spaces = async () => {
@@ -157,15 +159,25 @@ const get_user_location = async () => {
   }
 };
 
+const getData = async (key) => {
+  try {
+    const value = await AsyncStorage.getItem(key)
+    if(value !== null) {
+      // value previously stored
+      // return value;
+    }
+  } catch(e) {
+    // error reading value
+  }
+}
+
 function WelcomeScreen({navigation, route}) {
-  console.log("-----------");
-  // console.log("WelcomeProps: \n", props);
-  // console.log("WelcomeScreen: ", props);
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
       <AppText customStyle={styles.titleOne}>
-        {route.params.userName}!
+        {/* {route.params.userName}! */}
+        {getData("isSignedIn")}
       </AppText>
 
       <AppButton
