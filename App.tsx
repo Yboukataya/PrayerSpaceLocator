@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, PrivateValueStore } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -26,9 +26,37 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+const getData = async function (key) {
+  try {
+    // console.log("key type: ", typeof key);
+    // console.log(String(key));
+    const getTheItem = AsyncStorage.getItem(String(key));
+    const value = await getTheItem;
+    if (value != undefined) {
+      // value previously stored
+      // console.log("AsyncStorage val: ", value);
+      // console.log("async type: ", typeof value);
+      return value == "true";
+    }
+  } catch (e) {
+    // error reading value
+    console.log("couldn't find key");
+  }
+};
+
 export default function App() {
   let [isSignedIn, setSignedIn] = useState(false);
-  // setSignedIn()
+  // setSignedIn(getData("isSignedIn"));
+  let y = getData("isSignedIn").then(
+    function (result) {
+      return result;
+    },
+    function (error) {
+      console.log("uh oh");
+    }
+  );
+  console.log("y: ", typeof y);
+  // console.log("y is: ", y);
 
   return (
     <NavigationContainer>
