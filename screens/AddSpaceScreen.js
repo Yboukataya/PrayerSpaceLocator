@@ -112,11 +112,7 @@ export default function AddSpaceScreen({ navigation, route }) {
           label="Space Name"
           name="spaceName"
           placeholder="Space Name"
-          defaultValue={
-            route.params.existingSpace
-              ? route.params.existingSpace.spaceName
-              : ""
-          }
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.spaceName : ""}
         />
         {/* TODO: export this to a separate component */}
         <View
@@ -159,11 +155,7 @@ export default function AddSpaceScreen({ navigation, route }) {
           name="instructions"
           placeholder="How do you get to space?"
           multiline={true}
-          defaultValue={
-            route.params.existingSpace
-              ? route.params.existingSpace.instructions
-              : ""
-          }
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.instructions : ""}
         />
         <AppFormEntry
           label="Capacity"
@@ -173,24 +165,14 @@ export default function AddSpaceScreen({ navigation, route }) {
           type="text"
           pattern="[0-9]*"
           defaultValue={
-<<<<<<< HEAD
-            route.params.existingSpace
-              ? route.params.existingSpace.capacity.toString()
-              : ""
-=======
             route.params.existingSpace ? route.params.existingSpace.capacity.toString() : ""
->>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
           }
         />
         <AppFormEntry
           label="Daily Hours"
           name="dailyHours"
           placeholder="When is this space open?"
-          defaultValue={
-            route.params.existingSpace
-              ? route.params.existingSpace.daily_hours
-              : ""
-          }
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.daily_hours : ""}
         />
         <SubmitButton title="Submit!" selectedBuilding={selectedBuilding} />
       </AppForm>

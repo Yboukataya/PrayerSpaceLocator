@@ -161,18 +161,13 @@ const get_user_location = async () => {
 
 const getData = async (key) => {
   try {
-<<<<<<< HEAD
-    return await AsyncStorage.getItem(String(key));
-  } catch (e) {
-=======
-    const value = await AsyncStorage.getItem(key)
-    if(value !== null) {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
       // value previously stored
       // return value;
       return value;
     }
-  } catch(e) {
->>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
+  } catch (e) {
     // error reading value
   }
 };
@@ -189,8 +184,7 @@ const getMyObject = async (key) => {
 
 function WelcomeScreen({ navigation, route }) {
   // console.log(navigation);
-  let is_admin =
-    route.params == undefined ? user.is_admin : route.params.is_admin;
+  let is_admin = route.params == undefined ? user.is_admin : route.params.is_admin;
   // TODO: get this from async storage
   // let is_signed_in =
   let [isSignedIn, setSignedIn] = useState("");
@@ -210,16 +204,7 @@ function WelcomeScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
-      <AppText customStyle={styles.titleOne}>
-        {/* {route.params.userName}! */}
-<<<<<<< HEAD
-        {user.userName}
-=======
-        {/* {getData("isSignedIn").then((keyValue) => {
-          console.log(keyValue)
-        })} */}
->>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
-      </AppText>
+      <AppText customStyle={styles.titleOne}>{user.userName}</AppText>
 
       <AppButton
         title="Add a new Prayer Space"

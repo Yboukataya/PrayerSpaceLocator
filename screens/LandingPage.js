@@ -277,12 +277,6 @@ const storeObj = async (key, value) => {
 };
 
 function LandingScreen({ navigation }) {
-<<<<<<< HEAD
-  initMap();
-  one = 1;
-  // console.log(props);
-=======
->>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome to</AppText>
@@ -299,10 +293,7 @@ function LandingScreen({ navigation }) {
             userEmail: "ozer@math.upenn.edu",
             is_admin: true,
           });
-<<<<<<< HEAD
-=======
           console.log("Store ok!");
->>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
           navigation.navigate("Welcome", {
             userName: "mrozer",
             userEmail: "ozer@upenn.edu",
