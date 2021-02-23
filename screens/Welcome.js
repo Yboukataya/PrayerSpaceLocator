@@ -165,6 +165,7 @@ const getData = async (key) => {
     if(value !== null) {
       // value previously stored
       // return value;
+      return value;
     }
   } catch(e) {
     // error reading value
@@ -177,7 +178,9 @@ function WelcomeScreen({navigation, route}) {
       <AppText customStyle={styles.title}>Welcome</AppText>
       <AppText customStyle={styles.titleOne}>
         {/* {route.params.userName}! */}
-        {getData("isSignedIn")}
+        {getData("isSignedIn").then((keyValue) => {
+          console.log(keyValue[0]);
+        })}
       </AppText>
 
       <AppButton
