@@ -72,6 +72,7 @@ export default function AddSpaceScreen({ navigation, route }) {
   buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
 
   console.log("RouteParams: ", route.params);
+
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
@@ -172,9 +173,13 @@ export default function AddSpaceScreen({ navigation, route }) {
           type="text"
           pattern="[0-9]*"
           defaultValue={
+<<<<<<< HEAD
             route.params.existingSpace
               ? route.params.existingSpace.capacity.toString()
               : ""
+=======
+            route.params.existingSpace ? route.params.existingSpace.capacity.toString() : ""
+>>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
           }
         />
         <AppFormEntry

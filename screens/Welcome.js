@@ -161,8 +161,18 @@ const get_user_location = async () => {
 
 const getData = async (key) => {
   try {
+<<<<<<< HEAD
     return await AsyncStorage.getItem(String(key));
   } catch (e) {
+=======
+    const value = await AsyncStorage.getItem(key)
+    if(value !== null) {
+      // value previously stored
+      // return value;
+      return value;
+    }
+  } catch(e) {
+>>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
     // error reading value
   }
 };
@@ -202,7 +212,13 @@ function WelcomeScreen({ navigation, route }) {
       <AppText customStyle={styles.title}>Welcome</AppText>
       <AppText customStyle={styles.titleOne}>
         {/* {route.params.userName}! */}
+<<<<<<< HEAD
         {user.userName}
+=======
+        {/* {getData("isSignedIn").then((keyValue) => {
+          console.log(keyValue)
+        })} */}
+>>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
       </AppText>
 
       <AppButton

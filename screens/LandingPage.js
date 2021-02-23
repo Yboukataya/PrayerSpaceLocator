@@ -241,20 +241,16 @@ async function signInWithGoogleAsync(props) {
       console.log("OK");
       return result.accessToken;
     } else {
-      Alert.alert(
-        "Login Error",
-        "Hmm, looks like your login didn't go through :(",
-        [{ text: "Ok" }]
-      );
+      Alert.alert("Login Error", "Hmm, looks like your login didn't go through :(", [
+        { text: "Ok" },
+      ]);
       return { cancelled: true };
     }
   } catch (e) {
     if (e == "Not a Penn email") {
-      Alert.alert(
-        "Login Error",
-        "Whoops! This service is only for Penn students.",
-        [{ text: "Ok" }]
-      );
+      Alert.alert("Login Error", "Whoops! This service is only for Penn students.", [
+        { text: "Ok" },
+      ]);
       console.log("Nice try, sucker");
     }
     return { error: true };
@@ -281,9 +277,12 @@ const storeObj = async (key, value) => {
 };
 
 function LandingScreen({ navigation }) {
+<<<<<<< HEAD
   initMap();
   one = 1;
   // console.log(props);
+=======
+>>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome to</AppText>
@@ -300,6 +299,10 @@ function LandingScreen({ navigation }) {
             userEmail: "ozer@math.upenn.edu",
             is_admin: true,
           });
+<<<<<<< HEAD
+=======
+          console.log("Store ok!");
+>>>>>>> f60a773b2157f4e7395262a5c73ab9ac36e1f053
           navigation.navigate("Welcome", {
             userName: "mrozer",
             userEmail: "ozer@upenn.edu",
@@ -312,7 +315,6 @@ function LandingScreen({ navigation }) {
       <AppButton
         title="Continue as Guest"
         onPress={() => {
-          // get_user_location();
           navigation.navigate("ViewSpaces");
         }}
         customStyle={styles.editBtn}
