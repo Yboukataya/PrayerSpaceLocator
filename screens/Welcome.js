@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 import AppText from "../components/AppText";
@@ -161,28 +161,48 @@ const get_user_location = async () => {
 
 const getData = async (key) => {
   try {
-    const value = await AsyncStorage.getItem(key);
-    if (value !== null) {
-      // value previously stored
-      // return value;
-    }
+    return await AsyncStorage.getItem(String(key));
   } catch (e) {
     // error reading value
   }
 };
+const getMyObject = async (key) => {
+  try {
+    const jsonValue = await AsyncStorage.getItem(String(key));
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    // read error
+  }
+
+  console.log("Done.");
+};
 
 function WelcomeScreen({ navigation, route }) {
-  console.log(navigation);
-  let is_admin = route.params == undefined ? false : route.params.is_admin;
+  // console.log(navigation);
+  let is_admin =
+    route.params == undefined ? user.is_admin : route.params.is_admin;
   // TODO: get this from async storage
   // let is_signed_in =
+  let [isSignedIn, setSignedIn] = useState("");
+  let [user, setUser] = useState({});
+
+  useEffect(() => {
+    getData("isSignedIn").then(function (value) {
+      setSignedIn(value);
+    });
+
+    getMyObject("user").then(function (value) {
+      console.log(value);
+      setUser(value);
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
       <AppText customStyle={styles.titleOne}>
         {/* {route.params.userName}! */}
-        {/* {getData("isSignedIn")} */}
+        {user.userName}
       </AppText>
 
       <AppButton

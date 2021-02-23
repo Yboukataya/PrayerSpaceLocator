@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -10,7 +10,6 @@ import Navigation from "./navigation";
 
 import WelcomeScreen from "./screens/Welcome";
 import AddSpaceScreen from "./screens/AddSpaceScreen";
-// const AddSpaceScreen = require("./screens/AddSpaceScreen");
 import SpaceDetailScreen from "./screens/SpaceDetailScreen";
 import LandingScreen from "./screens/LandingPage";
 import Settings from "./screens/Settings";
@@ -22,13 +21,39 @@ import EventDetailScreen from "./screens/EventDetailScreen.js";
 import ViewEventsByBuildingScreen from "./screens/ViewEventsByBuildingScreen";
 import ViewEventsScreen from "./screens/ViewEventsScreen";
 
-import TabNavigator from "./navigation/TabNavigator.js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+const clearAll = async () => {
+  try {
+    await AsyncStorage.clear();
+  } catch (e) {
+    // clear error
+  }
+};
+
+const getData = async (key) => {
+  try {
+    return await AsyncStorage.getItem(String(key));
+  } catch (e) {
+    // error reading value
+  }
+};
+
 export default function App() {
-  let [isSignedIn, setSignedIn] = useState(true);
+  let [isSignedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    // clearAll();
+    getData("isSignedIn").then(function (value) {
+      setSignedIn(value == "true");
+    });
+  }, []);
+
+  // just for testing
+  setSignedIn(false);
 
   return (
     <NavigationContainer>
@@ -59,6 +84,7 @@ export default function App() {
           <>
             {/* For not signed-in users */}
             <Stack.Screen name="Landing" component={LandingScreen} />
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
             <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
             <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
           </>

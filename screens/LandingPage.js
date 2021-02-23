@@ -7,7 +7,7 @@ import SyncStorage from "sync-storage";
 import "localstorage-polyfill";
 // global.localStorage;
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as Google from "expo-google-app-auth";
 import getEnvVars from "../environment";
@@ -262,27 +262,25 @@ async function signInWithGoogleAsync(props) {
 }
 
 const storeData = async (key, value) => {
-  console.log(
-    "GOTCHA DATA BOY"
-  );
+  console.log("GOTCHA DATA BOY");
   try {
-    await AsyncStorage.setItem(key, value)
+    await AsyncStorage.setItem(key, value);
   } catch (e) {
     // saving error
   }
-}
+};
 
 const storeObj = async (key, value) => {
   console.log("GOTCHA JSON BOY");
   try {
-    const jsonValue = JSON.stringify(value)
-    await AsyncStorage.setItem(key, jsonValue)
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem(key, jsonValue);
   } catch (e) {
     // saving error
   }
-}
+};
 
-function LandingScreen({navigation}) {
+function LandingScreen({ navigation }) {
   initMap();
   one = 1;
   // console.log(props);
@@ -297,13 +295,16 @@ function LandingScreen({navigation}) {
         onPress={() => {
           // TODO: handle promise rejection?
           storeData("isSignedIn", "true");
-          storeObj("user", {userName: "señor ozer", userEmail: "ozer@math.upenn.edu", is_admin: true});
-          console.log("Store ok!");
+          storeObj("user", {
+            userName: "señor ozer",
+            userEmail: "ozer@math.upenn.edu",
+            is_admin: true,
+          });
           navigation.navigate("Welcome", {
             userName: "mrozer",
-            userEmail: "ozer@upenn.edu" ,
-            is_admin: true
-          })
+            userEmail: "ozer@upenn.edu",
+            is_admin: true,
+          });
         }}
         customStyle={styles.editBtn}
       ></AppButton>
