@@ -49,14 +49,12 @@ export default function App() {
   // setSignedIn(getData("isSignedIn"));
   getData("isSignedIn").then(
     function (result) {
-      setSignedIn(result);
+      if (typeof result == "boolean") setSignedIn(result);
     },
     function (error) {
       console.log("uh oh");
     }
   );
-  // console.log("y: ", typeof y);
-  // console.log("y is: ", y);
 
   return (
     <NavigationContainer>
