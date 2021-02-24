@@ -184,11 +184,13 @@ const getMyObject = async (key) => {
 
 function WelcomeScreen({ navigation, route }) {
   // console.log(navigation);
-  let is_admin = route.params == undefined ? user.is_admin : route.params.is_admin;
+
   // TODO: get this from async storage
   // let is_signed_in =
   let [isSignedIn, setSignedIn] = useState("");
   let [user, setUser] = useState({});
+
+  let is_admin = user.is_admin;
 
   useEffect(() => {
     getData("isSignedIn").then(function (value) {
@@ -198,6 +200,7 @@ function WelcomeScreen({ navigation, route }) {
     getMyObject("user").then(function (value) {
       console.log(value);
       setUser(value);
+      is_admin = route.params == undefined ? user.is_admin : route.params.is_admin;
     });
   }, []);
 
@@ -243,14 +246,6 @@ function WelcomeScreen({ navigation, route }) {
               viewUnapproved: true,
             })
           }
-          // if (route.params.source == "add") navigation.popToTop() else navigation.pop())
-          //   console.log(
-          //     navigation.goBack.equals(
-          //       navigation.navigate("MapView")
-          //     )
-          //   )
-          // }
-          // onPress={() => navigation.popToTop()}
           customStyle={styles.editBtn}
         ></AppButton>
       )}

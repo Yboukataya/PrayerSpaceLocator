@@ -1,27 +1,17 @@
 {
   "expo": {
     "name": "Musallah",
-    "slug": "PrayerSpaceLocator",
-    "version": "1.0.0",
-    "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": ["**/*"],
+    "version": "1.0.0",
+    "slug": "Musallah",
+    "orientation": "portrait",
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.seniordesigners.musallah",
+      "buildNumber": "1.0.0"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
-    "description": ""
+    "description": "Find prayer spaces around campus & meet up with other students to pray in congregation!"
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
 
 import AppSpaceListing from "./AppSpaceListing";
 import ListItemSeparator from "./ListItemSeparator";
@@ -20,14 +20,9 @@ function AppSpaceList({ locations, viewUnapproved }) {
   return (
     <View style={styles.container}>
       <FlatList
-        data={locations}
+        data={locations.filter((l) => (viewUnapproved ? l.approval == 0 : l.approval == 1))}
         keyExtractor={(listing) => listing.spaceName}
-        renderItem={({ item }) => (
-          <AppSpaceListing
-            space={item}
-            viewUnapproved={viewUnapproved}
-          />
-        )}
+        renderItem={({ item }) => <AppSpaceListing space={item} viewUnapproved={viewUnapproved} />}
         ItemSeparatorComponent={ListItemSeparator}
       />
     </View>
