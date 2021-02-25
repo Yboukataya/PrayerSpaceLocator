@@ -10,6 +10,8 @@ import Screen from "../components/Screen";
 import AppFormEntry from "../components/forms/AppFormEntry";
 import { PennBuildings } from "../constants/Buildings.js";
 
+import { baseUrl } from "../config/backend-config";
+
 // addSpace = async (
 //   bldgName,
 //   bldgAddress,
@@ -95,6 +97,24 @@ export default function AddSpaceScreen({ navigation, route }) {
           console.log("spaceData: " + values.spaceName);
           console.log("spaceBldg: " + selectedBuilding);
 
+          // get all spaces
+          let addUrl = baseUrl + "spaces?";
+          addUrl += `Name=${encodeURIComponent(values.spaceName)}&`;
+          addUrl += `Capacity=${encodeURIComponent(values.capacity)}&`;
+          addUrl += `Passerby=&`;
+          addUrl += `Cleanliness=&`;
+          addUrl += `Accessibility=&`;
+          addUrl += `Instructions=${encodeURIComponent(values.instructions)}&`;
+          addUrl += `Notes=&`;
+          addUrl += `Approval=0&`;
+          addUrl += "Building=1";
+
+          fetch(addUrl, {
+            method: "POST",
+          })
+            .then((response) => response.json())
+            .then((json) => console.log("Hooray! ", json));
+
           // console.log(selectedBuidling)
           // this.addSpace(
           //   values.bldgName,
@@ -105,7 +125,7 @@ export default function AddSpaceScreen({ navigation, route }) {
           //   values.spaceName
           //   selectedBuilding
           // );
-          props.navigation.navigate("SentToApproval");
+          // props.navigation.navigate("SentToApproval");
         }}
       >
         <AppFormEntry

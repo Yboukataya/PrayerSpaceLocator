@@ -192,7 +192,7 @@ function WelcomeScreen({ navigation, route }) {
   let [isSignedIn, setSignedIn] = useState("");
   let [user, setUser] = useState({});
 
-  let is_admin = false; //user.is_admin;
+  let is_admin = true; //user.is_admin;
 
   useEffect(() => {
     getData("isSignedIn").then(function (value) {
