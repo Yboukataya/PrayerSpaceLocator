@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
 
 import AppText from "./AppText";
 
@@ -13,26 +13,22 @@ import AppText from "./AppText";
  * @param {*} param0
  */
 
-function AppSpaceListing({ space, viewUnapproved}) {
-  // console.log("APPSPACELISTINGPROPS\n", papaProps);
+function AppSpaceListing({ space, viewUnapproved }) {
   const navigation = useNavigation();
   return (
     <View style={styles.listingContainer}>
       {/* for the text information */}
       <View>
         <AppText customStyle={{ flex: 1, width: "100%", borderColor: "blue" }}>
-          {space.spaceName} :
-          {/* <AppText customStyle={styles.distStyle}> {distance}</AppText> */}
+          {space.Name} {/* <AppText customStyle={styles.distStyle}> {distance}</AppText> */}
         </AppText>
-        <AppText customStyle={styles.capacityStyle}>
-          Capacity: {space.capacity}
-        </AppText>
+        <AppText customStyle={styles.capacityStyle}>Capacity: {space.Capacity}</AppText>
       </View>
 
       {/* for the icon */}
       <View>
         <TouchableOpacity
-          onPress={() => 
+          onPress={() =>
             navigation.navigate("SpaceDetail", {
               space: space,
               viewUnapproved: viewUnapproved,

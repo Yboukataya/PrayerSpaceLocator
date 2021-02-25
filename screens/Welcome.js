@@ -8,7 +8,7 @@ import "localstorage-polyfill";
 global.localStorage;
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { backendApi } from "../config/axios-config";
+// import { backendApi } from "../config/backend-config";
 
 import axios from "axios";
 
