@@ -190,7 +190,7 @@ function WelcomeScreen({ navigation, route }) {
   let [isSignedIn, setSignedIn] = useState("");
   let [user, setUser] = useState({});
 
-  let is_admin = user.is_admin;
+  let is_admin = false; //user.is_admin;
 
   useEffect(() => {
     getData("isSignedIn").then(function (value) {
@@ -200,14 +200,17 @@ function WelcomeScreen({ navigation, route }) {
     getMyObject("user").then(function (value) {
       console.log(value);
       setUser(value);
-      is_admin = route.params == undefined ? user.is_admin : route.params.is_admin;
+      is_admin =
+        route.params == undefined ? user.is_admin : route.params.is_admin;
     });
   }, []);
 
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
-      <AppText customStyle={styles.titleOne}>{user.userName}</AppText>
+      <AppText customStyle={styles.titleOne}>
+        {/*user.userName*/ "JACKIE CHAN"}
+      </AppText>
 
       <AppButton
         title="Add a new Prayer Space"
@@ -215,6 +218,16 @@ function WelcomeScreen({ navigation, route }) {
           navigation.navigate("AddSpace", {
             // Not updating an existing space here
             existingSpace: undefined,
+          })
+        }
+        customStyle={styles.editBtn}
+      ></AppButton>
+      <AppButton
+        title="Add new Event"
+        onPress={() =>
+          navigation.navigate("AddEvent", {
+            // Not updating an existing space here
+            // existingSpace: undefined,
           })
         }
         customStyle={styles.editBtn}
