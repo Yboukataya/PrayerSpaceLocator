@@ -8,6 +8,8 @@ import "localstorage-polyfill";
 global.localStorage;
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { backendApi } from "../config/axios-config";
+
 import axios from "axios";
 
 // const get_spaces = async () => {
@@ -200,17 +202,14 @@ function WelcomeScreen({ navigation, route }) {
     getMyObject("user").then(function (value) {
       console.log(value);
       setUser(value);
-      is_admin =
-        route.params == undefined ? user.is_admin : route.params.is_admin;
+      is_admin = route.params == undefined ? user.is_admin : route.params.is_admin;
     });
   }, []);
 
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
-      <AppText customStyle={styles.titleOne}>
-        {/*user.userName*/ "JACKIE CHAN"}
-      </AppText>
+      <AppText customStyle={styles.titleOne}>{/*user.userName*/ "JACKIE CHAN"}</AppText>
 
       <AppButton
         title="Add a new Prayer Space"
