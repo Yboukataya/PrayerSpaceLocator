@@ -47,6 +47,8 @@ export default function AddEventScreen({ navigation, route }) {
           console.log("eventSpace: " + selectedSpace);
           console.log("eventDate: " + eventDate);
           console.log("eventTime: " + eventTime);
+
+          // THIS SOAB code works.
           const save_date = new Date(
             eventDate.getFullYear(),
             eventDate.getMonth(),
@@ -54,7 +56,7 @@ export default function AddEventScreen({ navigation, route }) {
             eventTime.getHours(),
             eventTime.getMinutes()
           );
-          console.log(save_date);
+          console.log(save_date.toISOString());
 
           const instance = axios.create({
             baseURL: "http://localhost:3000",
@@ -63,11 +65,11 @@ export default function AddEventScreen({ navigation, route }) {
             .post(
               "/events?Name=" +
                 values.eventName +
-                "&Date" +
+                "&Date=" +
                 // null +
-                // save_date.toJSON().slice(0, 19).replace("T", " ").toString() +
+                save_date.toISOString() +
                 "&Space=" +
-                selectedSpace
+                1 // write code to translate the selected space to the spaceId
             )
             .then(function (response) {
               console.log(response);
