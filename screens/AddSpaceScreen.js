@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Formik, Field, Form } from "formik";
 
@@ -60,9 +60,25 @@ import { baseUrl } from "../config/backend-config";
 // };
 
 export default function AddSpaceScreen({ navigation, route }) {
+  let [dataBuildings, setBuildings] = useState([]);
   let buildings = [];
+
+  useEffect(() => {
+    fetch(baseUrl + "buildings").then((response) => console.log(response)); //.json())
+    // .then((json) => {
+    //   console.log(json.data);
+    //   setBuildings(json.data);
+    // });
+  }, []);
   let [selectedBuilding, setBuilding] = useState("");
 
+  // dataBuildings.forEach(function (b) {
+  //   let bldgDropdown = {
+  //     label: b.Name,
+  //     value: b.Buildingid,
+  //   };
+  //   buildings.push(bldgDropdown);
+  // });
   for (const [name] of Object.entries(PennBuildings)) {
     let bldgName = name;
     let bldgDropdown = {
@@ -72,8 +88,6 @@ export default function AddSpaceScreen({ navigation, route }) {
     buildings.push(bldgDropdown);
   }
   buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
-
-  console.log("RouteParams: ", route.params);
 
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
@@ -90,7 +104,7 @@ export default function AddSpaceScreen({ navigation, route }) {
           bldgAddress: "",
           instructions: "",
           capacity: "",
-          dailyHours: "",
+          // dailyHours: "",
           selectedBuilding: "",
         }}
         onSubmit={(values) => {
@@ -188,12 +202,12 @@ export default function AddSpaceScreen({ navigation, route }) {
             route.params.existingSpace ? route.params.existingSpace.capacity.toString() : ""
           }
         />
-        <AppFormEntry
+        {/* <AppFormEntry
           label="Daily Hours"
           name="dailyHours"
           placeholder="When is this space open?"
           defaultValue={route.params.existingSpace ? route.params.existingSpace.daily_hours : ""}
-        />
+        /> */}
         <SubmitButton title="Submit!" selectedBuilding={selectedBuilding} />
       </AppForm>
       {/* </View> */}

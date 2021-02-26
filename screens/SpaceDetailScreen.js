@@ -9,6 +9,8 @@ import AppTitle from "../components/AppTitle.js";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 
+import { baseUrl } from "../config/backend-config";
+
 /**
  * This component specifies appearance of the screen that shows attributes
  * about a prayer space. For each attribute, it uses an AppSpaceDetail component
@@ -16,7 +18,7 @@ import Screen from "../components/Screen";
  * @param {*} param0
  */
 
-const acceptOnPress = () =>
+const acceptOnPress = (spaceId) =>
   Alert.alert(
     "Accept Space",
     "I verify that I have visited this space and that I believe Muslim students would be safe praying here.",
@@ -28,7 +30,15 @@ const acceptOnPress = () =>
       },
       {
         text: "Yes, Approve!",
-        onPress: () => console.log("Accepting!") /* update database approval value */,
+        onPress: () => {
+          // console.log("Accepting..");
+          /* update database approval value */
+          fetch(baseUrl + `approval?Spaceid=${spaceId}`, {
+            method: "POST",
+          })
+            .then((response) => response.json())
+            .then((json) => console.log("Hooray! ", json));
+        },
       },
     ]
   );
@@ -50,8 +60,8 @@ const rejectOnPress = () =>
   ]);
 
 function SpaceDetailScreen({ route }) {
-  console.log("CHECK SPACE OBJECT: \n", route.params.space);
-  console.log("CHECK VIEWUNAPPROVED: \n", route.params.viewUnapproved);
+  // console.log("CHECK SPACE OBJECT: \n", route.params.space);
+  // console.log("CHECK VIEWUNAPPROVED: \n", route.params.viewUnapproved);
 
   const navigation = useNavigation();
 
@@ -94,7 +104,11 @@ function SpaceDetailScreen({ route }) {
 
       <View style={styles.btnContainer}>
         {route.params.viewUnapproved ? (
-          <AppButton title="Approve" customStyle={styles.btnStyle} onPress={acceptOnPress} />
+          <AppButton
+            title="Approve"
+            customStyle={styles.btnStyle}
+            onPress={() => acceptOnPress(route.params.space.Spaceid)}
+          />
         ) : null}
         {route.params.viewUnapproved ? (
           <AppButton title="Reject" customStyle={styles.btnStyle} onPress={rejectOnPress} />
