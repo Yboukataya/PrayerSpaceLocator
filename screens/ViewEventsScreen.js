@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 
 import AppButton from "../components/AppButton";
@@ -9,10 +9,11 @@ import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 import "localstorage-polyfill";
 import axios from "axios";
+import { baseUrl } from "../config/backend-config.js";
 
 import AppEventListing from "../components/AppEventListing";
 
-let events = [
+let eventsN = [
   {
     id: 1,
     building: "VanPelt Library",
@@ -56,20 +57,15 @@ function ViewEventsScreen({ navigation, route }) {
     // }
   };
 
-  const instance = axios.create({
-    baseURL: "http://localhost:3000",
-  });
-  instance
-    .get(
-      "/events" // write code to translate the selected space to the spaceId
-    )
-    .then(function (response) {
-      console.log(response);
-      // console.log("TRIAL: " + response.data.toJSONString());
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  useEffect(() => {
+    fetch(baseUrl + "events")
+      .then((response) => response.json())
+      .then((json) => {
+        setEvents(json.data);
+        console.log(json.data);
+      });
+  }, []);
+
   // TODO: where do we go after adding a new event?
 
   console.log("events: ", myEventsState[0]);

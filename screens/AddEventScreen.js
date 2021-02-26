@@ -10,6 +10,7 @@ import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 import AppFormEntry from "../components/forms/AppFormEntry";
 import { PennBuildings } from "../constants/Buildings.js";
+import { baseUrl } from "../config/backend-config";
 
 const axios = require("axios");
 
@@ -59,11 +60,11 @@ export default function AddEventScreen({ navigation, route }) {
           console.log(save_date.toISOString());
 
           const instance = axios.create({
-            baseURL: "http://localhost:3000",
+            baseURL: baseUrl,
           });
           instance
             .post(
-              "/events?Name=" +
+              "events?Name=" +
                 values.eventName +
                 "&Date=" +
                 // null +

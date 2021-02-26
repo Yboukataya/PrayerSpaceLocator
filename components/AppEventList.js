@@ -1,24 +1,20 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
 
 import AppEventListing from "./AppEventListing";
 import ListItemSeparator from "./ListItemSeparator";
 import Screen from "./Screen";
 
-function AppEventList({ events, myEventsState}) {
- 
+function AppEventList({ events, myEventsState }) {
   return (
     <View style={styles.container}>
       <FlatList
         data={events}
-        keyExtractor={(listing) => listing.eventName}
+        keyExtractor={(listing) => listing.Name}
         renderItem={({ item }) => (
-          <AppEventListing
-            event={item}
-            myEventsState={myEventsState}
-          />
+          <AppEventListing event={item} myEventsState={myEventsState} />
         )}
         ItemSeparatorComponent={ListItemSeparator}
       />
