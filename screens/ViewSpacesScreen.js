@@ -10,6 +10,8 @@ import "localstorage-polyfill";
 import axios from "axios";
 import AppMapView from "../components/AppMapView";
 
+import { baseUrl } from "../config/backend-config";
+
 /**
  * This component specifies appearance of the screen that shows both list of
  * nearby spaces as well as the map.
@@ -179,6 +181,22 @@ function ViewSpacesScreen({ navigation, route }) {
   // // let locations = JSON.parse(localStorage.getItem("computed"));
   // let locations = globalLocations;
   // let locationsMap = JSON.parse(localStorage.getItem("mapinfo"));
+  // backendApi
+  //   .get("/spaces")
+  //   .then(function (response) {
+  //     console.log(response);
+  //   })
+  //   .catch(function (error) {
+  //     console.log("Here's what went wrong: ", error.status);
+  //   });
+  let [spaces, setSpaces] = useState([]);
+
+  // get all spaces
+  useEffect(() => {
+    fetch(baseUrl + "spaces")
+      .then((response) => response.json())
+      .then((json) => setSpaces(json.data));
+  }, []);
 
   const [mapVisible, setMapVisible] = useState(false);
   return (
@@ -196,7 +214,7 @@ function ViewSpacesScreen({ navigation, route }) {
           <AppMapView locations={locationsMap} props={(navigation, route)} />
         ) : (
           <View style={styles.spaceListContainer}>
-            <AppSpaceList locations={spots} viewUnapproved={route.params.viewUnapproved} />
+            <AppSpaceList locations={spaces} viewUnapproved={route.params.viewUnapproved} />
           </View>
         )}
       </View>

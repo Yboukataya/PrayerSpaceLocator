@@ -17,11 +17,12 @@ import Screen from "./Screen";
 function AppSpaceList({ locations, viewUnapproved }) {
   // console.log("These are our locations: " + JSON.stringify(locations));
   // console.log("APPSPACELISTPROPS\n", "--------------\n", navigation);
+  console.log("Prayer Spaces:\n", locations);
   return (
     <View style={styles.container}>
       <FlatList
-        data={locations.filter((l) => (viewUnapproved ? l.approval == 0 : l.approval == 1))}
-        keyExtractor={(listing) => listing.spaceName}
+        data={locations.filter((l) => (viewUnapproved ? l.Approval == 0 : l.Approval == 1))}
+        keyExtractor={(listing) => listing.Name}
         renderItem={({ item }) => <AppSpaceListing space={item} viewUnapproved={viewUnapproved} />}
         ItemSeparatorComponent={ListItemSeparator}
       />
