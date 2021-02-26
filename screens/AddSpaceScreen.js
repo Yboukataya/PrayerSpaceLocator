@@ -10,7 +10,7 @@ import Screen from "../components/Screen";
 import AppFormEntry from "../components/forms/AppFormEntry";
 import { PennBuildings } from "../constants/Buildings.js";
 
-import { baseUrl } from "../config/backend-config";
+import { baseUrl } from "../config/backend-config.js";
 
 // addSpace = async (
 //   bldgName,
@@ -109,6 +109,8 @@ export default function AddSpaceScreen({ navigation, route }) {
           addUrl += `Approval=0&`;
           addUrl += "Building=1";
 
+          console.log(addUrl);
+
           fetch(addUrl, {
             method: "POST",
           })
@@ -125,14 +127,18 @@ export default function AddSpaceScreen({ navigation, route }) {
           //   values.spaceName
           //   selectedBuilding
           // );
-          // props.navigation.navigate("SentToApproval");
+          navigation.navigate("SentToApproval");
         }}
       >
         <AppFormEntry
           label="Space Name"
           name="spaceName"
           placeholder="Space Name"
-          defaultValue={route.params.existingSpace ? route.params.existingSpace.spaceName : ""}
+          defaultValue={
+            route.params.existingSpace
+              ? route.params.existingSpace.spaceName
+              : ""
+          }
         />
         {/* TODO: export this to a separate component */}
         <View
@@ -175,7 +181,11 @@ export default function AddSpaceScreen({ navigation, route }) {
           name="instructions"
           placeholder="How do you get to space?"
           multiline={true}
-          defaultValue={route.params.existingSpace ? route.params.existingSpace.instructions : ""}
+          defaultValue={
+            route.params.existingSpace
+              ? route.params.existingSpace.instructions
+              : ""
+          }
         />
         <AppFormEntry
           label="Capacity"
@@ -185,14 +195,20 @@ export default function AddSpaceScreen({ navigation, route }) {
           type="text"
           pattern="[0-9]*"
           defaultValue={
-            route.params.existingSpace ? route.params.existingSpace.capacity.toString() : ""
+            route.params.existingSpace
+              ? route.params.existingSpace.capacity.toString()
+              : ""
           }
         />
         <AppFormEntry
           label="Daily Hours"
           name="dailyHours"
           placeholder="When is this space open?"
-          defaultValue={route.params.existingSpace ? route.params.existingSpace.daily_hours : ""}
+          defaultValue={
+            route.params.existingSpace
+              ? route.params.existingSpace.daily_hours
+              : ""
+          }
         />
         <SubmitButton title="Submit!" selectedBuilding={selectedBuilding} />
       </AppForm>

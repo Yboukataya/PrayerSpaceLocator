@@ -14,69 +14,89 @@ import AppEventListing from "../components/AppEventListing";
 
 let events = [
   {
-  "id":1,
-  "building":"VanPelt Library",
-  "space":"DUNGEON",
-  "eventName":"Maghrib at VP",
-  "date": new Date(2021, 2, 15, 19, 30, 0,0),
+    id: 1,
+    building: "VanPelt Library",
+    space: "DUNGEON",
+    eventName: "Maghrib at VP",
+    date: new Date(2021, 2, 15, 19, 30, 0, 0),
   },
   {
-    
-    "id":2,
-    "building":"Houston",
-    "space":"SPARC",
-    "eventName":"ZUHR with bros only",
-    "date":  new Date(2021, 2, 15, 13, 30, 0,0),
+    id: 2,
+    building: "Houston",
+    space: "SPARC",
+    eventName: "ZUHR with bros only",
+    date: new Date(2021, 2, 15, 13, 30, 0, 0),
   },
   {
-    
-    "id":3,
-    "building":"Houston",
-    "space":"SPARC",
-    "eventName":"ladies only",
-    "date":  new Date(2021, 2, 15, 13, 35, 0,0),
+    id: 3,
+    building: "Houston",
+    space: "SPARC",
+    eventName: "ladies only",
+    date: new Date(2021, 2, 15, 13, 35, 0, 0),
   },
   {
-    
-    "id":4,
-    "building":"Engineering",
-    "space":"electrical switch room",
-    "eventName":"sorry, engineering only",
-    "date":  new Date(2021, 2, 14, 13, 40, 0,0),
-  }
-]
+    id: 4,
+    building: "Engineering",
+    space: "electrical switch room",
+    eventName: "sorry, engineering only",
+    date: new Date(2021, 2, 14, 13, 40, 0, 0),
+  },
+];
 
-function ViewEventsScreen({navigation, route}) {
+function ViewEventsScreen({ navigation, route }) {
   const [viewByBuilding, setViewByBuilding] = useState(true);
   const myEventsState = useState([]);
 
   const [viewMyEventsOnly, setViewMyEventsOnly] = useState(false);
+  const [events, setEvents] = useState([]);
   const toggleSwitch = () => {
-    setViewMyEventsOnly(previousState => !previousState)
+    setViewMyEventsOnly((previousState) => !previousState);
     // if (viewMyEventsOnly) {
     //   events = events.filter(e => myEventsState[0].includes(e.id));
     // }
   };
 
+  const instance = axios.create({
+    baseURL: "http://localhost:3000",
+  });
+  instance
+    .get(
+      "/events" // write code to translate the selected space to the spaceId
+    )
+    .then(function (response) {
+      console.log(response);
+      // console.log("TRIAL: " + response.data.toJSONString());
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  // TODO: where do we go after adding a new event?
+
   console.log("events: ", myEventsState[0]);
   return (
-    
-    <Screen style={{ flex: 1, padding: 20, }}>
-
+    <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.viewSelect}>
-        <TouchableOpacity onPress={() => setViewByBuilding(!viewByBuilding)} >
-          <AppText customStyle={viewByBuilding ? styles.subTitleSelected : styles.subTitle}>
+        <TouchableOpacity onPress={() => setViewByBuilding(!viewByBuilding)}>
+          <AppText
+            customStyle={
+              viewByBuilding ? styles.subTitleSelected : styles.subTitle
+            }
+          >
             Events By Building
           </AppText>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setViewByBuilding(!viewByBuilding)} >
-          <AppText customStyle={viewByBuilding ? styles.subTitle : styles.subTitleSelected}>
+        <TouchableOpacity onPress={() => setViewByBuilding(!viewByBuilding)}>
+          <AppText
+            customStyle={
+              viewByBuilding ? styles.subTitle : styles.subTitleSelected
+            }
+          >
             All Events Today
           </AppText>
         </TouchableOpacity>
       </View>
-      
+
       <View style={styles.headingContainer}>
         <AppText customStyle={styles.title}>
           {viewByBuilding ? "Buildings" : "Today's Events"}
@@ -86,19 +106,28 @@ function ViewEventsScreen({navigation, route}) {
       {/* Toggle switch for my events only / all events */}
       <View style={styles.container}>
         {viewByBuilding ? (
-        <AppBuildingEvents events={events} otherProps={navigation, route} />) : (
+          <AppBuildingEvents events={events} otherProps={(navigation, route)} />
+        ) : (
           <>
-          <View style={styles.switchContainer}>
-            <AppText customStyle={{paddingRight: 10,}}>View My Events Only</AppText>
-            <Switch onValueChange={toggleSwitch} value={viewMyEventsOnly} />
-          </View>
-          <View style={styles.eventListContainer}>
-            <AppEventList events={!viewMyEventsOnly ? (events) : events.filter(e => myEventsState[0].includes(e.id))} myEventsState={myEventsState}/>
-        </View>
-        </>
+            <View style={styles.switchContainer}>
+              <AppText customStyle={{ paddingRight: 10 }}>
+                View My Events Only
+              </AppText>
+              <Switch onValueChange={toggleSwitch} value={viewMyEventsOnly} />
+            </View>
+            <View style={styles.eventListContainer}>
+              <AppEventList
+                events={
+                  !viewMyEventsOnly
+                    ? events
+                    : events.filter((e) => myEventsState[0].includes(e.id))
+                }
+                myEventsState={myEventsState}
+              />
+            </View>
+          </>
         )}
       </View>
-  
     </Screen>
   );
 }
