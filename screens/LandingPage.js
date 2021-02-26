@@ -176,38 +176,20 @@ async function signOutWithGoogleAsync() {
   await Google.logOutAsync();
 }
 
-async function addOrFindUser(userEmail, isAdmin) {
-  // console.log(bldgName);
-  const axios = require("axios");
-  let data = {
-    email: userEmail,
-    is_admin: false,
-  };
-  let url = `http://localhost:8080/user/`;
-  let res = await axios
-    .post(url, data, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-    .catch(function (error) {
-      console.log("This is the error: ", error);
+async function findUser(userEmail, isAdmin) {
+  await fetch(baseUrl + `user?Email=${userEmail}`)
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json.data[0].Isadmin);
+      storeObj("user", {
+        userName: json.data[0].Name,
+        userEmail: json.data[0].Email,
+        is_admin: json.data[0].Isadmin,
+      });
     });
-  // console.log("THIS IS RES" + res);
-  return res;
 }
 
-async function isAdmin(userEmail) {
-  const axios = require("axios");
-  let url = `http://localhost:8080/user?email=` + userEmail;
-  let res = await axios.get(url).catch(function (error) {
-    // console.log("This is the error for CHECKING ADMIN: ", error);
-  });
-  // console.log("THIS IS RES for ADMIN " + res.data.admin);
-  return res.data.admin;
-}
-
-async function signInWithGoogleAsync(props) {
+async function signInWithGoogleAsync(navigation) {
   try {
     const result = await Google.logInAsync({
       androidClientId: "TODO",
@@ -230,15 +212,12 @@ async function signInWithGoogleAsync(props) {
       userEmail = result.user.email;
       accessToken = result.user.accessToken;
 
+      console.log("about to find user");
       // create function to check if user exists in db, this is a waste but ok for demo
-      await addOrFindUser(userEmail, false);
-      let is_admin = await isAdmin(userEmail);
-
-      navigation.navigate("Welcome", {
-        userName: { userName },
-        userEmail: { userEmail },
-        is_admin: { is_admin },
-      });
+      await findUser(userEmail);
+      // let  is_admin = await isAdmin(userEmail);
+      console.log("navigatin");
+      navigation.navigate("Welcome", { email: userEmail });
       console.log("OK");
       return result.accessToken;
     } else {
@@ -271,6 +250,7 @@ const storeObj = async (key, value) => {
   console.log("GOTCHA JSON BOY");
   try {
     const jsonValue = JSON.stringify(value);
+
     await AsyncStorage.setItem(key, jsonValue);
   } catch (e) {
     // saving error
@@ -285,29 +265,16 @@ function LandingScreen({ navigation }) {
 
       <AppButton
         title="Login"
-        onPress={() => signInWithGoogleAsync(props)}
-        // onPress={() => {
-        //   // TODO: handle promise rejection?
-        //   storeData("isSignedIn", "true");
-        //   storeObj("user", {
-        //     userName: "señor ozer",
-        //     userEmail: "ozer@math.upenn.edu",
-        //     is_admin: true,
-        //   });
-        //   console.log("Store ok!");
-        //   navigation.navigate("Welcome", {
-        //     userName: "mrozer",
-        //     userEmail: "ozer@upenn.edu",
-        //     is_admin: true,
-        //   });
-        // }}
+        onPress={() => signInWithGoogleAsync(navigation)}
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
         title="Continue as Guest"
         onPress={() => {
-          navigation.navigate("ViewSpaces");
+          navigation.navigate("ViewSpaces", {
+            viewUnapproved: false,
+          });
         }}
         customStyle={styles.editBtn}
       ></AppButton>

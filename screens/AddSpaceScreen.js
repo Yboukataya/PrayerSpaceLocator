@@ -99,9 +99,7 @@ export default function AddSpaceScreen({ navigation, route }) {
 
       <AppForm
         initialValues={{
-          spaceName: route.params.existingSpace
-            ? route.params.existingSpace.Name
-            : "",
+          spaceName: route.params.existingSpace ? route.params.existingSpace.Name : "",
           bldgName: "",
           bldgAddress: "",
           instructions: "",
@@ -128,32 +126,30 @@ export default function AddSpaceScreen({ navigation, route }) {
 
           console.log(addUrl);
 
-          // fetch(addUrl, {
-          //   method: "POST",
-          // })
-          //   .then((response) => response.json())
-          //   .then((json) => console.log("Hooray! ", json));
+          fetch(addUrl, {
+            method: "POST",
+          })
+            .then((response) => response.json())
+            .then((json) => console.log("Hooray! ", json));
 
-          // console.log(selectedBuidling)
+          // console.log(selectedBuidling),
           // this.addSpace(
           //   values.bldgName,
           //   values.bldgAddress,
           //   values.instructions,
           //   values.capacity,
           //   values.dailyHours,
-          //   values.spaceName
+          //   values.spaceName,
           //   selectedBuilding
           // );
-          // navigation.navigate("SentToApproval");
+          navigation.navigate("SentToApproval");
         }}
       >
         <AppFormEntry
           label="Space Name"
           name="spaceName"
           placeholder="Space Name"
-          defaultValue={
-            route.params.existingSpace ? route.params.existingSpace.Name : ""
-          }
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.Name : ""}
         />
         {/* TODO: export this to a separate component */}
         <View
@@ -196,11 +192,7 @@ export default function AddSpaceScreen({ navigation, route }) {
           name="instructions"
           placeholder="How do you get to space?"
           multiline={true}
-          defaultValue={
-            route.params.existingSpace
-              ? route.params.existingSpace.Instructions
-              : ""
-          }
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.Instructions : ""}
         />
         <AppFormEntry
           label="Capacity"
@@ -210,9 +202,7 @@ export default function AddSpaceScreen({ navigation, route }) {
           type="text"
           pattern="[0-9]*"
           defaultValue={
-            route.params.existingSpace
-              ? route.params.existingSpace.Capacity.toString()
-              : ""
+            route.params.existingSpace ? route.params.existingSpace.Capacity.toString() : ""
           }
         />
         {/* <AppFormEntry

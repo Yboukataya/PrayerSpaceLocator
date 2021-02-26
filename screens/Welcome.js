@@ -192,24 +192,25 @@ function WelcomeScreen({ navigation, route }) {
   let [isSignedIn, setSignedIn] = useState("");
   let [user, setUser] = useState({});
 
-  let is_admin = true; //user.is_admin;
+  let [is_admin, setIsAdmin] = useState(false); //user.is_admin;
 
   useEffect(() => {
-    getData("isSignedIn").then(function (value) {
-      setSignedIn(value);
-    });
+    // getData("isSignedIn").then(function (value) {
+    //   setSignedIn(value);
+    // });
 
     getMyObject("user").then(function (value) {
-      console.log(value);
+      console.log("VALUE | ", value);
       setUser(value);
-      is_admin = route.params == undefined ? user.is_admin : route.params.is_admin;
+      // is_admin = route.params == undefined ? user.is_admin : route.params.is_admin;
+      setIsAdmin(value.is_admin == 1);
     });
   }, []);
 
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
-      <AppText customStyle={styles.titleOne}>{/*user.userName*/ "JACKIE CHAN"}</AppText>
+      <AppText customStyle={styles.titleOne}>{user.userName}</AppText>
 
       <AppButton
         title="Add a new Prayer Space"

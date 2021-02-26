@@ -63,30 +63,31 @@ export default function App() {
         initialRouteName={isSignedIn ? "Welcome" : "Landing"}
         screenOptions={{ headerShown: false }}
       >
-        {isSignedIn ? (
-          <>
-            <Stack.Screen name="AddEvent" component={AddEventScreen} />
-            <Stack.Screen name="Welcome" component={WelcomeScreen} />
-            <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
-            <Stack.Screen name="ViewEvents" component={ViewEventsScreen} />
-            <Stack.Screen name="Settings" component={Settings} />
-            <Stack.Screen name="AddSpace" component={AddSpaceScreen} />
-            <Stack.Screen name="EventDetail" component={EventDetailScreen} />
-            <Stack.Screen name="SentToApproval" component={SentToApprovalScreen} />
-            <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
-            <Stack.Screen name="ViewEventsByBuilding" component={ViewEventsByBuildingScreen} />
-          </>
-        ) : (
-          <>
-            {/* For not signed-in users */}
+        {/* {isSignedIn ? (
+        <> */}
+        <Stack.Screen name="Landing" component={LandingScreen} />
+        <Stack.Screen name="AddEvent" component={AddEventScreen} />
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
+        <Stack.Screen name="ViewEvents" component={ViewEventsScreen} />
+        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="AddSpace" component={AddSpaceScreen} />
+        <Stack.Screen name="EventDetail" component={EventDetailScreen} />
+        <Stack.Screen name="SentToApproval" component={SentToApprovalScreen} />
+        <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
+        <Stack.Screen name="ViewEventsByBuilding" component={ViewEventsByBuildingScreen} />
+        {/* </> */}
+        {/* ) : ( */}
+        {/* <> */}
+        {/* For not signed-in users
             <Stack.Screen name="AddEvent" component={AddEventScreen} />
 
-            <Stack.Screen name="Landing" component={LandingScreen} />
+            
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
             <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
             <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
           </>
-        )}
+        )} */}
       </Stack.Navigator>
     </NavigationContainer>
   );
