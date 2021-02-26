@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  NavigationContainer,
-  PrivateValueStore,
-} from "@react-navigation/native";
+import { NavigationContainer, PrivateValueStore } from "@react-navigation/native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -58,7 +55,7 @@ export default function App() {
 
   // just for testing
   // setSignedIn(false);
-  const isSignedIn = true;
+  const isSignedIn = false;
 
   return (
     <NavigationContainer>
@@ -75,15 +72,9 @@ export default function App() {
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="AddSpace" component={AddSpaceScreen} />
             <Stack.Screen name="EventDetail" component={EventDetailScreen} />
-            <Stack.Screen
-              name="SentToApproval"
-              component={SentToApprovalScreen}
-            />
+            <Stack.Screen name="SentToApproval" component={SentToApprovalScreen} />
             <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
-            <Stack.Screen
-              name="ViewEventsByBuilding"
-              component={ViewEventsByBuildingScreen}
-            />
+            <Stack.Screen name="ViewEventsByBuilding" component={ViewEventsByBuildingScreen} />
           </>
         ) : (
           <>

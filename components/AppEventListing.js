@@ -9,12 +9,8 @@ import AppButton from "./AppButton";
 import AppText from "./AppText";
 
 async function getDefaultCalendarSource() {
-  const calendars = await Calendar.getCalendarsAsync(
-    Calendar.EntityTypes.EVENT
-  );
-  const defaultCalendars = calendars.filter(
-    (each) => each.title === "Calendar"
-  );
+  const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+  const defaultCalendars = calendars.filter((each) => each.title === "Calendar");
   return defaultCalendars[0];
 }
 
@@ -37,9 +33,7 @@ function AppSpaceListing({ event, myEventsState }) {
     (async () => {
       const { status } = await Calendar.requestCalendarPermissionsAsync();
       if (status === "granted") {
-        const calendars = await Calendar.getCalendarsAsync(
-          Calendar.EntityTypes.EVENT
-        );
+        const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
       }
     })();
   }, []);
@@ -58,7 +52,11 @@ function AppSpaceListing({ event, myEventsState }) {
             {/* {event.space + " in " + event.building} */}
           </AppText>
           <AppText customStyle={styles.capacityStyle}>
-            Time: {event.Date.getHours() + ":" + event.Date.getMinutes()}
+            Time:{" "}
+            {event.Date.getHours() +
+              ":" +
+              (event.Date.getMinutes() < 10 ? "0" : "") +
+              event.Date.getMinutes()}
           </AppText>
         </View>
       </View>
@@ -78,7 +76,7 @@ function AppSpaceListing({ event, myEventsState }) {
                 // selectedSpace: event.space,
                 // selectedBuilding: event.building,
                 date: event.Date.toDateString(),
-                time: event.Date.getHours() + ":" + event.date.getMinutes(),
+                time: event.Date.getHours() + ":" + event.Date.getMinutes(),
               },
             })
           }
@@ -89,17 +87,10 @@ function AppSpaceListing({ event, myEventsState }) {
           <TouchableOpacity
             style={styles.btnJoinEvent}
             onPress={() => {
-              createEvent({
-                eventName: event.Name,
-                selectedSpace: event.Space,
-                // selectedBuilding: event.building,
-                date: event.Date,
-              });
+              createEvent(event);
               // call setState for myEvents
               myEventsState[1]((oldArray) =>
-                oldArray.includes(event.Eventid)
-                  ? oldArray
-                  : [...oldArray, event.Eventid]
+                oldArray.includes(event.Eventid) ? oldArray : [...oldArray, event.Eventid]
               );
             }}
           >

@@ -36,11 +36,32 @@ let eventsN = [
     date: new Date(2021, 2, 15, 13, 35, 0, 0),
   },
   {
-    id: 4,
-    building: "Engineering",
-    space: "electrical switch room",
-    eventName: "sorry, engineering only",
-    date: new Date(2021, 2, 14, 13, 40, 0, 0),
+    Eventid: 4,
+    Building: "Engineering",
+    Space: "electrical switch room",
+    Name: "sorry, engineering only",
+    Date: new Date(2021, 2, 14, 13, 40, 0, 0),
+  },
+  {
+    Eventid: 4,
+    Building: "VanPelt Library",
+    Space: "electrical switch room",
+    Name: "sorry, engineering only",
+    Date: new Date(2021, 2, 14, 13, 40, 0, 0),
+  },
+  {
+    Eventid: 4,
+    Building: "Engineering",
+    Space: "electrical switch room",
+    Name: "sorry, engineering only",
+    Date: new Date(2021, 2, 14, 13, 40, 0, 0),
+  },
+  {
+    Eventid: 4,
+    Building: "Engineering",
+    Space: "electrical switch room",
+    Name: "sorry, engineering only",
+    Date: new Date(2021, 2, 14, 13, 40, 0, 0),
   },
 ];
 
@@ -50,11 +71,10 @@ function ViewEventsScreen({ navigation, route }) {
 
   const [viewMyEventsOnly, setViewMyEventsOnly] = useState(false);
   const [events, setEvents] = useState([]);
+
+  // When hitting the "View my events only", only render as visible the events where we are going
   const toggleSwitch = () => {
     setViewMyEventsOnly((previousState) => !previousState);
-    // if (viewMyEventsOnly) {
-    //   events = events.filter(e => myEventsState[0].includes(e.id));
-    // }
   };
 
   useEffect(() => {
@@ -73,21 +93,13 @@ function ViewEventsScreen({ navigation, route }) {
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.viewSelect}>
         <TouchableOpacity onPress={() => setViewByBuilding(!viewByBuilding)}>
-          <AppText
-            customStyle={
-              viewByBuilding ? styles.subTitleSelected : styles.subTitle
-            }
-          >
+          <AppText customStyle={viewByBuilding ? styles.subTitleSelected : styles.subTitle}>
             Events By Building
           </AppText>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setViewByBuilding(!viewByBuilding)}>
-          <AppText
-            customStyle={
-              viewByBuilding ? styles.subTitle : styles.subTitleSelected
-            }
-          >
+          <AppText customStyle={viewByBuilding ? styles.subTitle : styles.subTitleSelected}>
             All Events Today
           </AppText>
         </TouchableOpacity>
@@ -106,9 +118,7 @@ function ViewEventsScreen({ navigation, route }) {
         ) : (
           <>
             <View style={styles.switchContainer}>
-              <AppText customStyle={{ paddingRight: 10 }}>
-                View My Events Only
-              </AppText>
+              <AppText customStyle={{ paddingRight: 10 }}>View My Events Only</AppText>
               <Switch onValueChange={toggleSwitch} value={viewMyEventsOnly} />
             </View>
             <View style={styles.eventListContainer}>
@@ -116,7 +126,7 @@ function ViewEventsScreen({ navigation, route }) {
                 events={
                   !viewMyEventsOnly
                     ? events
-                    : events.filter((e) => myEventsState[0].includes(e.id))
+                    : events.filter((e) => myEventsState[0].includes(e.Eventid))
                 }
                 myEventsState={myEventsState}
               />

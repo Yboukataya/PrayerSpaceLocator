@@ -167,6 +167,7 @@ let accessToken = "";
 //       console.log(err);
 //     });
 // };
+import { baseUrl } from "../config/backend-config";
 
 async function signOutWithGoogleAsync() {
   userName = "";
@@ -242,7 +243,7 @@ async function signInWithGoogleAsync(props) {
       return result.accessToken;
     } else {
       Alert.alert("Login Error", "Hmm, looks like your login didn't go through :(", [
-        { text: "Ok" },
+        { text: "OK" },
       ]);
       return { cancelled: true };
     }
@@ -284,22 +285,22 @@ function LandingScreen({ navigation }) {
 
       <AppButton
         title="Login"
-        // onPress={() => signInWithGoogleAsync(props)}
-        onPress={() => {
-          // TODO: handle promise rejection?
-          storeData("isSignedIn", "true");
-          storeObj("user", {
-            userName: "señor ozer",
-            userEmail: "ozer@math.upenn.edu",
-            is_admin: true,
-          });
-          console.log("Store ok!");
-          navigation.navigate("Welcome", {
-            userName: "mrozer",
-            userEmail: "ozer@upenn.edu",
-            is_admin: true,
-          });
-        }}
+        onPress={() => signInWithGoogleAsync(props)}
+        // onPress={() => {
+        //   // TODO: handle promise rejection?
+        //   storeData("isSignedIn", "true");
+        //   storeObj("user", {
+        //     userName: "señor ozer",
+        //     userEmail: "ozer@math.upenn.edu",
+        //     is_admin: true,
+        //   });
+        //   console.log("Store ok!");
+        //   navigation.navigate("Welcome", {
+        //     userName: "mrozer",
+        //     userEmail: "ozer@upenn.edu",
+        //     is_admin: true,
+        //   });
+        // }}
         customStyle={styles.editBtn}
       ></AppButton>
 
