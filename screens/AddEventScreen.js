@@ -49,7 +49,6 @@ export default function AddEventScreen({ navigation, route }) {
           console.log("eventDate: " + eventDate);
           console.log("eventTime: " + eventTime);
 
-          // THIS SOAB code works.
           const save_date = new Date(
             eventDate.getFullYear(),
             eventDate.getMonth(),
@@ -57,27 +56,50 @@ export default function AddEventScreen({ navigation, route }) {
             eventTime.getHours(),
             eventTime.getMinutes()
           );
-          console.log(save_date.toISOString());
 
-          const instance = axios.create({
-            baseURL: baseUrl,
-          });
-          instance
-            .post(
-              "events?Name=" +
-                values.eventName +
-                "&Date=" +
-                // null +
-                save_date.toISOString() +
-                "&Space=" +
-                1 // write code to translate the selected space to the spaceId
-            )
-            .then(function (response) {
-              console.log(response);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+          // get all spaces
+          let addUrl = baseUrl + "events?";
+          addUrl += `Name=${encodeURIComponent(values.eventName)}&`;
+          addUrl += `Date=${encodeURIComponent(save_date.toISOString())}&`;
+          addUrl += "Space=2";
+
+          // console.log(addUrl);
+
+          fetch(addUrl, {
+            method: "POST",
+          })
+            .then((response) => response.json())
+            .then((json) => console.log("Hooray! ", json));
+
+          // // THIS SOAB code works.
+          // const save_date = new Date(
+          //   eventDate.getFullYear(),
+          //   eventDate.getMonth(),
+          //   eventDate.getDate(),
+          //   eventTime.getHours(),
+          //   eventTime.getMinutes()
+          // );
+          // console.log(save_date.toISOString());
+
+          // const instance = axios.create({
+          //   baseURL: baseUrl,
+          // });
+          // instance
+          //   .post(
+          //     "events?Name=" +
+          //       values.eventName +
+          //       "&Date=" +
+          //       // null +
+          //       save_date.toISOString() +
+          //       "&Space=" +
+          //       1 // write code to translate the selected space to the spaceId
+          //   )
+          //   .then(function (response) {
+          //     console.log(response);
+          //   })
+          //   .catch(function (error) {
+          //     console.log(error);
+          //   });
           // TODO: where do we go after adding a new event?
 
           navigation.navigate("EventDetail", {
@@ -93,11 +115,7 @@ export default function AddEventScreen({ navigation, route }) {
         }}
       >
         {/* EVENT NAME */}
-        <AppFormEntry
-          label="Event Name"
-          name="eventName"
-          placeholder="Event Name"
-        />
+        <AppFormEntry label="Event Name" name="eventName" placeholder="Event Name" />
 
         {/* BUILDING DROPDOWN */}
         <View style={styles.bldgDropdownStyle}>
