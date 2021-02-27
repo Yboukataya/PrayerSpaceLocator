@@ -22,16 +22,16 @@ let eventsN = [
     date: new Date(2021, 2, 15, 19, 30, 0, 0),
   },
   {
-    id: 2,
-    building: "Houston",
-    space: "SPARC",
+    Eventid: 2,
+    Building: "Houston",
+    Space: "SPARC",
     eventName: "ZUHR with bros only",
     date: new Date(2021, 2, 15, 13, 30, 0, 0),
   },
   {
-    id: 3,
-    building: "Houston",
-    space: "SPARC",
+    Eventid: 3,
+    Building: "Houston",
+    Space: "SPARC",
     eventName: "ladies only",
     date: new Date(2021, 2, 15, 13, 35, 0, 0),
   },
@@ -86,6 +86,15 @@ function ViewEventsScreen({ navigation, route }) {
       });
   }, []);
 
+  useEffect(() => {
+    fetch(baseUrl + "buildings")
+      .then((response) => response.json())
+      .then((json) => {
+        setEvents(json.data);
+        console.log(json.data);
+      });
+  }, []);
+
   // TODO: where do we go after adding a new event?
 
   console.log("events: ", myEventsState[0]);
@@ -93,13 +102,21 @@ function ViewEventsScreen({ navigation, route }) {
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.viewSelect}>
         <TouchableOpacity onPress={() => setViewByBuilding(!viewByBuilding)}>
-          <AppText customStyle={viewByBuilding ? styles.subTitleSelected : styles.subTitle}>
+          <AppText
+            customStyle={
+              viewByBuilding ? styles.subTitleSelected : styles.subTitle
+            }
+          >
             Events By Building
           </AppText>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setViewByBuilding(!viewByBuilding)}>
-          <AppText customStyle={viewByBuilding ? styles.subTitle : styles.subTitleSelected}>
+          <AppText
+            customStyle={
+              viewByBuilding ? styles.subTitle : styles.subTitleSelected
+            }
+          >
             All Events Today
           </AppText>
         </TouchableOpacity>
@@ -118,7 +135,9 @@ function ViewEventsScreen({ navigation, route }) {
         ) : (
           <>
             <View style={styles.switchContainer}>
-              <AppText customStyle={{ paddingRight: 10 }}>View My Events Only</AppText>
+              <AppText customStyle={{ paddingRight: 10 }}>
+                View My Events Only
+              </AppText>
               <Switch onValueChange={toggleSwitch} value={viewMyEventsOnly} />
             </View>
             <View style={styles.eventListContainer}>

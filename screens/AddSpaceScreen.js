@@ -63,30 +63,38 @@ export default function AddSpaceScreen({ navigation, route }) {
   let [dataBuildings, setBuildings] = useState([]);
   let buildings = [];
 
+  // useEffect(() => {
+  //   fetch(baseUrl + "buildings").then((response) => console.log(response)); //.json())
+  //   // .then((json) => {
+  //   //   console.log(json.data);
+  //   //   setBuildings(json.data);
+  //   // });
+  // }, []);
   useEffect(() => {
-    fetch(baseUrl + "buildings").then((response) => console.log(response)); //.json())
-    // .then((json) => {
-    //   console.log(json.data);
-    //   setBuildings(json.data);
-    // });
+    fetch(baseUrl + "buildings")
+      .then((response) => response.json())
+      .then((json) => {
+        setBuildings(json.data);
+        console.log(json.data);
+      });
   }, []);
   let [selectedBuilding, setBuilding] = useState("");
 
-  // dataBuildings.forEach(function (b) {
-  //   let bldgDropdown = {
-  //     label: b.Name,
-  //     value: b.Buildingid,
-  //   };
-  //   buildings.push(bldgDropdown);
-  // });
-  for (const [name] of Object.entries(PennBuildings)) {
-    let bldgName = name;
+  dataBuildings.forEach(function (b) {
     let bldgDropdown = {
-      label: bldgName,
-      value: bldgName,
+      label: b.Name,
+      value: b.Buildingid,
     };
     buildings.push(bldgDropdown);
-  }
+  });
+  // for (const [name] of Object.entries(PennBuildings)) {
+  //   let bldgName = name;
+  //   let bldgDropdown = {
+  //     label: bldgName,
+  //     value: bldgName,
+  //   };
+  //   buildings.push(bldgDropdown);
+  // }
   buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
 
   return (
@@ -99,7 +107,9 @@ export default function AddSpaceScreen({ navigation, route }) {
 
       <AppForm
         initialValues={{
-          spaceName: route.params.existingSpace ? route.params.existingSpace.Name : "",
+          spaceName: route.params.existingSpace
+            ? route.params.existingSpace.Name
+            : "",
           bldgName: "",
           bldgAddress: "",
           instructions: "",
@@ -111,6 +121,12 @@ export default function AddSpaceScreen({ navigation, route }) {
           console.log("LETS TRY VALUES: " + values);
           console.log("spaceData: " + values.spaceName);
           console.log("spaceBldg: " + selectedBuilding);
+          console.log(
+            buildings.filter((b) => b.label == selectedBuilding)[0].value
+          );
+          let buildingId = buildings.filter(
+            (b) => b.label == selectedBuilding
+          )[0].value;
 
           // get all spaces
           let addUrl = baseUrl + "spaces?";
@@ -123,7 +139,7 @@ export default function AddSpaceScreen({ navigation, route }) {
           addUrl += `Notes=&`;
           addUrl += `Approval=0&`;
           // TODO Fix this!
-          addUrl += "Building=1";
+          addUrl += `Building=${encodeURIComponent(buildingId)}`;
 
           console.log(addUrl);
 
@@ -140,7 +156,9 @@ export default function AddSpaceScreen({ navigation, route }) {
           label="Space Name"
           name="spaceName"
           placeholder="Space Name"
-          defaultValue={route.params.existingSpace ? route.params.existingSpace.Name : ""}
+          defaultValue={
+            route.params.existingSpace ? route.params.existingSpace.Name : ""
+          }
         />
         {/* TODO: export this to a separate component */}
         <View
@@ -183,7 +201,11 @@ export default function AddSpaceScreen({ navigation, route }) {
           name="instructions"
           placeholder="How do you get to space?"
           multiline={true}
-          defaultValue={route.params.existingSpace ? route.params.existingSpace.Instructions : ""}
+          defaultValue={
+            route.params.existingSpace
+              ? route.params.existingSpace.Instructions
+              : ""
+          }
         />
         <AppFormEntry
           label="Capacity"
@@ -193,7 +215,9 @@ export default function AddSpaceScreen({ navigation, route }) {
           type="text"
           pattern="[0-9]*"
           defaultValue={
-            route.params.existingSpace ? route.params.existingSpace.Capacity.toString() : ""
+            route.params.existingSpace
+              ? route.params.existingSpace.Capacity.toString()
+              : ""
           }
         />
         {/* <AppFormEntry

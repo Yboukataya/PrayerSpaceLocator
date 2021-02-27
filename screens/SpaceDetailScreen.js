@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, Image, StyleSheet, View } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -63,6 +63,21 @@ function SpaceDetailScreen({ route }) {
   // console.log("CHECK SPACE OBJECT: \n", route.params.space);
   // console.log("CHECK VIEWUNAPPROVED: \n", route.params.viewUnapproved);
 
+  let [selectedBuilding, setBuilding] = useState("");
+  useEffect(() => {
+    fetch(
+      baseUrl +
+        `buildings?Buildingid=${encodeURIComponent(
+          route.params.space.Building
+        )}`
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setBuilding(json.data);
+        console.log(json.data);
+      });
+  }, []);
+  // let [selectedBuilding, setBuilding] = useState("");
   const navigation = useNavigation();
 
   return (
@@ -72,7 +87,11 @@ function SpaceDetailScreen({ route }) {
       </View>
 
       <View style={styles.spaceDetails}>
-        <AppSpaceDetail space={route.params.space} detailTitle="Building" detailKey="Building" />
+        <AppSpaceDetail
+          space={route.params.space}
+          detailTitle="Building"
+          detailKey="Building"
+        />
         {/* <AppSpaceDetail
             space={route.params.space}
             detailTitle="Address"
@@ -83,7 +102,11 @@ function SpaceDetailScreen({ route }) {
           detailTitle="Instructions"
           detailKey="Instructions"
         />
-        <AppSpaceDetail space={route.params.space} detailTitle="Capacity" detailKey="Capacity" />
+        <AppSpaceDetail
+          space={route.params.space}
+          detailTitle="Capacity"
+          detailKey="Capacity"
+        />
         {/* <AppSpaceDetail
             space={route.params.space}
             detailTitle="Daily Hours"
@@ -112,16 +135,25 @@ function SpaceDetailScreen({ route }) {
           />
         ) : null}
         {route.params.viewUnapproved ? (
-          <AppButton title="Reject" customStyle={styles.btnStyle} onPress={rejectOnPress} />
+          <AppButton
+            title="Reject"
+            customStyle={styles.btnStyle}
+            onPress={rejectOnPress}
+          />
         ) : null}
         {/* {route.params.viewUnapproved ? (<AppButton title="Update"/>) : (<AppButton title="Bye"/>)}
           {route.params.viewUnapproved ? (<AppButton title="Go Back"/>) : (<AppButton title="Bye"/>)} */}
       </View>
       <AppButton
         title="Update"
-        onPress={() => navigation.navigate("AddSpace", { existingSpace: route.params.space })}
+        onPress={() =>
+          navigation.navigate("AddSpace", { existingSpace: route.params.space })
+        }
       />
-      <AppButton title="Go Back" onPress={() => navigation.navigate("ViewSpaces")} />
+      <AppButton
+        title="Go Back"
+        onPress={() => navigation.navigate("ViewSpaces")}
+      />
     </Screen>
   );
 }
