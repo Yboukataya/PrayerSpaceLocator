@@ -122,6 +122,7 @@ export default function AddSpaceScreen({ navigation, route }) {
           addUrl += `Instructions=${encodeURIComponent(values.instructions)}&`;
           addUrl += `Notes=&`;
           addUrl += `Approval=0&`;
+          // TODO Fix this!
           addUrl += "Building=1";
 
           console.log(addUrl);
@@ -132,16 +133,6 @@ export default function AddSpaceScreen({ navigation, route }) {
             .then((response) => response.json())
             .then((json) => console.log("Hooray! ", json));
 
-          // console.log(selectedBuidling),
-          // this.addSpace(
-          //   values.bldgName,
-          //   values.bldgAddress,
-          //   values.instructions,
-          //   values.capacity,
-          //   values.dailyHours,
-          //   values.spaceName,
-          //   selectedBuilding
-          // );
           navigation.navigate("SentToApproval");
         }}
       >

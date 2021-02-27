@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "slug": "Musallah",
     "orientation": "portrait",
+    "owner": "musallah",
     "ios": {
       "bundleIdentifier": "com.seniordesigners.musallah",
       "buildNumber": "1.0.0"
