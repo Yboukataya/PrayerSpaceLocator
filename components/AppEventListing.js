@@ -1,24 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import * as Calendar from "expo-calendar";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
+import * as Calendar from 'expo-calendar';
 
-import AppButton from "./AppButton";
-import AppText from "./AppText";
+import AppButton from './AppButton';
+import AppText from './AppText';
+
+import { baseUrl } from '../config/backend-config.js';
 
 async function getDefaultCalendarSource() {
   const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-  const defaultCalendars = calendars.filter((each) => each.title === "Calendar");
+  const defaultCalendars = calendars.filter((each) => each.title === 'Calendar');
   return defaultCalendars[0];
 }
 
 async function createEvent(event) {
   const defaultCalendarSource =
-    Platform.OS === "ios"
+    Platform.OS === 'ios'
       ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: "YeRubbishCalendar" };
+      : { isLocalAccount: true, name: 'YeRubbishCalendar' };
 
   await Calendar.createEventAsync(defaultCalendarSource.id, {
     title: event.Name,
@@ -29,13 +31,37 @@ async function createEvent(event) {
 }
 
 function AppSpaceListing({ event, myEventsState }) {
+  // console.log('da EWENT\n', event);
+  let [spaceName, setSpaceName] = useState('');
+  let [bldgName, setBldgName] = useState('');
+
   useEffect(() => {
-    (async () => {
+    const getCal = async () => {
       const { status } = await Calendar.requestCalendarPermissionsAsync();
-      if (status === "granted") {
+      if (status === 'granted') {
         const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
       }
-    })();
+    };
+    getCal();
+    let bldgId = -1;
+
+    fetch(baseUrl + `space?Spaceid=${event.Space}`)
+      .then((response) => response.json())
+      .then((json) => {
+        // console.log(json.data);
+        bldgId = json.data[0].Building;
+        let nameOfSpace = json.data[0].Name;
+        setSpaceName(nameOfSpace);
+      })
+      .then(() => {
+        // console.log(bldgId);
+        fetch(baseUrl + `building?Buildingid=${bldgId}`)
+          .then((response) => response.json())
+          .then((json) => {
+            setBldgName(json.data[0].Name);
+            // console.log(json.data);
+          });
+      });
   }, []);
 
   event.Date = new Date(event.Date);
@@ -48,14 +74,12 @@ function AppSpaceListing({ event, myEventsState }) {
         {/* for the text information */}
         <View style={styles.eventDetailTextStyle}>
           <AppText>{event.Name}</AppText>
+          <AppText customStyle={styles.capacityStyle}>{spaceName + ' in ' + bldgName}</AppText>
           <AppText customStyle={styles.capacityStyle}>
-            {/* {event.space + " in " + event.building} */}
-          </AppText>
-          <AppText customStyle={styles.capacityStyle}>
-            Time:{" "}
+            Time:{' '}
             {event.Date.getHours() +
-              ":" +
-              (event.Date.getMinutes() < 10 ? "0" : "") +
+              ':' +
+              (event.Date.getMinutes() < 10 ? '0' : '') +
               event.Date.getMinutes()}
           </AppText>
         </View>
@@ -70,13 +94,13 @@ function AppSpaceListing({ event, myEventsState }) {
         <TouchableOpacity
           style={styles.btnViewEvent}
           onPress={() =>
-            navigation.navigate("EventDetail", {
+            navigation.navigate('EventDetail', {
               event: {
                 eventName: event.Name,
-                // selectedSpace: event.space,
-                // selectedBuilding: event.building,
+                selectedSpace: spaceName,
+                selectedBuilding: bldgName,
                 date: event.Date.toDateString(),
-                time: event.Date.getHours() + ":" + event.Date.getMinutes(),
+                time: event.Date.getHours() + ':' + event.Date.getMinutes(),
               },
             })
           }
@@ -102,7 +126,7 @@ function AppSpaceListing({ event, myEventsState }) {
             onPress={() => {
               // TODO: remove the event from the array
               // myEventsState[1](oldArray => oldArray);
-              console.log("not goin no more!");
+              console.log('not goin no more!');
             }}
           >
             <Text style={styles.btnText}>Going!</Text>
@@ -115,46 +139,46 @@ function AppSpaceListing({ event, myEventsState }) {
 
 const styles = StyleSheet.create({
   btnText: {
-    color: "white",
+    color: 'white',
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   btnJoinEvent: {
-    backgroundColor: "#46D811",
+    backgroundColor: '#46D811',
     borderRadius: 10,
     marginBottom: 10,
     padding: 5,
   },
   btnViewEvent: {
-    backgroundColor: "#00BCFF",
+    backgroundColor: '#00BCFF',
     borderRadius: 10,
     marginBottom: 10,
     padding: 5,
   },
   buttonsContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     // width: 100,
     flex: 3,
   },
   capacityStyle: {
-    color: "goldenrod",
+    color: 'goldenrod',
   },
   detailContainer: {
     flex: 7,
   },
   distStyle: {
-    color: "green",
+    color: 'green',
   },
   eventDetailTextStyle: {
-    flexDirection: "column",
-    justifyContent: "flex-start",
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
   listingContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     marginTop: 10,
     marginBottom: 10,
   },

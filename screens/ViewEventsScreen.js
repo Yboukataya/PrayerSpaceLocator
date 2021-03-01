@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
 
-import AppButton from '../components/AppButton';
 import AppEventList from '../components/AppEventList';
 import AppBuildingEvents from '../components/AppBuildingEvents';
-import AppTitle from '../components/AppTitle.js';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import 'localstorage-polyfill';
-import axios from 'axios';
 import { baseUrl } from '../config/backend-config.js';
-
-import AppEventListing from '../components/AppEventListing';
 
 let eventsN = [
   {
@@ -66,7 +61,7 @@ let eventsN = [
 ];
 
 function ViewEventsScreen({ navigation, route }) {
-  const [viewByBuilding, setViewByBuilding] = useState(true);
+  const [viewByBuilding, setViewByBuilding] = useState(false);
   const myEventsState = useState([]);
 
   const [viewMyEventsOnly, setViewMyEventsOnly] = useState(false);
@@ -78,26 +73,16 @@ function ViewEventsScreen({ navigation, route }) {
   };
 
   useEffect(() => {
-    fetch(baseUrl + 'events')
-      .then((response) => response.json())
-      .then((json) => {
-        setEvents(json.data);
-        console.log(json.data);
-      });
+    const fetchData = async () => {
+      await fetch(baseUrl + 'events')
+        .then((response) => response.json())
+        .then((json) => {
+          setEvents(json.data);
+        });
+    };
+    fetchData();
   }, []);
 
-  useEffect(() => {
-    fetch(baseUrl + 'buildings')
-      .then((response) => response.json())
-      .then((json) => {
-        setEvents(json.data);
-        console.log(json.data);
-      });
-  }, []);
-
-  // TODO: where do we go after adding a new event?
-
-  console.log('events: ', myEventsState[0]);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.viewSelect}>

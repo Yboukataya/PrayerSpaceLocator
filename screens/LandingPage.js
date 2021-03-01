@@ -1,22 +1,15 @@
 import React from 'react';
-import { Alert, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
-
-import SyncStorage from 'sync-storage';
 import 'localstorage-polyfill';
-// global.localStorage;
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as Google from 'expo-google-app-auth';
 import getEnvVars from '../environment';
 
 import { getMyObject, storeObj, storeData } from '../config/async-utils';
 
-// TODO: when we move to email password login, use the secureStore expo package :)
-
-const IOS_AUTH_ID = getEnvVars().ios_auth_key;
+const IOS_AUTH_ID = '86332169337-nagmpq99r18ib493bnegn2roilg7kcqg.apps.googleusercontent.com';
 // TODO: set android in environment.js
 //const ANDROID_AUTH_ID = getEnvVars().android_auth_key;
 let userName = '';
