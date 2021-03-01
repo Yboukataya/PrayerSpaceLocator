@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { Formik, Field, Form } from "formik";
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Formik, Field, Form } from 'formik';
 
-import DropDownPicker from "react-native-dropdown-picker";
+import DropDownPicker from 'react-native-dropdown-picker';
 
-import { AppForm, AppFormField, SubmitButton } from "../components/forms";
-import AppText from "../components/AppText";
-import Screen from "../components/Screen";
-import AppFormEntry from "../components/forms/AppFormEntry";
-import { PennBuildings } from "../constants/Buildings.js";
+import { AppForm, AppFormField, SubmitButton } from '../components/forms';
+import AppText from '../components/AppText';
+import Screen from '../components/Screen';
+import AppFormEntry from '../components/forms/AppFormEntry';
+import { PennBuildings } from '../constants/Buildings.js';
 
-import { baseUrl } from "../config/backend-config.js";
+import { baseUrl } from '../config/backend-config.js';
 
 // addSpace = async (
 //   bldgName,
@@ -71,14 +71,14 @@ export default function AddSpaceScreen({ navigation, route }) {
   //   // });
   // }, []);
   useEffect(() => {
-    fetch(baseUrl + "buildings")
+    fetch(baseUrl + 'buildings')
       .then((response) => response.json())
       .then((json) => {
         setBuildings(json.data);
-        console.log(json.data);
       });
   }, []);
-  let [selectedBuilding, setBuilding] = useState("");
+
+  let [selectedBuilding, setBuilding] = useState('');
 
   dataBuildings.forEach(function (b) {
     let bldgDropdown = {
@@ -87,49 +87,36 @@ export default function AddSpaceScreen({ navigation, route }) {
     };
     buildings.push(bldgDropdown);
   });
-  // for (const [name] of Object.entries(PennBuildings)) {
-  //   let bldgName = name;
-  //   let bldgDropdown = {
-  //     label: bldgName,
-  //     value: bldgName,
-  //   };
-  //   buildings.push(bldgDropdown);
-  // }
+
   buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
 
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
         <AppText customStyle={styles.title}>
-          {route.params.existingSpace ? "Update Space" : "Add New Space"}
+          {route.params.existingSpace ? 'Update Space' : 'Add New Space'}
         </AppText>
       </View>
 
       <AppForm
         initialValues={{
-          spaceName: route.params.existingSpace
-            ? route.params.existingSpace.Name
-            : "",
-          bldgName: "",
-          bldgAddress: "",
-          instructions: "",
-          capacity: "",
+          spaceName: route.params.existingSpace ? route.params.existingSpace.Name : '',
+          bldgName: '',
+          bldgAddress: '',
+          instructions: '',
+          capacity: '',
           // dailyHours: "",
-          selectedBuilding: "",
+          selectedBuilding: '',
         }}
         onSubmit={(values) => {
-          console.log("LETS TRY VALUES: " + values);
-          console.log("spaceData: " + values.spaceName);
-          console.log("spaceBldg: " + selectedBuilding);
-          console.log(
-            buildings.filter((b) => b.label == selectedBuilding)[0].value
-          );
-          let buildingId = buildings.filter(
-            (b) => b.label == selectedBuilding
-          )[0].value;
+          console.log('LETS TRY VALUES: ' + values);
+          console.log('spaceData: ' + values.spaceName);
+          console.log('spaceBldg: ' + selectedBuilding);
+          console.log(buildings.filter((b) => b.label == selectedBuilding)[0].value);
+          let buildingId = buildings.filter((b) => b.label == selectedBuilding)[0].value;
 
           // get all spaces
-          let addUrl = baseUrl + "spaces?";
+          let addUrl = baseUrl + 'spaces?';
           addUrl += `Name=${encodeURIComponent(values.spaceName)}&`;
           addUrl += `Capacity=${encodeURIComponent(values.capacity)}&`;
           addUrl += `Passerby=&`;
@@ -144,29 +131,27 @@ export default function AddSpaceScreen({ navigation, route }) {
           console.log(addUrl);
 
           fetch(addUrl, {
-            method: "POST",
+            method: 'POST',
           })
             .then((response) => response.json())
-            .then((json) => console.log("Hooray! ", json));
+            .then((json) => console.log('Hooray! ', json));
 
-          navigation.navigate("SentToApproval");
+          navigation.navigate('SentToApproval');
         }}
       >
         <AppFormEntry
-          label="Space Name"
-          name="spaceName"
-          placeholder="Space Name"
-          defaultValue={
-            route.params.existingSpace ? route.params.existingSpace.Name : ""
-          }
+          label='Space Name'
+          name='spaceName'
+          placeholder='Space Name'
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.Name : ''}
         />
         {/* TODO: export this to a separate component */}
         <View
           style={{
-            alignItems: "center",
+            alignItems: 'center',
             flex: 1,
-            flexDirection: "row",
-            width: "100%",
+            flexDirection: 'row',
+            width: '100%',
             zIndex: 200,
           }}
         >
@@ -178,14 +163,14 @@ export default function AddSpaceScreen({ navigation, route }) {
             {/* TODO: Fix this dropdown once the database is addressed */}
             <DropDownPicker
               items={buildings}
-              placeholder="Select a building"
+              placeholder='Select a building'
               // defaultValue={route.params.existingSpace ? route.params.existingSpace.bldgName : ""}
               containerStyle={{ height: 40 }}
-              style={{ backgroundColor: "#fafafa" }}
+              style={{ backgroundColor: '#fafafa' }}
               itemStyle={{
-                justifyContent: "flex-start",
+                justifyContent: 'flex-start',
               }}
-              dropDownStyle={{ backgroundColor: "#fafafa" }}
+              dropDownStyle={{ backgroundColor: '#fafafa' }}
               // TODO: fix this to update some kind of form state
               onChangeItem={(item) => {
                 setBuilding(item.label);
@@ -197,27 +182,21 @@ export default function AddSpaceScreen({ navigation, route }) {
 
         {/* TODO: make this one bigger */}
         <AppFormEntry
-          label="Instructions"
-          name="instructions"
-          placeholder="How do you get to space?"
+          label='Instructions'
+          name='instructions'
+          placeholder='How do you get to space?'
           multiline={true}
-          defaultValue={
-            route.params.existingSpace
-              ? route.params.existingSpace.Instructions
-              : ""
-          }
+          defaultValue={route.params.existingSpace ? route.params.existingSpace.Instructions : ''}
         />
         <AppFormEntry
-          label="Capacity"
-          name="capacity"
-          keyboardType="number-pad"
-          placeholder=""
-          type="text"
-          pattern="[0-9]*"
+          label='Capacity'
+          name='capacity'
+          keyboardType='number-pad'
+          placeholder=''
+          type='text'
+          pattern='[0-9]*'
           defaultValue={
-            route.params.existingSpace
-              ? route.params.existingSpace.Capacity.toString()
-              : ""
+            route.params.existingSpace ? route.params.existingSpace.Capacity.toString() : ''
           }
         />
         {/* <AppFormEntry
@@ -226,7 +205,7 @@ export default function AddSpaceScreen({ navigation, route }) {
           placeholder="When is this space open?"
           defaultValue={route.params.existingSpace ? route.params.existingSpace.daily_hours : ""}
         /> */}
-        <SubmitButton title="Submit!" selectedBuilding={selectedBuilding} />
+        <SubmitButton title='Submit!' selectedBuilding={selectedBuilding} />
       </AppForm>
       {/* </View> */}
     </Screen>
@@ -235,13 +214,13 @@ export default function AddSpaceScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 20,
     marginBottom: 40,
   },
   title: {
     fontSize: 48,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
