@@ -175,11 +175,11 @@ async function findUser(userEmail, isAdmin) {
   await fetch(baseUrl + `user?Email=${userEmail}`)
     .then((response) => response.json())
     .then((json) => {
-      // console.log(json.data[0].Isadmin);
       storeObj('user', {
-        userName: json.data[0].Name,
-        userEmail: json.data[0].Email,
         is_admin: json.data[0].Isadmin,
+        userEmail: json.data[0].Email,
+        userId: json.data[0].Userid,
+        userName: json.data[0].Name,
       });
     });
 }

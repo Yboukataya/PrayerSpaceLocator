@@ -9,6 +9,7 @@ import AppButton from './AppButton';
 import AppText from './AppText';
 
 import { baseUrl } from '../config/backend-config.js';
+import { getMyObject } from '../config/async-utils';
 
 async function getDefaultCalendarSource() {
   const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
@@ -26,14 +27,14 @@ async function createEvent(event) {
     title: event.Name,
     startDate: event.Date,
     endDate: new Date(event.Date.getTime() + 15 * 60000),
-    // location: event.selectedSpace + " in " + event.selectedBuilding,
+    location: event.selectedSpace + ' in ' + event.selectedBuilding,
   });
 }
 
 function AppSpaceListing({ event, myEventsState }) {
-  // console.log('da EWENT\n', event);
   let [spaceName, setSpaceName] = useState('');
   let [bldgName, setBldgName] = useState('');
+  let [userId, setUserId] = useState(-1);
 
   useEffect(() => {
     const getCal = async () => {
@@ -45,27 +46,29 @@ function AppSpaceListing({ event, myEventsState }) {
     getCal();
     let bldgId = -1;
 
+    // Get the name of the space using the space ID
     fetch(baseUrl + `space?Spaceid=${event.Space}`)
       .then((response) => response.json())
       .then((json) => {
-        // console.log(json.data);
         bldgId = json.data[0].Building;
         let nameOfSpace = json.data[0].Name;
         setSpaceName(nameOfSpace);
       })
       .then(() => {
-        // console.log(bldgId);
+        // Get the name of the building from the space's building ID
         fetch(baseUrl + `building?Buildingid=${bldgId}`)
           .then((response) => response.json())
           .then((json) => {
             setBldgName(json.data[0].Name);
-            // console.log(json.data);
           });
       });
+
+    getMyObject('user').then(function (value) {
+      setUserId(value.userId);
+    });
   }, []);
 
   event.Date = new Date(event.Date);
-
   const navigation = useNavigation();
 
   return (
@@ -111,8 +114,14 @@ function AppSpaceListing({ event, myEventsState }) {
           <TouchableOpacity
             style={styles.btnJoinEvent}
             onPress={() => {
+              // Create the event on user's calendar
               createEvent(event);
-              // call setState for myEvents
+
+              // Notify database that a new attendee is going
+              fetch(`${baseUrl}rsvp?Userid=${userId}&Eventid=${event.Eventid}`, {
+                method: 'POST',
+              });
+              // call setState for myEvents: update list of my events
               myEventsState[1]((oldArray) =>
                 oldArray.includes(event.Eventid) ? oldArray : [...oldArray, event.Eventid]
               );
@@ -121,16 +130,18 @@ function AppSpaceListing({ event, myEventsState }) {
             <Text style={styles.btnText}>Join Event</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            style={styles.btnJoinEvent}
-            onPress={() => {
-              // TODO: remove the event from the array
-              // myEventsState[1](oldArray => oldArray);
-              console.log('not goin no more!');
-            }}
-          >
-            <Text style={styles.btnText}>Going!</Text>
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity
+              style={styles.btnJoinEvent}
+              onPress={() => {
+                // TODO: remove the event from the array
+                // myEventsState[1]((oldArray) => oldArray.splice(oldArray.indexOf(event.Eventid), 1));
+                console.log('not goin no more!');
+              }}
+            >
+              <Text style={styles.btnText}>Going!</Text>
+            </TouchableOpacity>
+          </>
         )}
       </View>
     </View>

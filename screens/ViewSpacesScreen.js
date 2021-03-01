@@ -11,7 +11,6 @@ import axios from 'axios';
 import AppMapView from '../components/AppMapView';
 
 import { baseUrl } from '../config/backend-config';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getMyObject, storeObj } from '../config/async-utils';
 /**
  * This component specifies appearance of the screen that shows both list of
