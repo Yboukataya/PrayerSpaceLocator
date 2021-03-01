@@ -26,7 +26,7 @@ export default function AddEventScreen({ navigation, route }) {
 
   let [dataSpaces, setSpaces] = useState([]);
 
-  let buildingId = 0;
+  let [spaceId, setSpaceId] = useState(-1);
 
   useEffect(() => {
     fetch(baseUrl + 'buildings')
@@ -75,46 +75,15 @@ export default function AddEventScreen({ navigation, route }) {
           let addUrl = baseUrl + 'events?';
           addUrl += `Name=${encodeURIComponent(values.eventName)}&`;
           addUrl += `Date=${encodeURIComponent(save_date.toISOString())}&`;
-          addUrl += 'Space=2';
+          addUrl += `Space=${spaceId}`;
 
-          // console.log(addUrl);
+          console.log(addUrl);
 
           fetch(addUrl, {
             method: 'POST',
           })
             .then((response) => response.json())
             .then((json) => console.log('Hooray! ', json));
-
-          // // THIS SOAB code works.
-          // const save_date = new Date(
-          //   eventDate.getFullYear(),
-          //   eventDate.getMonth(),
-          //   eventDate.getDate(),
-          //   eventTime.getHours(),
-          //   eventTime.getMinutes()
-          // );
-          // console.log(save_date.toISOString());
-
-          // const instance = axios.create({
-          //   baseURL: baseUrl,
-          // });
-          // instance
-          //   .post(
-          //     "events?Name=" +
-          //       values.eventName +
-          //       "&Date=" +
-          //       // null +
-          //       save_date.toISOString() +
-          //       "&Space=" +
-          //       1 // write code to translate the selected space to the spaceId
-          //   )
-          //   .then(function (response) {
-          //     console.log(response);
-          //   })
-          //   .catch(function (error) {
-          //     console.log(error);
-          //   });
-          // TODO: where do we go after adding a new event?
 
           navigation.navigate('EventDetail', {
             event: {
@@ -149,7 +118,7 @@ export default function AddEventScreen({ navigation, route }) {
               dropDownStyle={{ backgroundColor: '#fafafa' }}
               onChangeItem={(item) => {
                 setBuilding(item.label);
-                console.log('ITEM: ', item);
+                // console.log('ITEM: ', item);
                 // set ID of the building we're considering
                 // update eligible spaces
                 fetch(baseUrl + `building-spaces?Buildingid=${item.value}`)
@@ -163,7 +132,7 @@ export default function AddEventScreen({ navigation, route }) {
                       };
                       spaces.push(spaceDropdown);
                     });
-                    console.log('NewSPaces: ', spaces);
+                    // console.log('NewSPaces: ', spaces);
                     setSpaces(spaces);
                     // spaces.sort((a, b) => (a.label > b.label ? 1 : -1));
                   });
@@ -191,8 +160,10 @@ export default function AddEventScreen({ navigation, route }) {
               itemStyle={{ justifyContent: 'flex-start' }}
               dropDownStyle={{ backgroundColor: '#fafafa' }}
               onChangeItem={(item) => {
+                // Set space ID for event submission
+                setSpaceId(item.value);
                 setSpace(item.label);
-                console.log('Space updated!');
+                // console.log('Space updated!', item.value, ' | ', spaceId);
               }}
             />
           </View>
