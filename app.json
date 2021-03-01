@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Musallah",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/icon-safari.png",
     "version": "1.0.0",
     "slug": "Musallah",
     "orientation": "portrait",

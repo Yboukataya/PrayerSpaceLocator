@@ -1,25 +1,27 @@
-import React from "react";
-import { Alert, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import AppText from "../components/AppText";
-import AppButton from "../components/AppButton";
+import React from 'react';
+import { Alert, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
 
-import SyncStorage from "sync-storage";
-import "localstorage-polyfill";
+import SyncStorage from 'sync-storage';
+import 'localstorage-polyfill';
 // global.localStorage;
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import * as Google from "expo-google-app-auth";
-import getEnvVars from "../environment";
+import * as Google from 'expo-google-app-auth';
+import getEnvVars from '../environment';
+
+import { getMyObject, storeObj, storeData } from '../config/async-utils';
 
 // TODO: when we move to email password login, use the secureStore expo package :)
 
 const IOS_AUTH_ID = getEnvVars().ios_auth_key;
 // TODO: set android in environment.js
 //const ANDROID_AUTH_ID = getEnvVars().android_auth_key;
-let userName = "";
-let userEmail = "";
-let accessToken = "";
+let userName = '';
+let userEmail = '';
+let accessToken = '';
 // MOVE THIS TO THE LOCATION SCREEN WITH NABEEL TOMORROW ET.
 // const get_user_location = async () => {
 //   if ("geolocation" in navigator) {
@@ -167,12 +169,12 @@ let accessToken = "";
 //       console.log(err);
 //     });
 // };
-import { baseUrl } from "../config/backend-config";
+import { baseUrl } from '../config/backend-config';
 
 async function signOutWithGoogleAsync() {
-  userName = "";
-  userEmail = "";
-  accessToken = "";
+  userName = '';
+  userEmail = '';
+  accessToken = '';
   await Google.logOutAsync();
 }
 
@@ -180,8 +182,8 @@ async function findUser(userEmail, isAdmin) {
   await fetch(baseUrl + `user?Email=${userEmail}`)
     .then((response) => response.json())
     .then((json) => {
-      console.log(json.data[0].Isadmin);
-      storeObj("user", {
+      // console.log(json.data[0].Isadmin);
+      storeObj('user', {
         userName: json.data[0].Name,
         userEmail: json.data[0].Email,
         is_admin: json.data[0].Isadmin,
@@ -192,70 +194,50 @@ async function findUser(userEmail, isAdmin) {
 async function signInWithGoogleAsync(navigation) {
   try {
     const result = await Google.logInAsync({
-      androidClientId: "TODO",
+      androidClientId: 'TODO',
       iosClientId: IOS_AUTH_ID,
-      scopes: ["profile", "email"],
+      scopes: ['profile', 'email'],
     });
 
-    if (result.type === "success") {
-      console.log("accessToken: " + result.accessToken);
-      console.log("name: " + result.user.name);
-      console.log("fName: " + result.user.givenName);
-      console.log("email: " + result.user.email + "\n");
-      if (!result.user.email.endsWith("upenn.edu")) {
-        console.log("error");
+    if (result.type === 'success') {
+      console.log('accessToken: ' + result.accessToken);
+      console.log('name: ' + result.user.name);
+      console.log('fName: ' + result.user.givenName);
+      console.log('email: ' + result.user.email + '\n');
+      if (!result.user.email.endsWith('upenn.edu')) {
+        console.log('error');
         signOutWithGoogleAsync();
-        throw "Not a Penn email";
+        throw 'Not a Penn email';
       }
 
       userName = result.user.givenName;
       userEmail = result.user.email;
       accessToken = result.user.accessToken;
 
-      console.log("about to find user");
+      // console.log("about to find user");
       // create function to check if user exists in db, this is a waste but ok for demo
       await findUser(userEmail);
       // let  is_admin = await isAdmin(userEmail);
-      console.log("navigatin");
-      navigation.navigate("Welcome", { email: userEmail });
-      console.log("OK");
+      // console.log("navigatin");
+      navigation.navigate('Welcome', { email: userEmail });
+      // console.log("OK");
       return result.accessToken;
     } else {
-      Alert.alert("Login Error", "Hmm, looks like your login didn't go through :(", [
-        { text: "OK" },
+      Alert.alert('Login Error', "Hmm, looks like your login didn't go through :(", [
+        { text: 'OK' },
       ]);
       return { cancelled: true };
     }
   } catch (e) {
-    if (e == "Not a Penn email") {
-      Alert.alert("Login Error", "Whoops! This service is only for Penn students.", [
-        { text: "Ok" },
+    if (e == 'Not a Penn email') {
+      Alert.alert('Login Error', 'Whoops! This service is only for Penn students.', [
+        { text: 'Ok' },
       ]);
-      console.log("Nice try, sucker");
+      console.log('Nice try, sucker');
     }
     return { error: true };
   }
 }
-
-const storeData = async (key, value) => {
-  console.log("GOTCHA DATA BOY");
-  try {
-    await AsyncStorage.setItem(key, value);
-  } catch (e) {
-    // saving error
-  }
-};
-
-const storeObj = async (key, value) => {
-  console.log("GOTCHA JSON BOY");
-  try {
-    const jsonValue = JSON.stringify(value);
-
-    await AsyncStorage.setItem(key, jsonValue);
-  } catch (e) {
-    // saving error
-  }
-};
 
 function LandingScreen({ navigation }) {
   return (
@@ -264,15 +246,15 @@ function LandingScreen({ navigation }) {
       <AppText customStyle={styles.titleOne}>Musallah</AppText>
 
       <AppButton
-        title="Login"
+        title='Login'
         onPress={() => signInWithGoogleAsync(navigation)}
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
-        title="Continue as Guest"
+        title='Continue as Guest'
         onPress={() => {
-          navigation.navigate("ViewSpaces", {
+          navigation.navigate('ViewSpaces', {
             viewUnapproved: false,
           });
         }}
@@ -285,25 +267,25 @@ function LandingScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 40,
-    fontWeight: "600",
-    alignItems: "center",
-    justifyContent: "center",
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   titleOne: {
     fontSize: 48,
-    fontWeight: "600",
-    alignItems: "center",
-    justifyContent: "center",
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   editBtn: {
-    width: "80%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

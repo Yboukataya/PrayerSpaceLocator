@@ -1,11 +1,11 @@
-import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import React from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 
-import AppSpaceListing from "./AppSpaceListing";
-import ListItemSeparator from "./ListItemSeparator";
-import Screen from "./Screen";
+import AppSpaceListing from './AppSpaceListing';
+import ListItemSeparator from './ListItemSeparator';
+import Screen from './Screen';
 
 /**
  * This component defines a list of prayer spaces for the View Spaces page.
@@ -15,9 +15,6 @@ import Screen from "./Screen";
  */
 
 function AppSpaceList({ locations, viewUnapproved }) {
-  // console.log("These are our locations: " + JSON.stringify(locations));
-  // console.log("APPSPACELISTPROPS\n", "--------------\n", navigation);
-  console.log("Prayer Spaces:\n", locations);
   return (
     <View style={styles.container}>
       <FlatList
@@ -32,10 +29,10 @@ function AppSpaceList({ locations, viewUnapproved }) {
 const styles = StyleSheet.create({
   container: {
     // alignItems: "center",
-    justifyContent: "center",
+    justifyContent: 'center',
     marginTop: 20,
     marginBottom: 40,
-    width: "100%",
+    width: '100%',
   },
 });
 export default AppSpaceList;

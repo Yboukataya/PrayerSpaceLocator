@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import AppText from "../components/AppText";
-import AppButton from "../components/AppButton";
-import SyncStorage from "sync-storage";
-import "localstorage-polyfill";
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
+import SyncStorage from 'sync-storage';
+import 'localstorage-polyfill';
 global.localStorage;
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import { backendApi } from "../config/backend-config";
 
-import axios from "axios";
+import axios from 'axios';
 
 // const get_spaces = async () => {
 //   let res = await axios({
@@ -137,7 +137,7 @@ import axios from "axios";
 
 // MOVE THIS TO THE LOCATION SCREEN WITH NABEEL TOMORROW ET.
 const get_user_location = async () => {
-  if ("geolocation" in navigator) {
+  if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         // console.log(
@@ -181,7 +181,7 @@ const getMyObject = async (key) => {
     // read error
   }
 
-  console.log("Done.");
+  console.log('Done.');
 };
 
 function WelcomeScreen({ navigation, route }) {
@@ -189,20 +189,19 @@ function WelcomeScreen({ navigation, route }) {
 
   // TODO: get this from async storage
   // let is_signed_in =
-  let [isSignedIn, setSignedIn] = useState("");
+  let [isSignedIn, setSignedIn] = useState('');
   let [user, setUser] = useState({});
 
-  let [is_admin, setIsAdmin] = useState(false); //user.is_admin;
+  let [is_admin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     // getData("isSignedIn").then(function (value) {
     //   setSignedIn(value);
     // });
 
-    getMyObject("user").then(function (value) {
-      console.log("VALUE | ", value);
+    getMyObject('user').then(function (value) {
+      console.log('VALUE | ', value);
       setUser(value);
-      // is_admin = route.params == undefined ? user.is_admin : route.params.is_admin;
       setIsAdmin(value.is_admin == 1);
     });
   }, []);
@@ -213,9 +212,9 @@ function WelcomeScreen({ navigation, route }) {
       <AppText customStyle={styles.titleOne}>{user.userName}</AppText>
 
       <AppButton
-        title="Add a new Prayer Space"
+        title='Add a new Prayer Space'
         onPress={() =>
-          navigation.navigate("AddSpace", {
+          navigation.navigate('AddSpace', {
             // Not updating an existing space here
             existingSpace: undefined,
           })
@@ -223,20 +222,15 @@ function WelcomeScreen({ navigation, route }) {
         customStyle={styles.editBtn}
       ></AppButton>
       <AppButton
-        title="Add new Event"
-        onPress={() =>
-          navigation.navigate("AddEvent", {
-            // Not updating an existing space here
-            // existingSpace: undefined,
-          })
-        }
+        title='Add new Event'
+        onPress={() => navigation.navigate('AddEvent')}
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
-        title="List of Prayer Spaces"
+        title='List of Prayer Spaces'
         onPress={() => {
-          navigation.navigate("ViewSpaces", {
+          navigation.navigate('ViewSpaces', {
             viewUnapproved: false,
           });
         }}
@@ -244,18 +238,18 @@ function WelcomeScreen({ navigation, route }) {
       ></AppButton>
 
       <AppButton
-        title="View Events"
+        title='View Events'
         onPress={() => {
-          navigation.navigate("ViewEvents");
+          navigation.navigate('ViewEvents');
         }}
         customStyle={styles.editBtn}
       ></AppButton>
 
       {is_admin && (
         <AppButton
-          title="Approval needed"
+          title='Approval needed'
           onPress={() =>
-            navigation.navigate("ViewSpaces", {
+            navigation.navigate('ViewSpaces', {
               viewUnapproved: true,
             })
           }
@@ -269,25 +263,25 @@ function WelcomeScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 40,
-    fontWeight: "600",
-    alignItems: "center",
-    justifyContent: "center",
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   titleOne: {
     fontSize: 48,
-    fontWeight: "600",
-    alignItems: "center",
-    justifyContent: "center",
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   editBtn: {
-    width: "80%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

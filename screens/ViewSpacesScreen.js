@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-import AppButton from "../components/AppButton";
-import AppSpaceList from "../components/AppSpaceList";
-import AppTitle from "../components/AppTitle.js";
-import AppText from "../components/AppText";
-import Screen from "../components/Screen";
-import "localstorage-polyfill";
-import axios from "axios";
-import AppMapView from "../components/AppMapView";
+import AppButton from '../components/AppButton';
+import AppSpaceList from '../components/AppSpaceList';
+import AppTitle from '../components/AppTitle.js';
+import AppText from '../components/AppText';
+import Screen from '../components/Screen';
+import 'localstorage-polyfill';
+import axios from 'axios';
+import AppMapView from '../components/AppMapView';
 
-import { baseUrl } from "../config/backend-config";
-
+import { baseUrl } from '../config/backend-config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getMyObject, storeObj } from '../config/async-utils';
 /**
  * This component specifies appearance of the screen that shows both list of
  * nearby spaces as well as the map.
@@ -23,40 +24,40 @@ import { baseUrl } from "../config/backend-config";
 let spots = [
   {
     id: 1,
-    bldgName: "VanPelt Library",
-    bldgAddress: "3420 Walnut St, Philadelphia, PA 19104",
-    daily_hours: "9AM - 5PM",
-    instructions: "Go up to the 4th floor, study room 403",
+    bldgName: 'VanPelt Library',
+    bldgAddress: '3420 Walnut St, Philadelphia, PA 19104',
+    daily_hours: '9AM - 5PM',
+    instructions: 'Go up to the 4th floor, study room 403',
     capacity: 10,
-    spaceName: "VanPelt Library",
+    spaceName: 'VanPelt Library',
     approval: 0,
     latitude: 39.952801,
     longitude: -75.192398,
     imgUrl:
-      "https://images.unsplash.com/photo-1516836378273-db6cea41d84c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
+      'https://images.unsplash.com/photo-1516836378273-db6cea41d84c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80',
   },
   {
     id: 5,
-    bldgName: "DRL",
-    bldgAddress: "209 S 33rd Street, 19104",
-    daily_hours: "9AM- 5PM",
-    instructions: "Go to room A40",
+    bldgName: 'DRL',
+    bldgAddress: '209 S 33rd Street, 19104',
+    daily_hours: '9AM- 5PM',
+    instructions: 'Go to room A40',
     capacity: 5,
-    spaceName: "DRL",
+    spaceName: 'DRL',
     approval: 1,
     latitude: 39.95217,
     longitude: -75.19007,
     imgUrl:
-      "https://images.unsplash.com/photo-1594737660822-97e4807a7533?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1406&q=80",
+      'https://images.unsplash.com/photo-1594737660822-97e4807a7533?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1406&q=80',
   },
 ];
 
 const get_spaces = async () => {
   let res = await axios({
-    method: "get",
+    method: 'get',
     url: `http://node-env.eba-myjteg7z.us-east-1.elasticbeanstalk.com/spaces`,
   }).catch(function (error) {
-    console.log("This is the error: ", error);
+    console.log('This is the error: ', error);
   });
   // console.log("Behold, AWS!\n", res.data.data);
   // localStorage.setItem("mapinfo", JSON.stringify(res.data.data));
@@ -83,7 +84,7 @@ initMap = async () => {
   const addresses = [];
   const instructions = [];
   const dailyHours = [];
-  var destinations = "";
+  var destinations = '';
   let res = await get_spaces().then((response) => {
     // console.log("Response OK!");
     let x = JSON.parse(response);
@@ -101,12 +102,12 @@ initMap = async () => {
 
     for (var i = 0; i < addresses.length; i++) {
       if (i === addresses.length - 1) {
-        destinations = destinations.concat(addresses[i].replace(" ", "+"));
+        destinations = destinations.concat(addresses[i].replace(' ', '+'));
       } else {
-        destinations = destinations.concat(addresses[i].replace(" ", "+") + "|");
+        destinations = destinations.concat(addresses[i].replace(' ', '+') + '|');
       }
     }
-    destinations = destinations.replaceAll(" ", "+");
+    destinations = destinations.replaceAll(' ', '+');
     http_request2 = http_request2 + destinations + http_end;
     // console.log(
     // "THIS IS THE RES INSIDE THE INIT MAP FUNCTION: " + http_request2
@@ -117,8 +118,8 @@ initMap = async () => {
     .post(http_request2)
     .then((response) => {
       //console.log("THIS IS RESPONCE",response.data["rows"][0]["elements"][1].duration.text);
-      var origins = response.data["origin_addresses"];
-      var destinations = response.data["destination_addresses"]; // API CALL to get this info
+      var origins = response.data['origin_addresses'];
+      var destinations = response.data['destination_addresses']; // API CALL to get this info
 
       // const space_names = ["VanPelt Library", "DRL", "Huntsman Hall"];
       // const space_ids = [1, 2, 3];
@@ -134,7 +135,7 @@ initMap = async () => {
       //   "Go up walnut it is red building",
       // ]; // Sort the results
       for (var i = 0; i < origins.length; i++) {
-        var results = response.data["rows"][0]["elements"];
+        var results = response.data['rows'][0]['elements'];
         var len = destinations.length;
         var indices = new Array(len);
         for (let x = 0; x < len; ++x) {
@@ -164,9 +165,9 @@ initMap = async () => {
           });
         }
       }
-      console.log("THIS IS ARR3", arr3);
+      console.log('THIS IS ARR3', arr3);
       // setSpots(JSON.stringify(arr3));
-      localStorage.setItem("computed", JSON.stringify(arr3));
+      localStorage.setItem('computed', JSON.stringify(arr3));
       return; //return [sorted_results, sorted_capacity_results, sorted_name_results, sorted_ids];
     })
     .catch((err) => {
@@ -175,27 +176,19 @@ initMap = async () => {
 };
 
 function ViewSpacesScreen({ navigation, route }) {
-  // console.log(props)
-  // useEffect(() => {initMap}, []);
-  // console.log("localStorage: ", localStorage);
-  // // let locations = JSON.parse(localStorage.getItem("computed"));
-  // let locations = globalLocations;
-  // let locationsMap = JSON.parse(localStorage.getItem("mapinfo"));
-  // backendApi
-  //   .get("/spaces")
-  //   .then(function (response) {
-  //     console.log(response);
-  //   })
-  //   .catch(function (error) {
-  //     console.log("Here's what went wrong: ", error.status);
-  //   });
   let [spaces, setSpaces] = useState([]);
+  // let [isAdmin, setIsAdmin] = useState(false);
 
-  // get all spaces
   useEffect(() => {
-    fetch(baseUrl + "spaces")
+    // get all spaces
+    fetch(baseUrl + 'spaces')
       .then((response) => response.json())
       .then((json) => setSpaces(json.data));
+
+    fetch(baseUrl + 'buildings')
+      .then((response) => response.json())
+      // .then((json) => console.log(json.data));
+      .then((json) => storeObj('buildings', JSON.stringify(json.data)));
   }, []);
 
   const [mapVisible, setMapVisible] = useState(false);
@@ -203,7 +196,7 @@ function ViewSpacesScreen({ navigation, route }) {
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.headingContainer}>
         <AppText customStyle={styles.title}>
-          View {route.params.viewUnapproved ? "Unapproved " : ""}Spaces
+          View {route.params.viewUnapproved ? 'Unapproved ' : ''}Spaces
         </AppText>
       </View>
 
@@ -220,7 +213,7 @@ function ViewSpacesScreen({ navigation, route }) {
       </View>
       {mapVisible && !route.params.viewUnapproved ? (
         <AppButton
-          title={mapVisible ? "List View" : "Map View"}
+          title={mapVisible ? 'List View' : 'Map View'}
           onPress={() => setMapVisible(!mapVisible)}
         />
       ) : (
@@ -233,22 +226,22 @@ function ViewSpacesScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 20,
     marginBottom: 40,
   },
   headingContainer: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   spaceListContainer: {
     flex: 1,
-    width: "90%",
+    width: '90%',
   },
   title: {
     fontSize: 30,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });
 
