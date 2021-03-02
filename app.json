@@ -2,13 +2,18 @@
   "expo": {
     "name": "Musallah",
     "icon": "./assets/images/icon-safari.png",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "slug": "Musallah",
     "orientation": "portrait",
     "owner": "musallah",
     "ios": {
       "bundleIdentifier": "com.seniordesigners.musallah",
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.3",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.86332169337-nagmpq99r18ib493bnegn2roilg7kcqg"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

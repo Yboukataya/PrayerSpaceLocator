@@ -5,6 +5,7 @@ import AppButton from '../components/AppButton';
 import 'localstorage-polyfill';
 
 import * as Google from 'expo-google-app-auth';
+import * as GoogleSignIn from 'expo-google-sign-in';
 import getEnvVars from '../environment';
 
 import { getMyObject, storeObj, storeData } from '../config/async-utils';
@@ -200,14 +201,48 @@ async function addUser(userName, userEmail) {
     });
 }
 
+initAsync = async () => {
+  await GoogleSignIn.initAsync({
+    // You may ommit the clientId when the firebase `googleServicesFile` is configured
+    clientId: '<YOUR_IOS_CLIENT_ID>',
+  });
+  this._syncUserWithStateAsync();
+};
+
+_syncUserWithStateAsync = async () => {
+  const user = await GoogleSignIn.signInSilentlyAsync();
+  this.setState({ user });
+};
+
+signInAsync = async () => {
+  try {
+    await GoogleSignIn.askForPlayServicesAsync();
+    const { type, user } = await GoogleSignIn.signInAsync();
+    if (type === 'success') {
+      this._syncUserWithStateAsync();
+    }
+  } catch ({ message }) {
+    alert('login: Error:' + message);
+  }
+};
+
 async function signInWithGoogleAsync(navigation, isExistingUser) {
   try {
+    await GoogleSignIn.initAsync({
+      clientId: IOS_AUTH_ID,
+    });
+
+    await GoogleSignIn.askForPlayServicesAsync();
+    const { type, userr } = await GoogleSignIn.signInAsync();
+
+    // OLD GOOGLE SIGN IN
+    /*
     const result = await Google.logInAsync({
       androidClientId: ANDROID_AUTH_ID,
       iosClientId: IOS_AUTH_ID,
+      behavior: 'web',
       scopes: ['profile', 'email'],
     });
-
     if (result.type === 'success') {
       console.log('accessToken: ' + result.accessToken);
       console.log('name: ' + result.user.name);
@@ -222,6 +257,23 @@ async function signInWithGoogleAsync(navigation, isExistingUser) {
       userName = result.user.givenName;
       userEmail = result.user.email;
       accessToken = result.user.accessToken;
+      */
+
+    if (type === 'success') {
+      console.log(userr);
+      // console.log('accessToken: ' + result.accessToken);
+      // console.log('name: ' + result.user.name);
+      // console.log('fName: ' + result.user.givenName);
+      // console.log('email: ' + result.user.email + '\n');
+      if (!userr.email.endsWith('upenn.edu')) {
+        console.log('error');
+        // signOutWithGoogleAsync();
+        throw 'Not a Penn email';
+      }
+
+      userName = userr.givenName;
+      userEmail = userr.email;
+      accessToken = userr.accessToken;
 
       // is this a user logging in?
       if (isExistingUser) {
@@ -230,10 +282,8 @@ async function signInWithGoogleAsync(navigation, isExistingUser) {
       } else {
         await addUser(userName, userEmail);
         // popup: great, go ahead and sign in
-        Alert.alert('Good 2 go', 'go ahead and sign in now!', [{ text: 'OK' }]);
+        Alert.alert('Good to go!', 'You are all set - go ahead and sign in now!', [{ text: 'OK' }]);
       }
-      // let  is_admin = await isAdmin(userEmail);
-      // console.log("navigatin");
 
       return result.accessToken;
     } else {

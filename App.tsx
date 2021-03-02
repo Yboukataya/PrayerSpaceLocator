@@ -53,6 +53,7 @@ function eventStack() {
       <Stack.Screen name='ViewEvents' component={ViewEventsScreen} />
       <Stack.Screen name='EventDetail' component={EventDetailScreen} />
       <Stack.Screen name='ViewEventsByBuilding' component={ViewEventsByBuildingScreen} />
+      <Stack.Screen name='AddEvent' component={AddEventScreen} />
     </Stack.Navigator>
   );
 }
@@ -72,6 +73,8 @@ function signedOutStack() {
   return (
     <Stack.Navigator initialRouteName='Landing' screenOptions={{ headerShown: false }}>
       <Stack.Screen name='Landing' component={LandingScreen} />
+      <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
+      <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
     </Stack.Navigator>
   );
 }
@@ -103,8 +106,6 @@ export default function App() {
             } else if (route.name === 'Spaces') {
               iconName = 'compass';
             }
-
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
@@ -121,26 +122,11 @@ export default function App() {
           </>
         ) : (
           <>
+            {/* <Tab.Screen name='Events' component={eventStack} /> */}
             <Tab.Screen name='Home' component={signedOutStack} />
           </>
         )}
       </Tab.Navigator>
-      {/* <Stack.Navigator
-        initialRouteName={isSignedIn ? 'Welcome' : 'Landing'}
-        screenOptions={{ headerShown: false }}
-      >
-        <Stack.Screen name='Landing' component={LandingScreen} />
-        <Stack.Screen name='AddEvent' component={AddEventScreen} />
-        <Stack.Screen name='Welcome' component={WelcomeScreen} />
-        <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
-        <Stack.Screen name='ViewEvents' component={ViewEventsScreen} />
-        <Stack.Screen name='Settings' component={Settings} />
-        <Stack.Screen name='AddSpace' component={AddSpaceScreen} />
-        <Stack.Screen name='EventDetail' component={EventDetailScreen} />
-        <Stack.Screen name='SentToApproval' component={SentToApprovalScreen} />
-        <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
-        <Stack.Screen name='ViewEventsByBuilding' component={ViewEventsByBuildingScreen} />
-      </Stack.Navigator> */}
     </NavigationContainer>
   );
 }

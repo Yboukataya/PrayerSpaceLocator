@@ -3,6 +3,7 @@ import { StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
 
 import AppEventList from '../components/AppEventList';
 import AppBuildingEvents from '../components/AppBuildingEvents';
+import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import 'localstorage-polyfill';
@@ -81,7 +82,6 @@ function ViewEventsScreen({ navigation, route }) {
   useEffect(() => {
     // Load events from the database
     let today = new Date().toISOString().substr(0, 10);
-    today = '2021-03-25';
     const fetchData = async () => {
       await fetch(baseUrl + `events-today?Date=${today}`)
         .then((response) => response.json())
@@ -134,6 +134,11 @@ function ViewEventsScreen({ navigation, route }) {
                 myEventsState={myEventsState}
               />
             </View>
+            <AppButton
+              title='Create New Event'
+              onPress={() => navigation.navigate('AddEvent')}
+              customStyle={styles.editBtn}
+            ></AppButton>
           </>
         )}
       </View>
