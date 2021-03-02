@@ -31,10 +31,11 @@ async function createEvent(event) {
   });
 }
 
-function AppSpaceListing({ event, myEventsState }) {
+function AppEventListing({ event, myEventsState }) {
   let [spaceName, setSpaceName] = useState('');
   let [bldgName, setBldgName] = useState('');
   let [userId, setUserId] = useState(-1);
+  let [numGoing, setNumGoing] = useState(-1);
 
   useEffect(() => {
     const getCal = async () => {
@@ -45,6 +46,14 @@ function AppSpaceListing({ event, myEventsState }) {
     };
     getCal();
     let bldgId = -1;
+
+    // Get the number of ppl going to this event
+    fetch(baseUrl + `eventAttendeesPerEvent?Eventid=${event.Eventid}`)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        setNumGoing(json.data.length);
+      });
 
     // Get the name of the space using the space ID
     fetch(baseUrl + `space?Spaceid=${event.Space}`)
@@ -91,7 +100,7 @@ function AppSpaceListing({ event, myEventsState }) {
       {/* buttons on the right */}
       <View style={styles.buttonsContainer}>
         <View style={styles.pplGoingStyleView}>
-          <AppText style={styles.pplGoingStyle}>3 going</AppText>
+          <AppText style={styles.pplGoingStyle}>{numGoing} going</AppText>
         </View>
 
         <TouchableOpacity
@@ -201,4 +210,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppSpaceListing;
+export default AppEventListing;
