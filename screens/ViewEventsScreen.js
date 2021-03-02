@@ -73,8 +73,9 @@ function ViewEventsScreen({ navigation, route }) {
   };
 
   useEffect(() => {
+    let today = new Date().toISOString().substr(0, 10);
     const fetchData = async () => {
-      await fetch(baseUrl + 'events')
+      await fetch(baseUrl + `events-today?Date=${today}`)
         .then((response) => response.json())
         .then((json) => {
           setEvents(json.data);
