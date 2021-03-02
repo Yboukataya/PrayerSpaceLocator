@@ -22,11 +22,59 @@ import EventDetailScreen from './screens/EventDetailScreen.js';
 import ViewEventsByBuildingScreen from './screens/ViewEventsByBuildingScreen';
 import ViewEventsScreen from './screens/ViewEventsScreen';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getMyObject, storeObj, clearAll } from './config/async-utils';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+function signedInStack() {
+  return (
+    <Stack.Navigator initialRouteName='Welcome' screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='Landing' component={LandingScreen} />
+      <Stack.Screen name='AddEvent' component={AddEventScreen} />
+      <Stack.Screen name='Welcome' component={WelcomeScreen} />
+      <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
+      <Stack.Screen name='ViewEvents' component={ViewEventsScreen} />
+      <Stack.Screen name='Settings' component={Settings} />
+      <Stack.Screen name='AddSpace' component={AddSpaceScreen} />
+      <Stack.Screen name='EventDetail' component={EventDetailScreen} />
+      <Stack.Screen name='SentToApproval' component={SentToApprovalScreen} />
+      <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
+      <Stack.Screen name='ViewEventsByBuilding' component={ViewEventsByBuildingScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function eventStack() {
+  return (
+    <Stack.Navigator initialRouteName='ViewEvents' screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='ViewEvents' component={ViewEventsScreen} />
+      <Stack.Screen name='EventDetail' component={EventDetailScreen} />
+      <Stack.Screen name='ViewEventsByBuilding' component={ViewEventsByBuildingScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function spaceStack() {
+  return (
+    <Stack.Navigator initialRouteName='ViewSpaces' screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
+      <Stack.Screen name='AddSpace' component={AddSpaceScreen} />
+      <Stack.Screen name='SentToApproval' component={SentToApprovalScreen} />
+      <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function signedOutStack() {
+  return (
+    <Stack.Navigator initialRouteName='Landing' screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='Landing' component={LandingScreen} />
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   let [isSignedIn, setSignedIn] = useState(false);
@@ -41,13 +89,43 @@ export default function App() {
     // checkSignin();
   }, []);
 
-  // just for testing
-  // setSignedIn(false);
-  // const isSignedIn = false;
-
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Events') {
+              iconName = 'calendar';
+            } else if (route.name === 'Spaces') {
+              iconName = 'compass';
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: 'tomato',
+          inactiveTintColor: 'gray',
+        }}
+      >
+        {isSignedIn ? (
+          <>
+            <Tab.Screen name='Home' component={signedInStack} />
+            <Tab.Screen name='Spaces' component={spaceStack} />
+            <Tab.Screen name='Events' component={eventStack} />
+          </>
+        ) : (
+          <>
+            <Tab.Screen name='Home' component={signedOutStack} />
+          </>
+        )}
+      </Tab.Navigator>
+      {/* <Stack.Navigator
         initialRouteName={isSignedIn ? 'Welcome' : 'Landing'}
         screenOptions={{ headerShown: false }}
       >
@@ -62,7 +140,7 @@ export default function App() {
         <Stack.Screen name='SentToApproval' component={SentToApprovalScreen} />
         <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
         <Stack.Screen name='ViewEventsByBuilding' component={ViewEventsByBuildingScreen} />
-      </Stack.Navigator>
+      </Stack.Navigator> */}
     </NavigationContainer>
   );
 }
