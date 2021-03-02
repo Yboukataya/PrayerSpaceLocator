@@ -10,8 +10,8 @@ import getEnvVars from '../environment';
 import { getMyObject, storeObj, storeData } from '../config/async-utils';
 
 const IOS_AUTH_ID = '86332169337-nagmpq99r18ib493bnegn2roilg7kcqg.apps.googleusercontent.com';
+const ANDROID_AUTH_ID = '86332169337-1vfr1qn2eqr4m0h0jh9a0pp1q5d97a7k.apps.googleusercontent.com';
 // TODO: set android in environment.js
-//const ANDROID_AUTH_ID = getEnvVars().android_auth_key;
 let userName = '';
 let userEmail = '';
 let accessToken = '';
@@ -203,7 +203,7 @@ async function addUser(userName, userEmail) {
 async function signInWithGoogleAsync(navigation, isExistingUser) {
   try {
     const result = await Google.logInAsync({
-      androidClientId: 'TODO',
+      androidClientId: ANDROID_AUTH_ID,
       iosClientId: IOS_AUTH_ID,
       scopes: ['profile', 'email'],
     });
