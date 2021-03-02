@@ -184,19 +184,23 @@ async function findUser(userName, userEmail, isAdmin) {
     })
     .catch((e) => {
       console.log('ERRERRERR:\n', e);
-      // fetch(`${baseUrl}user?Name=${userName}&Email=${userEmail}&Photo=""&Isadmin=0`, {
-      //   method: 'POST',
-      // })
-      //   // .then((response) => response.json())
-      //   .then((response) => {
-      //     console.log(response);
-      //     true;
-      //   });
-      // .then((json) => console.log('JSONNNN\n', json));
     });
 }
 
-async function signInWithGoogleAsync(navigation) {
+async function addUser(userName, userEmail) {
+  await fetch(baseUrl + `users?Name=${userName}&Email=${userEmail}&Photo=&Isadmin=0`, {
+    method: 'POST',
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      console.log('okie dokie');
+    })
+    .catch((e) => {
+      console.log('ERRERRERR:\n', e);
+    });
+}
+
+async function signInWithGoogleAsync(navigation, isExistingUser) {
   try {
     const result = await Google.logInAsync({
       androidClientId: 'TODO',
@@ -219,13 +223,18 @@ async function signInWithGoogleAsync(navigation) {
       userEmail = result.user.email;
       accessToken = result.user.accessToken;
 
-      // console.log("about to find user");
-      // create function to check if user exists in db, this is a waste but ok for demo
-      await findUser(userName, userEmail);
+      // is this a user logging in?
+      if (isExistingUser) {
+        await findUser(userName, userEmail);
+        navigation.navigate('Welcome', { email: userEmail });
+      } else {
+        await addUser(userName, userEmail);
+        // popup: great, go ahead and sign in
+        Alert.alert('Good 2 go', 'go ahead and sign in now!', [{ text: 'OK' }]);
+      }
       // let  is_admin = await isAdmin(userEmail);
       // console.log("navigatin");
-      navigation.navigate('Welcome', { email: userEmail });
-      // console.log("OK");
+
       return result.accessToken;
     } else {
       Alert.alert('Login Error', "Hmm, looks like your login didn't go through :(", [
@@ -252,7 +261,13 @@ function LandingScreen({ navigation }) {
 
       <AppButton
         title='Login'
-        onPress={() => signInWithGoogleAsync(navigation)}
+        onPress={() => signInWithGoogleAsync(navigation, true)}
+        customStyle={styles.editBtn}
+      ></AppButton>
+
+      <AppButton
+        title='Sign up!'
+        onPress={() => signInWithGoogleAsync(navigation, false)}
         customStyle={styles.editBtn}
       ></AppButton>
 

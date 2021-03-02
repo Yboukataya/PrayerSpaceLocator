@@ -200,7 +200,7 @@ function WelcomeScreen({ navigation, route }) {
     // });
 
     getMyObject('user').then(function (value) {
-      console.log('VALUE | ', value);
+      // console.log('VALUE | ', value);
       setUser(value);
       setIsAdmin(value.is_admin == 1);
     });

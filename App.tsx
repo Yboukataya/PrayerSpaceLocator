@@ -32,13 +32,13 @@ export default function App() {
   let [isSignedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
-    // clearAll();
-    async function checkSignin() {
-      await getMyObject('user').then(function (value) {
-        setSignedIn(value !== null);
-      });
-    }
-    checkSignin();
+    clearAll();
+    // async function checkSignin() {
+    //   await getMyObject('user').then(function (value) {
+    //     setSignedIn(value !== null);
+    //   });
+    // }
+    // checkSignin();
   }, []);
 
   // just for testing
