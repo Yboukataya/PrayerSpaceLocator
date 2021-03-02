@@ -73,7 +73,11 @@ export default function App() {
         {isSignedIn ? (
           <>
             <Tab.Screen name='Home' component={signedInStack} />
-            <Tab.Screen name='Spaces' component={ViewSpacesScreen} />
+            <Tab.Screen
+              name='Spaces'
+              component={ViewSpacesScreen}
+              props={...(props, (viewUnapproved = false))}
+            />
             <Tab.Screen name='Events' component={ViewEventsScreen} />
           </>
         ) : (
