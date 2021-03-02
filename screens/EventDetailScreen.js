@@ -29,7 +29,16 @@ export default function EventDetailScreen({ route }) {
         <AppSpaceDetail space={route.params.event} detailTitle='Space' detailKey='selectedSpace' />
         {/* TODO: combine date/time into one entry below */}
         <AppSpaceDetail space={route.params.event} detailTitle='Date' detailKey='date' />
-        <AppSpaceDetail space={route.params.event} detailTitle='Time' detailKey='time' />
+
+        <View style={styles.detailEntry}>
+          <AppText>
+            <AppText customStyle={styles.detailTitleStyle}>Time: </AppText>
+            {route.params.event.time.getHours() +
+              ':' +
+              (route.params.event.time.getMinutes() < 10 ? '0' : '') +
+              route.params.event.time.getMinutes()}
+          </AppText>
+        </View>
       </View>
       <View style={styles.btnContainer}></View>
       {/* <AppButton title="Update"  onPress={() => navigation.navigate("AddSpace", {existingSpace: route.params.space})}/> */}
@@ -53,6 +62,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
     marginBottom: 10,
+  },
+  detailEntry: {
+    marginBottom: 20,
+  },
+  detailTitleStyle: {
+    fontWeight: 'bold',
   },
   editBtn: {
     width: '50%',

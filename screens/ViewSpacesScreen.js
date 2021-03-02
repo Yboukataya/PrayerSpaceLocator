@@ -177,6 +177,9 @@ initMap = async () => {
 function ViewSpacesScreen({ navigation, route }) {
   let [spaces, setSpaces] = useState([]);
   // let [isAdmin, setIsAdmin] = useState(false);
+  console.log(route.params);
+  // let viewUnapproved = route.params.viewUnapproved ? route.params.viewUnapproved : false;
+  let viewUnapproved = false;
 
   useEffect(() => {
     // get all spaces
@@ -195,22 +198,22 @@ function ViewSpacesScreen({ navigation, route }) {
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.headingContainer}>
         <AppText customStyle={styles.title}>
-          View {route.params.viewUnapproved ? 'Unapproved ' : ''}Spaces
+          View {viewUnapproved ? 'Unapproved ' : ''}Spaces
         </AppText>
       </View>
 
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
         {/* Always hide map view if an admin is here to look at unapproved */}
-        {mapVisible && !route.params.viewUnapproved ? (
+        {mapVisible && !viewUnapproved ? (
           <AppMapView locations={locationsMap} props={(navigation, route)} />
         ) : (
           <View style={styles.spaceListContainer}>
-            <AppSpaceList locations={spaces} viewUnapproved={route.params.viewUnapproved} />
+            <AppSpaceList locations={spaces} viewUnapproved={viewUnapproved} />
           </View>
         )}
       </View>
-      {mapVisible && !route.params.viewUnapproved ? (
+      {mapVisible && !viewUnapproved ? (
         <AppButton
           title={mapVisible ? 'List View' : 'Map View'}
           onPress={() => setMapVisible(!mapVisible)}
