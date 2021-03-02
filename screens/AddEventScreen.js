@@ -71,7 +71,7 @@ export default function AddEventScreen({ navigation, route }) {
             eventTime.getMinutes()
           );
 
-          // get all spaces
+          // endpoint for adding new event
           let addUrl = baseUrl + 'events?';
           addUrl += `Name=${encodeURIComponent(values.eventName)}&`;
           addUrl += `Date=${encodeURIComponent(save_date.toISOString())}&`;

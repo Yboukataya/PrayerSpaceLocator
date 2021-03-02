@@ -69,6 +69,8 @@ function ViewEventsScreen({ navigation, route }) {
 
   // For toggle at the top of screen
   const [viewMyEventsOnly, setViewMyEventsOnly] = useState(false);
+
+  // Events state
   const [events, setEvents] = useState([]);
 
   // When hitting the "View my events only", only render as visible the events where we are going
