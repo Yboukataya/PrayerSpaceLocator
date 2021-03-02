@@ -1,11 +1,11 @@
-import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import React from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
 
-import AppBuildingListing from "./AppBuildingListing";
-import ListItemSeparator from "./ListItemSeparator";
-import Screen from "./Screen";
+import AppBuildingListing from './AppBuildingListing';
+import ListItemSeparator from './ListItemSeparator';
+import Screen from './Screen';
 
 function AppBuildingList({ buildings, events }) {
   // console.log("hi");
@@ -18,18 +18,19 @@ function AppBuildingList({ buildings, events }) {
         renderItem={({ item }) => (
           <AppBuildingListing
             building={item}
-            events={events.filter(event => event.building === item.name)}
-          />        )}
+            events={events.filter((event) => event.building === item.name)}
+          />
+        )}
       />
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
+    justifyContent: 'center',
     marginTop: 20,
     marginBottom: 40,
-    width: "100%",
+    width: '100%',
   },
 });
 

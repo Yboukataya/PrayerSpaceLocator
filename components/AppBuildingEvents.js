@@ -10,36 +10,31 @@ function AppBuildingEvents({ events }) {
   let [dataBuildings, setBuildings] = useState([]);
   let buildings = [];
 
+  let [eventsPerBuilding, setEventsPerBuilding] = useState({});
+
   useEffect(() => {
-    fetch(baseUrl + 'buildings')
-      .then((response) => response.json())
-      .then((json) => {
-        setBuildings(json.data);
-      });
+    async function getBuildings() {
+      await fetch(baseUrl + 'buildings')
+        .then((response) => response.json())
+        .then((json) => {
+          setBuildings(json.data);
+        });
+    }
+    getBuildings();
   }, []);
 
-  dataBuildings.forEach(function (b) {
+  dataBuildings.forEach(async function (b) {
     let bldgEntry = {
       name: b.Name,
-      numEvents: b.Buildingid,
+      Buildingid: b.Buildingid,
+      // numEvents: eventsPerBuilding[b.Buildingid],
     };
     buildings.push(bldgEntry);
   });
 
-  buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
+  console.log(eventsPerBuilding);
 
-  // let buildings = [];
-  // for (const [name] of Object.entries(PennBuildings)) {
-  //   let bldgName = name;
-  //   let bldg = {
-  //     name: bldgName,
-  //     // TODO: assign this based on number of events happening in the building
-  //     // JS to count number of events where bldgName matches building of space on the event
-  //     numEvents: 5,
-  //   };
-  //   buildings.push(bldg);
-  // }
-  // buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
+  buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
 
   return (
     <View style={styles.container}>
