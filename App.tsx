@@ -23,7 +23,7 @@ import ViewEventsByBuildingScreen from './screens/ViewEventsByBuildingScreen';
 import ViewEventsScreen from './screens/ViewEventsScreen';
 
 // import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getMyObject, storeObj } from '../config/async-utils';
+import { getMyObject, storeObj, clearAll } from './config/async-utils';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -31,12 +31,12 @@ const Stack = createStackNavigator();
 export default function App() {
   // let [isSignedIn, setSignedIn] = useState(false);
 
-  // useEffect(() => {
-  //   // clearAll();
-  //   getData("isSignedIn").then(function (value) {
-  //     setSignedIn(value == "true");
-  //   });
-  // }, []);
+  useEffect(() => {
+    clearAll();
+    // getData("isSignedIn").then(function (value) {
+    //   setSignedIn(value == "true");
+    // });
+  }, []);
 
   // just for testing
   // setSignedIn(false);

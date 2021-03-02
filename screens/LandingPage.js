@@ -171,7 +171,7 @@ async function signOutWithGoogleAsync() {
   await Google.logOutAsync();
 }
 
-async function findUser(userEmail, isAdmin) {
+async function findUser(userName, userEmail, isAdmin) {
   await fetch(baseUrl + `user?Email=${userEmail}`)
     .then((response) => response.json())
     .then((json) => {
@@ -181,6 +181,18 @@ async function findUser(userEmail, isAdmin) {
         userId: json.data[0].Userid,
         userName: json.data[0].Name,
       });
+    })
+    .catch((e) => {
+      console.log('ERRERRERR:\n', e);
+      // fetch(`${baseUrl}user?Name=${userName}&Email=${userEmail}&Photo=""&Isadmin=0`, {
+      //   method: 'POST',
+      // })
+      //   // .then((response) => response.json())
+      //   .then((response) => {
+      //     console.log(response);
+      //     true;
+      //   });
+      // .then((json) => console.log('JSONNNN\n', json));
     });
 }
 
@@ -209,7 +221,7 @@ async function signInWithGoogleAsync(navigation) {
 
       // console.log("about to find user");
       // create function to check if user exists in db, this is a waste but ok for demo
-      await findUser(userEmail);
+      await findUser(userName, userEmail);
       // let  is_admin = await isAdmin(userEmail);
       // console.log("navigatin");
       navigation.navigate('Welcome', { email: userEmail });
