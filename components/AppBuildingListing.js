@@ -13,10 +13,11 @@ import { baseUrl } from '../config/backend-config';
  * @param {*} param0
  */
 
-function AppBuildingListing({ building, events }) {
+function AppBuildingListing({ building, myEventsState }) {
   // console.log("APPSPACELISTINGPROPS\n", papaProps);
   const navigation = useNavigation();
   let [numEvents, setNumEvents] = useState(0);
+  let [zaEvents, setZaEvents] = useState([]);
 
   useEffect(() => {
     // get count of events in each building
@@ -24,7 +25,8 @@ function AppBuildingListing({ building, events }) {
       .then((response) => response.json())
       .then((json) => {
         // let x =
-        setNumEvents(json.data[0]['count(*)']);
+        setNumEvents(json.data.length);
+        setZaEvents(json.data);
       });
   });
 
@@ -45,7 +47,8 @@ function AppBuildingListing({ building, events }) {
           onPress={() =>
             navigation.navigate('ViewEventsByBuilding', {
               building: building.name,
-              events: events,
+              events: zaEvents,
+              myEventsState: myEventsState,
             })
           }
         >

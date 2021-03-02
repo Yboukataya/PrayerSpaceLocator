@@ -7,7 +7,7 @@ import AppBuildingListing from './AppBuildingListing';
 import ListItemSeparator from './ListItemSeparator';
 import Screen from './Screen';
 
-function AppBuildingList({ buildings, events }) {
+function AppBuildingList({ buildings, events, myEventsState }) {
   // console.log("hi");
   // console.log(buildings);
   return (
@@ -19,6 +19,7 @@ function AppBuildingList({ buildings, events }) {
           <AppBuildingListing
             building={item}
             events={events.filter((event) => event.building === item.name)}
+            myEventsState={myEventsState}
           />
         )}
       />

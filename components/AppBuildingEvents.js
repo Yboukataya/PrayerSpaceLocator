@@ -6,7 +6,7 @@ import 'localstorage-polyfill';
 import { PennBuildings } from '../constants/Buildings.js';
 import { baseUrl } from '../config/backend-config';
 
-function AppBuildingEvents({ events }) {
+function AppBuildingEvents({ events, myEventsState }) {
   let [dataBuildings, setBuildings] = useState([]);
   let buildings = [];
 
@@ -27,19 +27,16 @@ function AppBuildingEvents({ events }) {
     let bldgEntry = {
       name: b.Name,
       Buildingid: b.Buildingid,
-      // numEvents: eventsPerBuilding[b.Buildingid],
     };
     buildings.push(bldgEntry);
   });
-
-  console.log(eventsPerBuilding);
 
   buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
 
   return (
     <View style={styles.container}>
       <View style={styles.buildingListContainer}>
-        <AppBuildingList buildings={buildings} events={events} />
+        <AppBuildingList buildings={buildings} events={events} myEventsState={myEventsState} />
       </View>
     </View>
   );

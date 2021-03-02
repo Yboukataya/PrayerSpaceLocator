@@ -117,7 +117,7 @@ function ViewEventsScreen({ navigation, route }) {
       {/* Toggle switch for my events only / all events */}
       <View style={styles.container}>
         {viewByBuilding ? (
-          <AppBuildingEvents events={events} otherProps={(navigation, route)} />
+          <AppBuildingEvents events={events} myEventsState={myEventsState} />
         ) : (
           <>
             <View style={styles.switchContainer}>
