@@ -29,18 +29,21 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
-  // let [isSignedIn, setSignedIn] = useState(false);
+  let [isSignedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
-    clearAll();
-    // getData("isSignedIn").then(function (value) {
-    //   setSignedIn(value == "true");
-    // });
+    // clearAll();
+    async function checkSignin() {
+      await getMyObject('user').then(function (value) {
+        setSignedIn(value !== null);
+      });
+    }
+    checkSignin();
   }, []);
 
   // just for testing
   // setSignedIn(false);
-  const isSignedIn = false;
+  // const isSignedIn = false;
 
   return (
     <NavigationContainer>
@@ -48,8 +51,6 @@ export default function App() {
         initialRouteName={isSignedIn ? 'Welcome' : 'Landing'}
         screenOptions={{ headerShown: false }}
       >
-        {/* {isSignedIn ? (
-        <> */}
         <Stack.Screen name='Landing' component={LandingScreen} />
         <Stack.Screen name='AddEvent' component={AddEventScreen} />
         <Stack.Screen name='Welcome' component={WelcomeScreen} />
@@ -61,18 +62,6 @@ export default function App() {
         <Stack.Screen name='SentToApproval' component={SentToApprovalScreen} />
         <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
         <Stack.Screen name='ViewEventsByBuilding' component={ViewEventsByBuildingScreen} />
-        {/* </> */}
-        {/* ) : ( */}
-        {/* <> */}
-        {/* For not signed-in users
-            <Stack.Screen name="AddEvent" component={AddEventScreen} />
-
-            
-            <Stack.Screen name="Welcome" component={WelcomeScreen} />
-            <Stack.Screen name="ViewSpaces" component={ViewSpacesScreen} />
-            <Stack.Screen name="SpaceDetail" component={SpaceDetailScreen} />
-          </>
-        )} */}
       </Stack.Navigator>
     </NavigationContainer>
   );
