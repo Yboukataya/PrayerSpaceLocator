@@ -30,3 +30,19 @@ export const storeData = async (key, value) => {
     // saving error
   }
 };
+
+export const clearAll = async () => {
+  try {
+    await AsyncStorage.clear();
+  } catch (e) {
+    // clear error
+  }
+};
+
+export const getData = async (key) => {
+  try {
+    return await AsyncStorage.getItem(String(key));
+  } catch (e) {
+    // error reading value
+  }
+};

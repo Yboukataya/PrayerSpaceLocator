@@ -61,9 +61,13 @@ let eventsN = [
 ];
 
 function ViewEventsScreen({ navigation, route }) {
+  // Which view appears?
   const [viewByBuilding, setViewByBuilding] = useState(false);
+
+  // Events that I am going to (on the frontend)
   const myEventsState = useState([]);
 
+  // For toggle at the top of screen
   const [viewMyEventsOnly, setViewMyEventsOnly] = useState(false);
   const [events, setEvents] = useState([]);
 
@@ -73,7 +77,9 @@ function ViewEventsScreen({ navigation, route }) {
   };
 
   useEffect(() => {
+    // Load events from the database
     let today = new Date().toISOString().substr(0, 10);
+    today = '2021-03-25';
     const fetchData = async () => {
       await fetch(baseUrl + `events-today?Date=${today}`)
         .then((response) => response.json())

@@ -96,7 +96,10 @@ function AppSpaceListing({ event, myEventsState }) {
 
         <TouchableOpacity
           style={styles.btnViewEvent}
-          onPress={() =>
+          onPress={() => {
+            fetch(baseUrl + `incrementEventViews?Eventid=${event.Eventid}`, {
+              method: 'PUT',
+            });
             navigation.navigate('EventDetail', {
               event: {
                 eventName: event.Name,
@@ -105,8 +108,8 @@ function AppSpaceListing({ event, myEventsState }) {
                 date: event.Date.toDateString(),
                 time: event.Date.getHours() + ':' + event.Date.getMinutes(),
               },
-            })
-          }
+            });
+          }}
         >
           <Text style={styles.btnText}>View Event</Text>
         </TouchableOpacity>

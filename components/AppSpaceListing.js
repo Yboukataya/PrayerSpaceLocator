@@ -1,11 +1,12 @@
-import React from "react";
+import React from 'react';
 
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
+import { baseUrl } from '../config/backend-config';
 
-import AppText from "./AppText";
+import AppText from './AppText';
 
 /**
  * This component defines how each prayer space in the list on the View Spaces
@@ -19,7 +20,7 @@ function AppSpaceListing({ space, viewUnapproved }) {
     <View style={styles.listingContainer}>
       {/* for the text information */}
       <View>
-        <AppText customStyle={{ flex: 1, width: "100%", borderColor: "blue" }}>
+        <AppText customStyle={{ flex: 1, width: '100%', borderColor: 'blue' }}>
           {space.Name} {/* <AppText customStyle={styles.distStyle}> {distance}</AppText> */}
         </AppText>
         <AppText customStyle={styles.capacityStyle}>Capacity: {space.Capacity}</AppText>
@@ -28,14 +29,17 @@ function AppSpaceListing({ space, viewUnapproved }) {
       {/* for the icon */}
       <View>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("SpaceDetail", {
+          onPress={() => {
+            fetch(baseUrl + `incrementSpaceViews?Spaceid=${space.Spaceid}`, {
+              method: 'PUT',
+            });
+            navigation.navigate('SpaceDetail', {
               space: space,
               viewUnapproved: viewUnapproved,
-            })
-          }
+            });
+          }}
         >
-          <AntDesign name="rightcircle" size={40} />
+          <AntDesign name='rightcircle' size={40} />
         </TouchableOpacity>
       </View>
     </View>
@@ -45,15 +49,15 @@ function AppSpaceListing({ space, viewUnapproved }) {
 const styles = StyleSheet.create({
   //   alternateRow: {},
   capacityStyle: {
-    color: "goldenrod",
+    color: 'goldenrod',
   },
   distStyle: {
-    color: "green",
+    color: 'green',
   },
   listingContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     marginTop: 10,
     marginBottom: 10,
   },
