@@ -1,27 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import AppSpaceListing from './AppSpaceListing';
+import AppEventListing from './AppEventListing';
 import ListItemSeparator from './ListItemSeparator';
 import Screen from './Screen';
 
-/**
- * This component defines a list of prayer spaces for the View Spaces page.
- * It uses the AppSpaceListing component to render each individual space in
- * the table.
- * @param {*} props
- */
-
-function AppSpaceList({ locations, viewUnapproved }) {
+function AppEventList({ events, myEventsState }) {
+  const [refreshing, setRefreshing] = useState(false);
   return (
     <View style={styles.container}>
       <FlatList
-        data={locations.filter((l) => (viewUnapproved ? l.Approval == 0 : l.Approval == 1))}
+        data={events}
         keyExtractor={(listing) => listing.Name}
-        renderItem={({ item }) => <AppSpaceListing space={item} viewUnapproved={viewUnapproved} />}
+        renderItem={({ item }) => <AppEventListing event={item} myEventsState={myEventsState} />}
         ItemSeparatorComponent={ListItemSeparator}
+        refreshing={refreshing}
+        onRefresh={() => console.log('ayy')}
       />
     </View>
   );
@@ -35,4 +31,4 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
-export default AppSpaceList;
+export default AppEventList;

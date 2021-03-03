@@ -38,15 +38,13 @@ function TabNavigator(props) {
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
       })}
+      
       tabBarOptions={{
         activeTintColor: "tomato",
         inactiveTintColor: "gray",
       }}
     >
       <Tab.Screen name="Home" component={HomeNavigator} />
-      {/* TODO: should we keep this tab? Kind of complicates navigation */}
-      {/* <Tab.Screen name="Spaces" component={ListViewScreen} /> */}
-      {/* <Tab.Screen name="Settings" component={ListViewScreen} /> */}
     </Tab.Navigator>
   );
 }

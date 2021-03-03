@@ -1,43 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 
 import { useNavigation } from '@react-navigation/native';
-import { baseUrl } from '../config/backend-config';
 
 import AppText from './AppText';
-
+import { baseUrl } from '../config/backend-config';
 /**
  * This component defines how each prayer space in the list on the View Spaces
  * screen is rendered.
  * @param {*} param0
  */
 
-function AppSpaceListing({ space, viewUnapproved }) {
+function AppBuildingListing({ building, myEventsState }) {
+  // console.log("APPSPACELISTINGPROPS\n", papaProps);
   const navigation = useNavigation();
+  let [numEvents, setNumEvents] = useState(0);
+  let [zaEvents, setZaEvents] = useState([]);
+
+  useEffect(() => {
+    // get count of events in each building
+    fetch(baseUrl + 'eventsByBuilding?Buildingid=' + building.Buildingid)
+      .then((response) => response.json())
+      .then((json) => {
+        // let x =
+        setNumEvents(json.data.length);
+        setZaEvents(json.data);
+      });
+  });
+
   return (
     <View style={styles.listingContainer}>
       {/* for the text information */}
       <View>
         <AppText customStyle={{ flex: 1, width: '100%', borderColor: 'blue' }}>
-          {space.Name} {/* <AppText customStyle={styles.distStyle}> {distance}</AppText> */}
+          {building.name}
         </AppText>
-        <AppText customStyle={styles.capacityStyle}>Capacity: {space.Capacity}</AppText>
+        <AppText customStyle={styles.capacityStyle}>{numEvents} events today</AppText>
       </View>
 
       {/* for the icon */}
       <View>
+        {/* TODO Fix icon to go to a page with all events in that building */}
         <TouchableOpacity
-          onPress={() => {
-            fetch(baseUrl + `incrementSpaceViews?Spaceid=${space.Spaceid}`, {
-              method: 'PUT',
-            });
-            navigation.navigate('SpaceDetail', {
-              space: space,
-              viewUnapproved: viewUnapproved,
-            });
-          }}
+          onPress={() =>
+            navigation.navigate('ViewEventsByBuilding', {
+              building: building.name,
+              events: zaEvents,
+              myEventsState: myEventsState,
+            })
+          }
         >
           <AntDesign name='rightcircle' size={40} />
         </TouchableOpacity>
@@ -63,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppSpaceListing;
+export default AppBuildingListing;

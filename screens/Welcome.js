@@ -1,12 +1,16 @@
-import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import * as firebase from "firebase";
-import AppText from "../components/AppText";
-import AppButton from "../components/AppButton";
-import SyncStorage from "sync-storage";
-import "localstorage-polyfill";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
+import SyncStorage from 'sync-storage';
+import 'localstorage-polyfill';
 global.localStorage;
-import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// import { backendApi } from "../config/backend-config";
+
+import axios from 'axios';
 
 // const get_spaces = async () => {
 //   let res = await axios({
@@ -133,7 +137,7 @@ import axios from "axios";
 
 // MOVE THIS TO THE LOCATION SCREEN WITH NABEEL TOMORROW ET.
 const get_user_location = async () => {
-  if ("geolocation" in navigator) {
+  if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         // console.log(
@@ -157,60 +161,98 @@ const get_user_location = async () => {
   }
 };
 
-function WelcomeScreen(props) {
-  one = 2048;
-  // console.log("WelcomeScreen: ", props);
+const getData = async (key) => {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      // value previously stored
+      // return value;
+      return value;
+    }
+  } catch (e) {
+    // error reading value
+  }
+};
+const getMyObject = async (key) => {
+  try {
+    const jsonValue = await AsyncStorage.getItem(String(key));
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    // read error
+  }
+
+  console.log('Done.');
+};
+
+function WelcomeScreen({ navigation, route }) {
+  // console.log(navigation);
+
+  // TODO: get this from async storage
+  // let is_signed_in =
+  let [isSignedIn, setSignedIn] = useState('');
+  let [user, setUser] = useState({});
+
+  let [is_admin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // getData("isSignedIn").then(function (value) {
+    //   setSignedIn(value);
+    // });
+
+    getMyObject('user').then(function (value) {
+      // console.log('VALUE | ', value);
+      setUser(value);
+      setIsAdmin(value.is_admin == 1);
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome</AppText>
-      <AppText customStyle={styles.titleOne}>
-        {props.route.params.userName.userName}!
-      </AppText>
+      <AppText customStyle={styles.titleOne}>{user.userName}</AppText>
 
       <AppButton
-        title="Add a new Prayer Space"
-        onPress={() => props.navigation.navigate("AddSpace")}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
+        title='Add a new Prayer Space'
+        onPress={() =>
+          navigation.navigate('AddSpace', {
+            // Not updating an existing space here
+            existingSpace: undefined,
+          })
+        }
+        customStyle={styles.editBtn}
+      ></AppButton>
+      <AppButton
+        title='Add new Event'
+        onPress={() => navigation.navigate('AddEvent')}
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
-        title="List of Prayer Spaces"
+        title='List of Prayer Spaces'
         onPress={() => {
-          // initMap();
-          // get_user_location();
-          props.navigation.navigate("ViewSpaces");
+          navigation.navigate('ViewSpaces', {
+            viewUnapproved: false,
+          });
         }}
-        // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-        //   console.log(
-        //     props.navigation.goBack.equals(
-        //       props.navigation.navigate("MapView")
-        //     )
-        //   )
-        // }
-        // onPress={() => props.navigation.popToTop()}
         customStyle={styles.editBtn}
       ></AppButton>
 
-      {props.route.params.is_admin.is_admin && (
+      <AppButton
+        title='View Events'
+        onPress={() => {
+          navigation.navigate('ViewEvents');
+        }}
+        customStyle={styles.editBtn}
+      ></AppButton>
+
+      {is_admin && (
         <AppButton
-          title="Approval needed"
-          onPress={() => navigation.navigate("MapView")}
-          // if (props.route.params.source == "add") props.navigation.popToTop() else props.navigation.pop())
-          //   console.log(
-          //     props.navigation.goBack.equals(
-          //       props.navigation.navigate("MapView")
-          //     )
-          //   )
-          // }
-          // onPress={() => props.navigation.popToTop()}
+          title='Approval needed'
+          onPress={() =>
+            navigation.navigate('ViewSpaces', {
+              viewUnapproved: true,
+            })
+          }
           customStyle={styles.editBtn}
         ></AppButton>
       )}
@@ -221,25 +263,25 @@ function WelcomeScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 40,
-    fontWeight: "600",
-    alignItems: "center",
-    justifyContent: "center",
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   titleOne: {
     fontSize: 48,
-    fontWeight: "600",
-    alignItems: "center",
-    justifyContent: "center",
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   editBtn: {
-    width: "80%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

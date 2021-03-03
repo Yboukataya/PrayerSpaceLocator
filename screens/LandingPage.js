@@ -1,23 +1,22 @@
-import React from "react";
-import { Alert, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import * as firebase from "firebase";
-import AppText from "../components/AppText";
-import AppButton from "../components/AppButton";
+import React from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
+import 'localstorage-polyfill';
 
-import SyncStorage from "sync-storage";
-import "localstorage-polyfill";
-global.localStorage;
-import axios from "axios";
+import * as Google from 'expo-google-app-auth';
+import * as GoogleSignIn from 'expo-google-sign-in';
+import getEnvVars from '../environment';
 
-import * as Google from "expo-google-app-auth";
-import getEnvVars from "../environment";
+import { getMyObject, storeObj, storeData } from '../config/async-utils';
+import { useNavigation } from '@react-navigation/native';
 
-const IOS_AUTH_ID = getEnvVars().ios_auth_key;
+const IOS_AUTH_ID = '86332169337-nagmpq99r18ib493bnegn2roilg7kcqg.apps.googleusercontent.com';
+const ANDROID_AUTH_ID = '86332169337-1vfr1qn2eqr4m0h0jh9a0pp1q5d97a7k.apps.googleusercontent.com';
 // TODO: set android in environment.js
-//const ANDROID_AUTH_ID = getEnvVars().android_auth_key;
-let userName = "";
-let userEmail = "";
-let accessToken = "";
+let userName = '';
+let userEmail = '';
+let accessToken = '';
 // MOVE THIS TO THE LOCATION SCREEN WITH NABEEL TOMORROW ET.
 // const get_user_location = async () => {
 //   if ("geolocation" in navigator) {
@@ -165,120 +164,174 @@ let accessToken = "";
 //       console.log(err);
 //     });
 // };
+import { baseUrl } from '../config/backend-config';
 
 async function signOutWithGoogleAsync() {
-  userName = "";
-  userEmail = "";
-  accessToken = "";
+  userName = '';
+  userEmail = '';
+  accessToken = '';
   await Google.logOutAsync();
 }
 
-async function addOrFindUser(userEmail, isAdmin) {
-  // console.log(bldgName);
-  const axios = require("axios");
-  let data = {
-    email: userEmail,
-    is_admin: false,
-  };
-  let url = `http://localhost:8080/user/`;
-  let res = await axios
-    .post(url, data, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+async function findUser(userName, userEmail, isAdmin) {
+  await fetch(baseUrl + `user?Email=${userEmail}`)
+    .then((response) => response.json())
+    .then((json) => {
+      storeObj('user', {
+        is_admin: json.data[0].Isadmin,
+        userEmail: json.data[0].Email,
+        userId: json.data[0].Userid,
+        userName: json.data[0].Name,
+      });
     })
-    .catch(function (error) {
-      console.log("This is the error: ", error);
+    .catch((e) => {
+      console.log('ERRERRERR:\n', e);
     });
-  // console.log("THIS IS RES" + res);
-  return res;
 }
 
-async function isAdmin(userEmail) {
-  const axios = require("axios");
-  let url = `http://localhost:8080/user?email=` + userEmail;
-  let res = await axios.get(url).catch(function (error) {
-    // console.log("This is the error for CHECKING ADMIN: ", error);
-  });
-  // console.log("THIS IS RES for ADMIN " + res.data.admin);
-  return res.data.admin;
+async function addUser(userName, userEmail) {
+  await fetch(baseUrl + `users?Name=${userName}&Email=${userEmail}&Photo=&Isadmin=0`, {
+    method: 'POST',
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      console.log('okie dokie');
+    })
+    .catch((e) => {
+      console.log('ERRERRERR:\n', e);
+    });
 }
 
-async function signInWithGoogleAsync(props) {
+// initAsync = async () => {
+//   await GoogleSignIn.initAsync({
+//     // You may ommit the clientId when the firebase `googleServicesFile` is configured
+//     clientId: '<YOUR_IOS_CLIENT_ID>',
+//   });
+//   this._syncUserWithStateAsync();
+// };
+
+// _syncUserWithStateAsync = async () => {
+//   const user = await GoogleSignIn.signInSilentlyAsync();
+//   this.setState({ user });
+// };
+
+// signInAsync = async () => {
+//   try {
+//     await GoogleSignIn.askForPlayServicesAsync();
+//     const { type, user } = await GoogleSignIn.signInAsync();
+//     if (type === 'success') {
+//       this._syncUserWithStateAsync();
+//     }
+//   } catch ({ message }) {
+//     alert('login: Error:' + message);
+//   }
+// };
+
+async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
   try {
-    const result = await Google.logInAsync({
-      androidClientId: "TODO",
-      iosClientId: IOS_AUTH_ID,
-      scopes: ["profile", "email"],
+    // SIMULATOR-ONLY GOOGLE SIGN IN
+    // const result = await Google.logInAsync({
+    //   androidClientId: ANDROID_AUTH_ID,
+    //   iosClientId: IOS_AUTH_ID,
+    //   behavior: 'web',
+    //   scopes: ['profile', 'email'],
+    // });
+    // if (result.type === 'success') {
+    //   console.log('accessToken: ' + result.accessToken);
+    //   console.log('name: ' + result.user.name);
+    //   console.log('fName: ' + result.user.givenName);
+    //   console.log('email: ' + result.user.email + '\n');
+    //   if (!result.user.email.endsWith('upenn.edu')) {
+    //     console.log('error');
+    //     signOutWithGoogleAsync();
+    //     throw 'Not a Penn email';
+    //   }
+
+    //   userName = result.user.givenName;
+    //   userEmail = result.user.email;
+    //   accessToken = result.user.accessToken;
+
+    // STANDALONE GOOGLE SIGN IN
+    await GoogleSignIn.initAsync({
+      clientId: IOS_AUTH_ID,
     });
 
-    if (result.type === "success") {
-      console.log("accessToken: " + result.accessToken);
-      console.log("name: " + result.user.name);
-      console.log("fName: " + result.user.givenName);
-      console.log("email: " + result.user.email + "\n");
-      if (!result.user.email.endsWith("upenn.edu")) {
-        console.log("error");
-        signOutWithGoogleAsync();
-        throw "Not a Penn email";
+    await GoogleSignIn.askForPlayServicesAsync();
+    const { type, user } = await GoogleSignIn.signInAsync();
+    if (type === 'success') {
+      console.log(user);
+      // console.log('accessToken: ' + result.accessToken);
+      // console.log('name: ' + result.user.name);
+      // console.log('fName: ' + result.user.givenName);
+      // console.log('email: ' + result.user.email + '\n');
+      if (!user.email.endsWith('upenn.edu')) {
+        console.log('error');
+        // signOutWithGoogleAsync();
+        throw 'Not a Penn email';
       }
 
-      userName = result.user.givenName;
-      userEmail = result.user.email;
-      accessToken = result.user.accessToken;
+      userName = user.givenName;
+      userEmail = user.email;
+      accessToken = user.accessToken;
 
-      // create function to check if user exists in db, this is a waste but ok for demo
-      await addOrFindUser(userEmail, false);
-      let is_admin = await isAdmin(userEmail);
+      // is this a user logging in?
+      if (isExistingUser) {
+        await findUser(userName, userEmail);
+        setSignedIn(true);
+        // let the navigator useEffect handle updating the stack, don't navigate here
+        // navigation.navigate('Welcome', { email: userEmail });
+      } else {
+        await addUser(userName, userEmail);
+        // popup: great, go ahead and sign in
+        Alert.alert('Good to go!', 'You are all set - go ahead and sign in now!', [{ text: 'OK' }]);
+      }
 
-      props.navigation.navigate("Welcome", {
-        userName: { userName },
-        userEmail: { userEmail },
-        is_admin: { is_admin },
-      });
-      console.log("OK");
       return result.accessToken;
     } else {
-      Alert.alert(
-        "Login Error",
-        "Hmm, looks like your login didn't go through :(",
-        [{ text: "Ok" }]
-      );
+      Alert.alert('Login Error', "Hmm, looks like your login didn't go through :(", [
+        { text: 'OK' },
+      ]);
       return { cancelled: true };
     }
   } catch (e) {
-    if (e == "Not a Penn email") {
-      Alert.alert(
-        "Login Error",
-        "Whoops! This service is only for Penn students.",
-        [{ text: "Ok" }]
-      );
-      console.log("Nice try, sucker");
+    if (e == 'Not a Penn email') {
+      Alert.alert('Login Error', 'Whoops! This service is only for Penn students.', [
+        { text: 'Ok' },
+      ]);
+      console.log('Nice try, sucker');
     }
     return { error: true };
   }
 }
 
 function LandingScreen(props) {
-  initMap();
-  one = 1;
-  // console.log(props);
+  const navigation = useNavigation();
+  console.log(props);
+  console.log(navigation);
+
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome to</AppText>
       <AppText customStyle={styles.titleOne}>Musallah</AppText>
 
       <AppButton
-        title="Login"
-        onPress={() => signInWithGoogleAsync(props)}
+        title='Login'
+        onPress={() => signInWithGoogleAsync(navigation, true, props.setSignedIn)}
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
-        title="Continue as Guest"
+        title='Sign up!'
+        onPress={() => signInWithGoogleAsync(navigation, false, props.setSignedIn)}
+        customStyle={styles.editBtn}
+      ></AppButton>
+
+      <AppButton
+        title='Continue as Guest'
         onPress={() => {
-          // get_user_location();
-          props.navigation.navigate("ViewSpaces");
+          navigation.navigate('ViewSpaces', {
+            viewUnapproved: false,
+          });
         }}
         customStyle={styles.editBtn}
       ></AppButton>
@@ -289,25 +342,25 @@ function LandingScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 40,
-    fontWeight: "600",
-    alignItems: "center",
-    justifyContent: "center",
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   titleOne: {
     fontSize: 48,
-    fontWeight: "600",
-    alignItems: "center",
-    justifyContent: "center",
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   editBtn: {
-    width: "80%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
