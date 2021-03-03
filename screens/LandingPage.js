@@ -9,6 +9,7 @@ import * as GoogleSignIn from 'expo-google-sign-in';
 import getEnvVars from '../environment';
 
 import { getMyObject, storeObj, storeData } from '../config/async-utils';
+import { useNavigation } from '@react-navigation/native';
 
 const IOS_AUTH_ID = '86332169337-nagmpq99r18ib493bnegn2roilg7kcqg.apps.googleusercontent.com';
 const ANDROID_AUTH_ID = '86332169337-1vfr1qn2eqr4m0h0jh9a0pp1q5d97a7k.apps.googleusercontent.com';
@@ -228,37 +229,36 @@ signInAsync = async () => {
 
 async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
   try {
+    // SIMULATOR-ONLY GOOGLE SIGN IN
+
+    // const result = await Google.logInAsync({
+    //   androidClientId: ANDROID_AUTH_ID,
+    //   iosClientId: IOS_AUTH_ID,
+    //   behavior: 'web',
+    //   scopes: ['profile', 'email'],
+    // });
+    // if (result.type === 'success') {
+    //   console.log('accessToken: ' + result.accessToken);
+    //   console.log('name: ' + result.user.name);
+    //   console.log('fName: ' + result.user.givenName);
+    //   console.log('email: ' + result.user.email + '\n');
+    //   if (!result.user.email.endsWith('upenn.edu')) {
+    //     console.log('error');
+    //     signOutWithGoogleAsync();
+    //     throw 'Not a Penn email';
+    //   }
+
+    //   userName = result.user.givenName;
+    //   userEmail = result.user.email;
+    //   accessToken = result.user.accessToken;
+
+    // STANDALONE GOOGLE SIGN IN
     await GoogleSignIn.initAsync({
       clientId: IOS_AUTH_ID,
     });
 
     await GoogleSignIn.askForPlayServicesAsync();
     const { type, userr } = await GoogleSignIn.signInAsync();
-
-    // OLD GOOGLE SIGN IN
-    /*
-    const result = await Google.logInAsync({
-      androidClientId: ANDROID_AUTH_ID,
-      iosClientId: IOS_AUTH_ID,
-      behavior: 'web',
-      scopes: ['profile', 'email'],
-    });
-    if (result.type === 'success') {
-      console.log('accessToken: ' + result.accessToken);
-      console.log('name: ' + result.user.name);
-      console.log('fName: ' + result.user.givenName);
-      console.log('email: ' + result.user.email + '\n');
-      if (!result.user.email.endsWith('upenn.edu')) {
-        console.log('error');
-        signOutWithGoogleAsync();
-        throw 'Not a Penn email';
-      }
-
-      userName = result.user.givenName;
-      userEmail = result.user.email;
-      accessToken = result.user.accessToken;
-      */
-
     if (type === 'success') {
       console.log(userr);
       // console.log('accessToken: ' + result.accessToken);
@@ -279,7 +279,8 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
       if (isExistingUser) {
         await findUser(userName, userEmail);
         setSignedIn(true);
-        navigation.navigate('Welcome', { email: userEmail });
+        // let the navigator useEffect handle updating the stack, don't navigate here
+        // navigation.navigate('Welcome', { email: userEmail });
       } else {
         await addUser(userName, userEmail);
         // popup: great, go ahead and sign in
@@ -304,7 +305,11 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
   }
 }
 
-function LandingScreen({ navigation, route }) {
+function LandingScreen(props) {
+  console.log(navigation);
+  console.log(props);
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome to</AppText>
@@ -312,13 +317,13 @@ function LandingScreen({ navigation, route }) {
 
       <AppButton
         title='Login'
-        onPress={() => signInWithGoogleAsync(navigation, true, route.params.setSignedIn)}
+        onPress={() => signInWithGoogleAsync(navigation, true, props.setSignedIn)}
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
         title='Sign up!'
-        onPress={() => signInWithGoogleAsync(navigation, false, route.params.setSignedIn)}
+        onPress={() => signInWithGoogleAsync(navigation, false, props.setSignedIn)}
         customStyle={styles.editBtn}
       ></AppButton>
 
