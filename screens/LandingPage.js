@@ -230,7 +230,6 @@ async function addUser(userName, userEmail) {
 async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
   try {
     // SIMULATOR-ONLY GOOGLE SIGN IN
-
     // const result = await Google.logInAsync({
     //   androidClientId: ANDROID_AUTH_ID,
     //   iosClientId: IOS_AUTH_ID,
