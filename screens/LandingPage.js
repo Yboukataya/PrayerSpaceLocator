@@ -202,30 +202,30 @@ async function addUser(userName, userEmail) {
     });
 }
 
-initAsync = async () => {
-  await GoogleSignIn.initAsync({
-    // You may ommit the clientId when the firebase `googleServicesFile` is configured
-    clientId: '<YOUR_IOS_CLIENT_ID>',
-  });
-  this._syncUserWithStateAsync();
-};
+// initAsync = async () => {
+//   await GoogleSignIn.initAsync({
+//     // You may ommit the clientId when the firebase `googleServicesFile` is configured
+//     clientId: '<YOUR_IOS_CLIENT_ID>',
+//   });
+//   this._syncUserWithStateAsync();
+// };
 
-_syncUserWithStateAsync = async () => {
-  const user = await GoogleSignIn.signInSilentlyAsync();
-  this.setState({ user });
-};
+// _syncUserWithStateAsync = async () => {
+//   const user = await GoogleSignIn.signInSilentlyAsync();
+//   this.setState({ user });
+// };
 
-signInAsync = async () => {
-  try {
-    await GoogleSignIn.askForPlayServicesAsync();
-    const { type, user } = await GoogleSignIn.signInAsync();
-    if (type === 'success') {
-      this._syncUserWithStateAsync();
-    }
-  } catch ({ message }) {
-    alert('login: Error:' + message);
-  }
-};
+// signInAsync = async () => {
+//   try {
+//     await GoogleSignIn.askForPlayServicesAsync();
+//     const { type, user } = await GoogleSignIn.signInAsync();
+//     if (type === 'success') {
+//       this._syncUserWithStateAsync();
+//     }
+//   } catch ({ message }) {
+//     alert('login: Error:' + message);
+//   }
+// };
 
 async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
   try {
@@ -258,22 +258,22 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
     });
 
     await GoogleSignIn.askForPlayServicesAsync();
-    const { type, userr } = await GoogleSignIn.signInAsync();
+    const { type, user } = await GoogleSignIn.signInAsync();
     if (type === 'success') {
-      console.log(userr);
+      console.log(user);
       // console.log('accessToken: ' + result.accessToken);
       // console.log('name: ' + result.user.name);
       // console.log('fName: ' + result.user.givenName);
       // console.log('email: ' + result.user.email + '\n');
-      if (!userr.email.endsWith('upenn.edu')) {
+      if (!user.email.endsWith('upenn.edu')) {
         console.log('error');
         // signOutWithGoogleAsync();
         throw 'Not a Penn email';
       }
 
-      userName = userr.givenName;
-      userEmail = userr.email;
-      accessToken = userr.accessToken;
+      userName = user.givenName;
+      userEmail = user.email;
+      accessToken = user.accessToken;
 
       // is this a user logging in?
       if (isExistingUser) {
@@ -306,9 +306,9 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
 }
 
 function LandingScreen(props) {
-  console.log(navigation);
-  console.log(props);
   const navigation = useNavigation();
+  console.log(props);
+  console.log(navigation);
 
   return (
     <View style={styles.container}>

@@ -68,16 +68,16 @@ function spaceStack() {
   );
 }
 
-function signedOutStack() {
-  return (
-    <Stack.Navigator initialRouteName='Landing' screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='Landing' component={LandingScreen} />
-      {/* <Stack.Screen name='Landing' children={() => <LandingScreen setSignedIn={setSignedIn} />} /> */}
-      <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
-      <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
-    </Stack.Navigator>
-  );
-}
+// function signedOutStack() {
+//   return (
+//     <Stack.Navigator initialRouteName='Landing' screenOptions={{ headerShown: false }}>
+//       <Stack.Screen name='Landing' component={LandingScreen} />
+//       {/* <Stack.Screen name='Landing' children={() => <LandingScreen setSignedIn={setSignedIn} />} /> */}
+//       <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
+//       <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
+//     </Stack.Navigator>
+//   );
+// }
 
 export default function App() {
   let [isSignedIn, setSignedIn] = useState(false);
@@ -121,7 +121,7 @@ export default function App() {
         })}
         tabBarOptions={{
           activeTintColor: 'tomato',
-          inactiveTintColor: 'gray',
+          inactiveTintColor: '#aba6a4',
         }}
       >
         {isSignedIn ? (
