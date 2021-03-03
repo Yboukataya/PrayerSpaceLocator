@@ -202,55 +202,8 @@ async function addUser(userName, userEmail) {
     });
 }
 
-// initAsync = async () => {
-//   await GoogleSignIn.initAsync({
-//     // You may ommit the clientId when the firebase `googleServicesFile` is configured
-//     clientId: '<YOUR_IOS_CLIENT_ID>',
-//   });
-//   this._syncUserWithStateAsync();
-// };
-
-// _syncUserWithStateAsync = async () => {
-//   const user = await GoogleSignIn.signInSilentlyAsync();
-//   this.setState({ user });
-// };
-
-// signInAsync = async () => {
-//   try {
-//     await GoogleSignIn.askForPlayServicesAsync();
-//     const { type, user } = await GoogleSignIn.signInAsync();
-//     if (type === 'success') {
-//       this._syncUserWithStateAsync();
-//     }
-//   } catch ({ message }) {
-//     alert('login: Error:' + message);
-//   }
-// };
-
 async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
   try {
-    // SIMULATOR-ONLY GOOGLE SIGN IN
-    // const result = await Google.logInAsync({
-    //   androidClientId: ANDROID_AUTH_ID,
-    //   iosClientId: IOS_AUTH_ID,
-    //   behavior: 'web',
-    //   scopes: ['profile', 'email'],
-    // });
-    // if (result.type === 'success') {
-    //   console.log('accessToken: ' + result.accessToken);
-    //   console.log('name: ' + result.user.name);
-    //   console.log('fName: ' + result.user.givenName);
-    //   console.log('email: ' + result.user.email + '\n');
-    //   if (!result.user.email.endsWith('upenn.edu')) {
-    //     console.log('error');
-    //     signOutWithGoogleAsync();
-    //     throw 'Not a Penn email';
-    //   }
-
-    //   userName = result.user.givenName;
-    //   userEmail = result.user.email;
-    //   accessToken = result.user.accessToken;
-
     // STANDALONE GOOGLE SIGN IN
     await GoogleSignIn.initAsync({
       clientId: IOS_AUTH_ID,
@@ -260,10 +213,6 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
     const { type, user } = await GoogleSignIn.signInAsync();
     if (type === 'success') {
       console.log(user);
-      // console.log('accessToken: ' + result.accessToken);
-      // console.log('name: ' + result.user.name);
-      // console.log('fName: ' + result.user.givenName);
-      // console.log('email: ' + result.user.email + '\n');
       if (!user.email.endsWith('upenn.edu')) {
         console.log('error');
         // signOutWithGoogleAsync();
@@ -285,9 +234,9 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
         // popup: great, go ahead and sign in
         Alert.alert('Good to go!', 'You are all set - go ahead and sign in now!', [{ text: 'OK' }]);
       }
-
       return result.accessToken;
     } else {
+      // login didn't succeed
       Alert.alert('Login Error', "Hmm, looks like your login didn't go through :(", [
         { text: 'OK' },
       ]);
@@ -299,8 +248,45 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
         { text: 'Ok' },
       ]);
       console.log('Nice try, sucker');
+    } else {
+      // SIMULATOR GOOGLE SIGN IN
+      // If standalone doesn't work, try the Expo Google sign-in
+      const result = await Google.logInAsync({
+        androidClientId: ANDROID_AUTH_ID,
+        iosClientId: IOS_AUTH_ID,
+        behavior: 'web',
+        scopes: ['profile', 'email'],
+      });
+      if (result.type === 'success') {
+        console.log('accessToken: ' + result.accessToken);
+        console.log('name: ' + result.user.name);
+        console.log('fName: ' + result.user.givenName);
+        console.log('email: ' + result.user.email + '\n');
+        if (!result.user.email.endsWith('upenn.edu')) {
+          console.log('error');
+          signOutWithGoogleAsync();
+          throw 'Not a Penn email';
+        }
+
+        userName = result.user.givenName;
+        userEmail = result.user.email;
+        accessToken = result.user.accessToken;
+
+        if (isExistingUser) {
+          await findUser(userName, userEmail);
+          setSignedIn(true);
+          // let the navigator useEffect handle updating the stack, don't navigate here
+          // navigation.navigate('Welcome', { email: userEmail });
+        } else {
+          await addUser(userName, userEmail);
+          // popup: great, go ahead and sign in
+          Alert.alert('Good to go!', 'You are all set - go ahead and sign in now!', [
+            { text: 'OK' },
+          ]);
+        }
+      }
+      return { error: true };
     }
-    return { error: true };
   }
 }
 
