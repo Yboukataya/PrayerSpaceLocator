@@ -92,7 +92,11 @@ export default function AddEventScreen({ navigation, route }) {
               selectedSpace: selectedSpace,
               // save_date()
               date: eventDate.toDateString(),
-              time: eventTime.getHours() + ':' + eventTime.getMinutes(),
+              time:
+                eventTime.getHours() +
+                ':' +
+                (eventTime.getMinutes() < 10 ? '0' : '') +
+                eventTime.getMinutes(),
             },
           });
         }}

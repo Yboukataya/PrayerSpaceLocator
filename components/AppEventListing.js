@@ -115,7 +115,11 @@ function AppEventListing({ event, myEventsState }) {
                 selectedSpace: spaceName,
                 selectedBuilding: bldgName,
                 date: event.Date.toDateString(),
-                time: event.Date,
+                time:
+                  event.Date.getHours() +
+                  ':' +
+                  (event.Date.getMinutes() < 10 ? '0' : '') +
+                  event.Date.getMinutes(),
               },
             });
           }}

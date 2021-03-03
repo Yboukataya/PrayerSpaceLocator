@@ -33,10 +33,7 @@ export default function EventDetailScreen({ route }) {
         <View style={styles.detailEntry}>
           <AppText>
             <AppText customStyle={styles.detailTitleStyle}>Time: </AppText>
-            {route.params.event.time.getHours() +
-              ':' +
-              (route.params.event.time.getMinutes() < 10 ? '0' : '') +
-              route.params.event.time.getMinutes()}
+            {route.params.event.time}
           </AppText>
         </View>
       </View>
