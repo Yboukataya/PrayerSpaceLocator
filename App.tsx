@@ -23,8 +23,7 @@ import ViewEventsByBuildingScreen from './screens/ViewEventsByBuildingScreen';
 import ViewEventsScreen from './screens/ViewEventsScreen';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getMyObject, storeObj, clearAll } from './config/async-utils';
+import { getMyObject, clearAll } from './config/async-utils';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -73,6 +72,7 @@ function signedOutStack() {
   return (
     <Stack.Navigator initialRouteName='Landing' screenOptions={{ headerShown: false }}>
       <Stack.Screen name='Landing' component={LandingScreen} />
+      {/* <Stack.Screen name='Landing' children={() => <LandingScreen setSignedIn={setSignedIn} />} /> */}
       <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
       <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
     </Stack.Navigator>
@@ -91,6 +91,16 @@ export default function App() {
     }
     checkSignin();
   }, []);
+
+  function signedOutStack() {
+    return (
+      <Stack.Navigator initialRouteName='Landing' screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='Landing' children={() => <LandingScreen setSignedIn={setSignedIn} />} />
+        <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
+        <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
+      </Stack.Navigator>
+    );
+  }
 
   return (
     <NavigationContainer>
@@ -121,10 +131,7 @@ export default function App() {
             <Tab.Screen name='Events' component={eventStack} />
           </>
         ) : (
-          <>
-            {/* <Tab.Screen name='Events' component={eventStack} /> */}
-            <Tab.Screen name='Home' component={signedOutStack} />
-          </>
+          <Tab.Screen name='Home' component={signedOutStack} />
         )}
       </Tab.Navigator>
     </NavigationContainer>

@@ -226,7 +226,7 @@ signInAsync = async () => {
   }
 };
 
-async function signInWithGoogleAsync(navigation, isExistingUser) {
+async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
   try {
     await GoogleSignIn.initAsync({
       clientId: IOS_AUTH_ID,
@@ -278,6 +278,7 @@ async function signInWithGoogleAsync(navigation, isExistingUser) {
       // is this a user logging in?
       if (isExistingUser) {
         await findUser(userName, userEmail);
+        setSignedIn(true);
         navigation.navigate('Welcome', { email: userEmail });
       } else {
         await addUser(userName, userEmail);
@@ -303,7 +304,7 @@ async function signInWithGoogleAsync(navigation, isExistingUser) {
   }
 }
 
-function LandingScreen({ navigation }) {
+function LandingScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <AppText customStyle={styles.title}>Welcome to</AppText>
@@ -311,13 +312,13 @@ function LandingScreen({ navigation }) {
 
       <AppButton
         title='Login'
-        onPress={() => signInWithGoogleAsync(navigation, true)}
+        onPress={() => signInWithGoogleAsync(navigation, true, route.params.setSignedIn)}
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
         title='Sign up!'
-        onPress={() => signInWithGoogleAsync(navigation, false)}
+        onPress={() => signInWithGoogleAsync(navigation, false, route.params.setSignedIn)}
         customStyle={styles.editBtn}
       ></AppButton>
 
