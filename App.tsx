@@ -31,7 +31,6 @@ const Stack = createStackNavigator();
 function signedInStack() {
   return (
     <Stack.Navigator initialRouteName='Welcome' screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='Landing' component={LandingScreen} />
       <Stack.Screen name='AddEvent' component={AddEventScreen} />
       <Stack.Screen name='Welcome' component={WelcomeScreen} />
       <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
@@ -42,6 +41,7 @@ function signedInStack() {
       <Stack.Screen name='SentToApproval' component={SentToApprovalScreen} />
       <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
       <Stack.Screen name='ViewEventsByBuilding' component={ViewEventsByBuildingScreen} />
+      <Stack.Screen name='Landing' component={LandingScreen} />
     </Stack.Navigator>
   );
 }
@@ -83,7 +83,7 @@ export default function App() {
   let [isSignedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
-    // clearAll();
+    clearAll();
     async function checkSignin() {
       await getMyObject('user').then(function (value) {
         setSignedIn(value !== null);

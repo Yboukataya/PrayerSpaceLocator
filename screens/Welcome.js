@@ -214,24 +214,32 @@ function WelcomeScreen({ navigation, route }) {
       <AppButton
         title='Add a new Prayer Space'
         onPress={() =>
-          navigation.navigate('AddSpace', {
+          navigation.navigate('Spaces', {
+            screen: 'AddSpace',
             // Not updating an existing space here
-            existingSpace: undefined,
+            params: { existingSpace: undefined },
           })
         }
         customStyle={styles.editBtn}
       ></AppButton>
       <AppButton
         title='Add new Event'
-        onPress={() => navigation.navigate('AddEvent')}
+        onPress={() =>
+          navigation.navigate('Events', {
+            screen: 'AddEvent',
+          })
+        }
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
         title='List of Prayer Spaces'
         onPress={() => {
-          navigation.navigate('ViewSpaces', {
-            viewUnapproved: false,
+          navigation.navigate('Spaces', {
+            screen: 'ViewSpaces',
+            params: {
+              viewUnapproved: false,
+            },
           });
         }}
         customStyle={styles.editBtn}
@@ -240,7 +248,9 @@ function WelcomeScreen({ navigation, route }) {
       <AppButton
         title='View Events'
         onPress={() => {
-          navigation.navigate('ViewEvents');
+          navigation.navigate('Events', {
+            screen: 'ViewEvents',
+          });
         }}
         customStyle={styles.editBtn}
       ></AppButton>
