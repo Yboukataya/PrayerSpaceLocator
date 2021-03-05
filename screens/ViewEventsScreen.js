@@ -17,48 +17,6 @@ let eventsN = [
     eventName: 'Maghrib at VP',
     date: new Date(2021, 2, 15, 19, 30, 0, 0),
   },
-  {
-    Eventid: 2,
-    Building: 'Houston',
-    Space: 'SPARC',
-    eventName: 'ZUHR with bros only',
-    date: new Date(2021, 2, 15, 13, 30, 0, 0),
-  },
-  {
-    Eventid: 3,
-    Building: 'Houston',
-    Space: 'SPARC',
-    eventName: 'ladies only',
-    date: new Date(2021, 2, 15, 13, 35, 0, 0),
-  },
-  {
-    Eventid: 4,
-    Building: 'Engineering',
-    Space: 'electrical switch room',
-    Name: 'sorry, engineering only',
-    Date: new Date(2021, 2, 14, 13, 40, 0, 0),
-  },
-  {
-    Eventid: 4,
-    Building: 'VanPelt Library',
-    Space: 'electrical switch room',
-    Name: 'sorry, engineering only',
-    Date: new Date(2021, 2, 14, 13, 40, 0, 0),
-  },
-  {
-    Eventid: 4,
-    Building: 'Engineering',
-    Space: 'electrical switch room',
-    Name: 'sorry, engineering only',
-    Date: new Date(2021, 2, 14, 13, 40, 0, 0),
-  },
-  {
-    Eventid: 4,
-    Building: 'Engineering',
-    Space: 'electrical switch room',
-    Name: 'sorry, engineering only',
-    Date: new Date(2021, 2, 14, 13, 40, 0, 0),
-  },
 ];
 
 function ViewEventsScreen({ navigation, route }) {

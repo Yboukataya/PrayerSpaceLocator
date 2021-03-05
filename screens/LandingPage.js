@@ -8,6 +8,8 @@ import * as Google from 'expo-google-app-auth';
 import * as GoogleSignIn from 'expo-google-sign-in';
 import getEnvVars from '../environment';
 
+import * as Device from 'expo-device';
+
 import { getMyObject, storeObj, storeData } from '../config/async-utils';
 import { useNavigation } from '@react-navigation/native';
 
@@ -204,44 +206,82 @@ async function addUser(userName, userEmail) {
 
 async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
   try {
-    // STANDALONE GOOGLE SIGN IN
-    await GoogleSignIn.initAsync({
-      clientId: IOS_AUTH_ID,
-    });
+    // on iOS
+    if (Device.isDevice && Device.osName === 'iOS') {
+      await GoogleSignIn.initAsync({
+        clientId: IOS_AUTH_ID,
+      });
 
-    await GoogleSignIn.askForPlayServicesAsync();
-    const { type, user } = await GoogleSignIn.signInAsync();
-    if (type === 'success') {
-      console.log(user);
-      if (!user.email.endsWith('upenn.edu')) {
-        console.log('error');
-        // signOutWithGoogleAsync();
-        throw 'Not a Penn email';
-      }
+      await GoogleSignIn.askForPlayServicesAsync();
+      const { type, user } = await GoogleSignIn.signInAsync();
 
-      userName = user.givenName;
-      userEmail = user.email;
-      accessToken = user.accessToken;
+      if (type === 'success') {
+        console.log(user);
+        if (!user.email.endsWith('upenn.edu')) {
+          console.log('error');
+          // signOutWithGoogleAsync();
+          throw 'Not a Penn email';
+        }
 
-      // is this a user logging in?
-      if (isExistingUser) {
-        await findUser(userName, userEmail);
-        setSignedIn(true);
-        // let the navigator useEffect handle updating the stack, don't navigate here
-        // navigation.navigate('Welcome', { email: userEmail });
+        console.log('USER:\n', user);
+        userName = user.firstName;
+        userEmail = user.email;
+        accessToken = user.accessToken;
       } else {
-        await addUser(userName, userEmail);
-        // popup: great, go ahead and sign in
-        Alert.alert('Good to go!', 'You are all set - go ahead and sign in now!', [{ text: 'OK' }]);
+        // login didn't succeed
+        Alert.alert('Login Error', "Hmm, looks like your login didn't go through :(", [
+          { text: 'OK' },
+        ]);
+        return { cancelled: true };
       }
-      return result.accessToken;
     } else {
-      // login didn't succeed
-      Alert.alert('Login Error', "Hmm, looks like your login didn't go through :(", [
-        { text: 'OK' },
-      ]);
-      return { cancelled: true };
+      // Android or iOS simulator
+      console.log('we in the simulator, boys!');
+      const result = await Google.logInAsync({
+        androidClientId: ANDROID_AUTH_ID,
+        iosClientId: IOS_AUTH_ID,
+        behavior: 'web',
+        scopes: ['profile', 'email'],
+      });
+
+      if (result.type === 'success') {
+        console.log('accessToken: ' + result.accessToken);
+        console.log('name: ' + result.user.name);
+        console.log('fName: ' + result.user.givenName);
+        console.log('email: ' + result.user.email + '\n');
+
+        // Temporarily disable Penn check
+        /*
+        if (!result.user.email.endsWith('upenn.edu')) {
+          console.log('error');
+          signOutWithGoogleAsync();
+          throw 'Not a Penn email';
+        }
+        */
+
+        userName = result.user.givenName;
+        userEmail = result.user.email;
+        accessToken = result.user.accessToken;
+      } else {
+        // login didn't succeed
+        Alert.alert('Login Error', "Hmm, looks like your login didn't go through :(", [
+          { text: 'OK' },
+        ]);
+        return { cancelled: true };
+      }
     }
+
+    // is this a user logging in?
+    if (isExistingUser) {
+      await findUser(userName, userEmail);
+      setSignedIn(true);
+      // let the navigator useEffect handle updating the stack, don't navigate here
+    } else {
+      await addUser(userName, userEmail);
+      // popup: great, go ahead and sign in
+      Alert.alert('Good to go!', 'You are all set - go ahead and sign in now!', [{ text: 'OK' }]);
+    }
+    return result.accessToken;
   } catch (e) {
     if (e == 'Not a Penn email') {
       Alert.alert('Login Error', 'Whoops! This service is only for Penn students.', [
@@ -249,42 +289,6 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
       ]);
       console.log('Nice try, sucker');
     } else {
-      // SIMULATOR GOOGLE SIGN IN
-      // If standalone doesn't work, try the Expo Google sign-in
-      const result = await Google.logInAsync({
-        androidClientId: ANDROID_AUTH_ID,
-        iosClientId: IOS_AUTH_ID,
-        behavior: 'web',
-        scopes: ['profile', 'email'],
-      });
-      if (result.type === 'success') {
-        console.log('accessToken: ' + result.accessToken);
-        console.log('name: ' + result.user.name);
-        console.log('fName: ' + result.user.givenName);
-        console.log('email: ' + result.user.email + '\n');
-        if (!result.user.email.endsWith('upenn.edu')) {
-          console.log('error');
-          signOutWithGoogleAsync();
-          throw 'Not a Penn email';
-        }
-
-        userName = result.user.givenName;
-        userEmail = result.user.email;
-        accessToken = result.user.accessToken;
-
-        if (isExistingUser) {
-          await findUser(userName, userEmail);
-          setSignedIn(true);
-          // let the navigator useEffect handle updating the stack, don't navigate here
-          // navigation.navigate('Welcome', { email: userEmail });
-        } else {
-          await addUser(userName, userEmail);
-          // popup: great, go ahead and sign in
-          Alert.alert('Good to go!', 'You are all set - go ahead and sign in now!', [
-            { text: 'OK' },
-          ]);
-        }
-      }
       return { error: true };
     }
   }
@@ -292,8 +296,8 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
 
 function LandingScreen(props) {
   const navigation = useNavigation();
-  console.log(props);
-  console.log(navigation);
+  // console.log(props);
+  // console.log(navigation);
 
   return (
     <View style={styles.container}>

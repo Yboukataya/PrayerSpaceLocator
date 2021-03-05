@@ -26,6 +26,7 @@
     "expo-asset": "~8.2.0",
     "expo-calendar": "~8.5.0",
     "expo-constants": "^9.2.0",
+    "expo-device": "~2.3.0",
     "expo-font": "^8.3.0",
     "expo-google-app-auth": "^8.1.4",
     "expo-google-sign-in": "~8.3.0",

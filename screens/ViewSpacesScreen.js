@@ -178,8 +178,8 @@ function ViewSpacesScreen({ navigation, route }) {
   let [spaces, setSpaces] = useState([]);
   // let [isAdmin, setIsAdmin] = useState(false);
   console.log(route.params);
-  // let viewUnapproved = route.params.viewUnapproved ? route.params.viewUnapproved : false;
-  let viewUnapproved = false;
+  let viewUnapproved = route.params.viewUnapproved;
+  // let viewUnapproved = false;
 
   useEffect(() => {
     // get all spaces
