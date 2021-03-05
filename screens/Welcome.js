@@ -259,8 +259,11 @@ function WelcomeScreen({ navigation, route }) {
         <AppButton
           title='Approval needed'
           onPress={() =>
-            navigation.navigate('ViewSpaces', {
-              viewUnapproved: true,
+            navigation.navigate('Spaces', {
+              screen: 'ViewSpaces',
+              params: {
+                viewUnapproved: true,
+              },
             })
           }
           customStyle={styles.editBtn}
