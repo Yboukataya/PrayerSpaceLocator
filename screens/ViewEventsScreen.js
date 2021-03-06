@@ -10,6 +10,8 @@ import 'localstorage-polyfill';
 import { baseUrl } from '../config/backend-config.js';
 import { useIsFocused } from '@react-navigation/native';
 
+import { getMyObject } from '../config/async-utils';
+
 let eventsN = [
   {
     id: 1,
@@ -34,6 +36,8 @@ function ViewEventsScreen({ navigation, route }) {
   const [events, setEvents] = useState([]);
   const allEventsState = useState([]);
 
+  let [userId, setUserId] = useState(-1);
+
   // When hitting the "View my events only", only render as visible the events where we are going
   const toggleSwitch = () => {
     setViewMyEventsOnly((previousState) => !previousState);
@@ -54,12 +58,36 @@ function ViewEventsScreen({ navigation, route }) {
     console.log('yip yip');
   }
 
+  async function loadMyEvents() {
+    // Load events from the database
+    let today = new Date().toISOString().substr(0, 10);
+    console.log(`UserId: ${userId}, Date: ${today}`);
+    await fetch(baseUrl + `eventsByUserDate?User=${userId}&Date=${today}`)
+      .then((response) => response.json())
+      .then((json) => {
+        // setEventListEvents(json.data);
+        // allEventsState[1](json.data);
+        console.log('MyEventsToday:');
+        console.log(json.data);
+      });
+    // console.log('okie');
+  }
+
+  useEffect(() => {
+    async function updateUserId() {
+      await getMyObject('user').then(function (value) {
+        setUserId(value.userId);
+      });
+    }
+    updateUserId();
+    loadMyEvents();
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
     // Load events from the database when this screen is focused
     if (isFocused) {
       refreshEvents();
-      console.log('Events updated');
     }
     return () => {
       isMounted = false;
