@@ -7,9 +7,8 @@ import { baseUrl } from '../config/backend-config.js';
 import AppEventListing from './AppEventListing';
 import ListItemSeparator from './ListItemSeparator';
 
-function AppEventList({ allEventsState, events, myEventsState }) {
+function AppEventList({ allEventsState, myEventsState }) {
   const [refreshing, setRefreshing] = useState(false);
-  // let [eventListEvents, setEventListEvents] = useState(events);
 
   async function refreshEvents() {
     // Load events from the database
@@ -26,7 +25,6 @@ function AppEventList({ allEventsState, events, myEventsState }) {
   return (
     <View style={styles.container}>
       <FlatList
-        // data={eventListEvents}
         data={allEventsState[0]}
         keyExtractor={(listing) => listing.Name}
         renderItem={({ item }) => <AppEventListing event={item} myEventsState={myEventsState} />}

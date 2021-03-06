@@ -59,11 +59,9 @@ function ViewEventsScreen({ navigation, route }) {
   }
 
   async function loadMyEvents() {
-    // Load events from the database
+    // Load which events I am attending
     let today = new Date().toISOString().substr(0, 10);
-    // console.log(`UserId: ${userId}, Date: ${today}`);
     let reqUrl = baseUrl + `eventsByUserDate?Userid=${userId}&Date=${today}`;
-    // console.log(reqUrl);
     await fetch(reqUrl)
       .then((response) => response.json())
       .then((json) => {
@@ -72,7 +70,6 @@ function ViewEventsScreen({ navigation, route }) {
         json.data.forEach((e) => x.push(e.event));
         myEventsState[1](x);
       });
-    // console.log(x);
     console.log('okie');
   }
 
@@ -122,7 +119,7 @@ function ViewEventsScreen({ navigation, route }) {
       {/* Toggle switch for my events only / all events */}
       <View style={styles.container}>
         {viewByBuilding ? (
-          <AppBuildingEvents events={events} myEventsState={myEventsState} />
+          <AppBuildingEvents events={allEventsState[0]} myEventsState={myEventsState} />
         ) : (
           <>
             <View style={styles.switchContainer}>
@@ -131,11 +128,14 @@ function ViewEventsScreen({ navigation, route }) {
             </View>
             <View style={styles.eventListContainer}>
               <AppEventList
-                allEventsState={allEventsState}
-                events={
+                allEventsState={
                   !viewMyEventsOnly
-                    ? events
-                    : events.filter((e) => myEventsState[0].includes(e.Eventid))
+                    ? allEventsState
+                    : [
+                        // Decide whether or not to only show events to which I am going
+                        allEventsState[0].filter((e) => myEventsState[0].includes(e.Eventid)),
+                        allEventsState[1],
+                      ]
                 }
                 myEventsState={myEventsState}
               />
