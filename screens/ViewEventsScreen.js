@@ -38,21 +38,26 @@ function ViewEventsScreen({ navigation, route }) {
     setViewMyEventsOnly((previousState) => !previousState);
   };
 
+  // Variable denoting whether or not this screen is focused (for updating events)
   let isFocused = useIsFocused();
+
+  async function refreshEvents(setEvents) {
+    // Load events from the database
+    let today = new Date().toISOString().substr(0, 10);
+    await fetch(baseUrl + `events-today?Date=${today}`)
+      .then((response) => response.json())
+      .then((json) => {
+        setEvents(json.data);
+      });
+  }
 
   useEffect(() => {
     let isMounted = true;
-    // Load events from the database
-    let today = new Date().toISOString().substr(0, 10);
-    // const fetchData = async () => {
-    //   await fetch(baseUrl + `events-today?Date=${today}`)
-    //     .then((response) => response.json())
-    //     .then((json) => {
-    //       setEvents(json.data);
-    //     });
-    // };
-    // fetchData();
-    console.log('Events updated');
+    // Load events from the database when this screen is focused
+    if (isFocused) {
+      refreshEvents(setEvents);
+      console.log('Events updated');
+    }
     return () => {
       isMounted = false;
     };
