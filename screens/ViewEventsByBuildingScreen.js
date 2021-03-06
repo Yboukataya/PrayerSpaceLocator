@@ -44,7 +44,6 @@ let events = [
  * route.params.event:      events happening only in that building
  */
 function ViewEventsByBuildingScreen({ navigation, route }) {
-  // console.log("event params:" + route.params.events);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.headingContainer}>
@@ -53,7 +52,12 @@ function ViewEventsByBuildingScreen({ navigation, route }) {
 
       <View style={styles.container}>
         <View style={styles.eventListContainer}>
-          <AppEventList events={route.params.events} myEventsState={route.params.myEventsState} />
+          <AppEventList
+            events={route.params.events}
+            // for buildings, we're just showing events, so no need to pass a modifying function
+            allEventsState={[route.params.events, (arr) => {}]}
+            myEventsState={route.params.myEventsState}
+          />
         </View>
       </View>
     </Screen>

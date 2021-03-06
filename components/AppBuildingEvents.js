@@ -10,8 +10,6 @@ function AppBuildingEvents({ events, myEventsState }) {
   let [dataBuildings, setBuildings] = useState([]);
   let buildings = [];
 
-  let [eventsPerBuilding, setEventsPerBuilding] = useState({});
-
   useEffect(() => {
     async function getBuildings() {
       await fetch(baseUrl + 'buildings')
