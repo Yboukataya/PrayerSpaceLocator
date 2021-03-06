@@ -6,7 +6,7 @@ import 'localstorage-polyfill';
 
 import * as Google from 'expo-google-app-auth';
 import * as GoogleSignIn from 'expo-google-sign-in';
-import getEnvVars from '../environment';
+// import getEnvVars from '../environment';
 
 import * as Device from 'expo-device';
 

@@ -7,9 +7,9 @@ import { baseUrl } from '../config/backend-config.js';
 import AppEventListing from './AppEventListing';
 import ListItemSeparator from './ListItemSeparator';
 
-function AppEventList({ events, myEventsState }) {
+function AppEventList({ allEventsState, events, myEventsState }) {
   const [refreshing, setRefreshing] = useState(false);
-  let [eventListEvents, setEventListEvents] = useState(events);
+  // let [eventListEvents, setEventListEvents] = useState(events);
 
   async function refreshEvents() {
     // Load events from the database
@@ -17,21 +17,23 @@ function AppEventList({ events, myEventsState }) {
     await fetch(baseUrl + `events-today?Date=${today}`)
       .then((response) => response.json())
       .then((json) => {
-        setEventListEvents(json.data);
+        // setEventListEvents(json.data);
+        allEventsState[1](json.data);
       });
+    // console.log('okie');
   }
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={eventListEvents}
+        // data={eventListEvents}
+        data={allEventsState[0]}
         keyExtractor={(listing) => listing.Name}
         renderItem={({ item }) => <AppEventListing event={item} myEventsState={myEventsState} />}
         ItemSeparatorComponent={ListItemSeparator}
         refreshing={refreshing}
         onRefresh={() => {
           refreshEvents();
-          console.log('ayy');
         }}
       />
     </View>

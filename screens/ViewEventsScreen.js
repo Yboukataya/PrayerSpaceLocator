@@ -32,6 +32,7 @@ function ViewEventsScreen({ navigation, route }) {
 
   // Events state
   const [events, setEvents] = useState([]);
+  const allEventsState = useState([]);
 
   // When hitting the "View my events only", only render as visible the events where we are going
   const toggleSwitch = () => {
@@ -48,7 +49,9 @@ function ViewEventsScreen({ navigation, route }) {
       .then((response) => response.json())
       .then((json) => {
         setEvents(json.data);
+        allEventsState[1](json.data);
       });
+    console.log('yip yip');
   }
 
   useEffect(() => {
@@ -97,6 +100,7 @@ function ViewEventsScreen({ navigation, route }) {
             </View>
             <View style={styles.eventListContainer}>
               <AppEventList
+                allEventsState={allEventsState}
                 events={
                   !viewMyEventsOnly
                     ? events

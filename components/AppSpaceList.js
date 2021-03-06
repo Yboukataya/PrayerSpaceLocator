@@ -29,6 +29,7 @@ function AppSpaceList({ locations, viewUnapproved }) {
 const styles = StyleSheet.create({
   container: {
     // alignItems: "center",
+    flex: 1,
     justifyContent: 'center',
     marginTop: 20,
     marginBottom: 40,
