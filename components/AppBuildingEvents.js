@@ -19,11 +19,13 @@ function AppBuildingEvents({ events, myEventsState }) {
         });
     }
     getBuildings();
+    console.log('got buildings OK');
   }, []);
 
   dataBuildings.forEach(async function (b) {
     let bldgEntry = {
       name: b.Name,
+      address: b.Address,
       Buildingid: b.Buildingid,
     };
     buildings.push(bldgEntry);

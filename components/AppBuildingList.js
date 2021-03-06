@@ -13,16 +13,6 @@ function AppBuildingList({ buildings, events, myEventsState }) {
   const [refreshing, setRefreshing] = useState(false);
   let [eventListEvents, setEventListEvents] = useState(events);
 
-  async function refreshEvents() {
-    // Load events from the database
-    let today = new Date().toISOString().substr(0, 10);
-    await fetch(baseUrl + `events-today?Date=${today}`)
-      .then((response) => response.json())
-      .then((json) => {
-        setEventListEvents(json.data);
-      });
-  }
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -37,7 +27,7 @@ function AppBuildingList({ buildings, events, myEventsState }) {
         )}
         refreshing={refreshing}
         onRefresh={() => {
-          refreshEvents();
+          // refreshEvents();
           console.log('ayy');
         }}
       />

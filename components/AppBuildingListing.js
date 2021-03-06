@@ -20,19 +20,24 @@ function AppBuildingListing({ building, events, myEventsState }) {
   let [zaEvents, setZaEvents] = useState([]);
 
   useEffect(() => {
-    let isMounted = true;
+    // let isMounted = true;
     // get count of events in each building
-    fetch(baseUrl + 'eventsByBuilding?Buildingid=' + building.Buildingid)
-      .then((response) => response.json())
-      .then((json) => {
-        // let x =
-        setNumEvents(json.data.length);
-        setZaEvents(json.data);
-      });
-    return () => {
-      isMounted = false;
-    };
-  });
+    let today = new Date().toISOString().substr(0, 10);
+    async function getBldgEvents() {
+      await fetch(baseUrl + 'eventsByBuilding?Buildingid=' + building.Buildingid + '&Date=' + today)
+        .then((response) => response.json())
+        .then((json) => {
+          // let x =
+          setNumEvents(json.data.length);
+          setZaEvents(json.data);
+        });
+    }
+    getBldgEvents();
+    console.log('BLDG: ', building);
+    // return () => {
+    //   isMounted = false;
+    // };
+  }, []);
 
   return (
     <View style={styles.listingContainer}>
@@ -53,6 +58,7 @@ function AppBuildingListing({ building, events, myEventsState }) {
               screen: 'ViewEventsByBuilding',
               params: {
                 building: building.name,
+                address: building.address,
                 events: zaEvents,
                 myEventsState: myEventsState,
               },

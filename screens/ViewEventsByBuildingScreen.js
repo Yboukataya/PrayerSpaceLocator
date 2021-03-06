@@ -48,6 +48,7 @@ function ViewEventsByBuildingScreen({ navigation, route }) {
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.headingContainer}>
         <AppText customStyle={styles.title}>{route.params.building}</AppText>
+        <AppText>{route.params.address}</AppText>
       </View>
 
       <View style={styles.container}>
