@@ -97,7 +97,6 @@ function ViewEventsScreen({ navigation, route }) {
             </View>
             <View style={styles.eventListContainer}>
               <AppEventList
-                refreshEvents={refreshEvents}
                 events={
                   !viewMyEventsOnly
                     ? events
