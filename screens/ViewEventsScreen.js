@@ -61,16 +61,19 @@ function ViewEventsScreen({ navigation, route }) {
   async function loadMyEvents() {
     // Load events from the database
     let today = new Date().toISOString().substr(0, 10);
-    console.log(`UserId: ${userId}, Date: ${today}`);
-    await fetch(baseUrl + `eventsByUserDate?User=${userId}&Date=${today}`)
+    // console.log(`UserId: ${userId}, Date: ${today}`);
+    let reqUrl = baseUrl + `eventsByUserDate?Userid=${userId}&Date=${today}`;
+    // console.log(reqUrl);
+    await fetch(reqUrl)
       .then((response) => response.json())
       .then((json) => {
-        // setEventListEvents(json.data);
-        // allEventsState[1](json.data);
-        console.log('MyEventsToday:');
-        console.log(json.data);
+        // Update local state to reflect database
+        let x = [];
+        json.data.forEach((e) => x.push(e.event));
+        myEventsState[1](x);
       });
-    // console.log('okie');
+    // console.log(x);
+    console.log('okie');
   }
 
   useEffect(() => {
@@ -81,7 +84,7 @@ function ViewEventsScreen({ navigation, route }) {
     }
     updateUserId();
     loadMyEvents();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     let isMounted = true;
