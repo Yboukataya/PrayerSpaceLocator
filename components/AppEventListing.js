@@ -51,7 +51,7 @@ function AppEventListing({ event, myEventsState }) {
     fetch(baseUrl + `eventAttendeesPerEvent?Eventid=${event.Eventid}`)
       .then((response) => response.json())
       .then((json) => {
-        console.log(json);
+        // console.log(json);
         setNumGoing(json.data.length);
       });
 

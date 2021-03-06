@@ -60,7 +60,11 @@ function eventStack() {
 function spaceStack() {
   return (
     <Stack.Navigator initialRouteName='ViewSpaces' screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
+      <Stack.Screen
+        name='ViewSpaces'
+        component={ViewSpacesScreen}
+        initialParams={{ viewUnapproved: false }}
+      />
       <Stack.Screen name='AddSpace' component={AddSpaceScreen} />
       <Stack.Screen name='SentToApproval' component={SentToApprovalScreen} />
       <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
@@ -83,7 +87,7 @@ export default function App() {
   let [isSignedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
-    clearAll();
+    // clearAll();
     async function checkSignin() {
       await getMyObject('user').then(function (value) {
         setSignedIn(value !== null);

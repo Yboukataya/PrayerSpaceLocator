@@ -8,6 +8,7 @@ import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import 'localstorage-polyfill';
 import { baseUrl } from '../config/backend-config.js';
+import { useIsFocused } from '@react-navigation/native';
 
 let eventsN = [
   {
@@ -37,18 +38,25 @@ function ViewEventsScreen({ navigation, route }) {
     setViewMyEventsOnly((previousState) => !previousState);
   };
 
+  let isFocused = useIsFocused();
+
   useEffect(() => {
+    let isMounted = true;
     // Load events from the database
     let today = new Date().toISOString().substr(0, 10);
-    const fetchData = async () => {
-      await fetch(baseUrl + `events-today?Date=${today}`)
-        .then((response) => response.json())
-        .then((json) => {
-          setEvents(json.data);
-        });
+    // const fetchData = async () => {
+    //   await fetch(baseUrl + `events-today?Date=${today}`)
+    //     .then((response) => response.json())
+    //     .then((json) => {
+    //       setEvents(json.data);
+    //     });
+    // };
+    // fetchData();
+    console.log('Events updated');
+    return () => {
+      isMounted = false;
     };
-    fetchData();
-  }, []);
+  }, [isFocused]);
 
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
