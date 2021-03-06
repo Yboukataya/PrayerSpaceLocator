@@ -41,7 +41,7 @@ function ViewEventsScreen({ navigation, route }) {
   // Variable denoting whether or not this screen is focused (for updating events)
   let isFocused = useIsFocused();
 
-  async function refreshEvents(setEvents) {
+  async function refreshEvents() {
     // Load events from the database
     let today = new Date().toISOString().substr(0, 10);
     await fetch(baseUrl + `events-today?Date=${today}`)
@@ -55,7 +55,7 @@ function ViewEventsScreen({ navigation, route }) {
     let isMounted = true;
     // Load events from the database when this screen is focused
     if (isFocused) {
-      refreshEvents(setEvents);
+      refreshEvents();
       console.log('Events updated');
     }
     return () => {
@@ -97,6 +97,7 @@ function ViewEventsScreen({ navigation, route }) {
             </View>
             <View style={styles.eventListContainer}>
               <AppEventList
+                refreshEvents={refreshEvents}
                 events={
                   !viewMyEventsOnly
                     ? events

@@ -1,23 +1,38 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
+import { baseUrl } from '../config/backend-config.js';
 
 import AppEventListing from './AppEventListing';
 import ListItemSeparator from './ListItemSeparator';
-import Screen from './Screen';
 
 function AppEventList({ events, myEventsState }) {
   const [refreshing, setRefreshing] = useState(false);
+  let [eventListEvents, setEventListEvents] = useState(events);
+
+  async function refreshEvents() {
+    // Load events from the database
+    let today = new Date().toISOString().substr(0, 10);
+    await fetch(baseUrl + `events-today?Date=${today}`)
+      .then((response) => response.json())
+      .then((json) => {
+        setEventListEvents(json.data);
+      });
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={events}
+        data={eventListEvents}
         keyExtractor={(listing) => listing.Name}
         renderItem={({ item }) => <AppEventListing event={item} myEventsState={myEventsState} />}
         ItemSeparatorComponent={ListItemSeparator}
         refreshing={refreshing}
-        onRefresh={() => console.log('ayy')}
+        onRefresh={() => {
+          refreshEvents();
+          console.log('ayy');
+        }}
       />
     </View>
   );
