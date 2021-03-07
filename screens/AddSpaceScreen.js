@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Formik, Field, Form } from 'formik';
+// import { Formik, Field, Form } from 'formik';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -8,9 +8,10 @@ import { AppForm, AppFormField, SubmitButton } from '../components/forms';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import AppFormEntry from '../components/forms/AppFormEntry';
-import { PennBuildings } from '../constants/Buildings.js';
 
 import { baseUrl } from '../config/backend-config.js';
+
+import t from 'tcomb-form-native';
 
 // addSpace = async (
 //   bldgName,
@@ -90,124 +91,40 @@ export default function AddSpaceScreen({ navigation, route }) {
 
   buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
 
+  let Building = t.enums({
+    1: 'DRL',
+    2: 'CA',
+    3: 'Huntsman',
+  });
+
+  const Space = t.struct({
+    spaceName: t.String,
+    capacity: t.Number,
+    instructions: t.String,
+    building: Building,
+  });
+
+  const Form = t.form.Form;
+
+  let options = {
+    fields: {
+      instructions: {
+        placeholder: 'How do you get to this space?',
+      },
+    },
+  };
+
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
         <AppText customStyle={styles.title}>
-          {route.params.existingSpace ? 'Update Space' : 'Add New Space'}
+          {route.params.existingSpace ? 'Update Space' : 'Add Space'}
         </AppText>
-      </View>
 
-      <AppForm
-        initialValues={{
-          spaceName: route.params.existingSpace ? route.params.existingSpace.Name : '',
-          bldgName: '',
-          bldgAddress: '',
-          instructions: '',
-          capacity: '',
-          // dailyHours: "",
-          selectedBuilding: '',
-        }}
-        onSubmit={(values) => {
-          console.log('LETS TRY VALUES: ' + values);
-          console.log('spaceData: ' + values.spaceName);
-          console.log('spaceBldg: ' + selectedBuilding);
-          console.log(buildings.filter((b) => b.label == selectedBuilding)[0].value);
-          let buildingId = buildings.filter((b) => b.label == selectedBuilding)[0].value;
-
-          // get all spaces
-          let addUrl = baseUrl + 'spaces?';
-          addUrl += `Name=${encodeURIComponent(values.spaceName)}&`;
-          addUrl += `Capacity=${encodeURIComponent(values.capacity)}&`;
-          addUrl += `Passerby=&`;
-          addUrl += `Cleanliness=&`;
-          addUrl += `Accessibility=&`;
-          addUrl += `Instructions=${encodeURIComponent(values.instructions)}&`;
-          addUrl += `Notes=&`;
-          addUrl += `Approval=0&`;
-          // TODO Fix this!
-          addUrl += `Building=${encodeURIComponent(buildingId)}`;
-
-          console.log(addUrl);
-
-          fetch(addUrl, {
-            method: 'POST',
-          })
-            .then((response) => response.json())
-            .then((json) => console.log('Hooray! ', json));
-
-          navigation.navigate('SentToApproval');
-        }}
-      >
-        <AppFormEntry
-          label='Space Name'
-          name='spaceName'
-          placeholder='Space Name'
-          defaultValue={route.params.existingSpace ? route.params.existingSpace.Name : ''}
-        />
-        {/* TODO: export this to a separate component */}
-        <View
-          style={{
-            alignItems: 'center',
-            flex: 1,
-            flexDirection: 'row',
-            width: '100%',
-            zIndex: 200,
-          }}
-        >
-          <View style={{ flex: 3 }}>
-            <AppText>Building</AppText>
-          </View>
-
-          <View style={{ flex: 7 }}>
-            {/* TODO: Fix this dropdown once the database is addressed */}
-            <DropDownPicker
-              items={buildings}
-              placeholder='Select a building'
-              // defaultValue={route.params.existingSpace ? route.params.existingSpace.bldgName : ""}
-              containerStyle={{ height: 40 }}
-              style={{ backgroundColor: '#fafafa' }}
-              itemStyle={{
-                justifyContent: 'flex-start',
-              }}
-              dropDownStyle={{ backgroundColor: '#fafafa' }}
-              // TODO: fix this to update some kind of form state
-              onChangeItem={(item) => {
-                setBuilding(item.label);
-                console.log(selectedBuilding);
-              }}
-            />
-          </View>
+        <View style={styles.formContainer}>
+          <Form type={Space} options={options} />
         </View>
-
-        {/* TODO: make this one bigger */}
-        <AppFormEntry
-          label='Instructions'
-          name='instructions'
-          placeholder='How do you get to space?'
-          multiline={true}
-          defaultValue={route.params.existingSpace ? route.params.existingSpace.Instructions : ''}
-        />
-        <AppFormEntry
-          label='Capacity'
-          name='capacity'
-          keyboardType='number-pad'
-          placeholder=''
-          type='text'
-          pattern='[0-9]*'
-          defaultValue={
-            route.params.existingSpace ? route.params.existingSpace.Capacity.toString() : ''
-          }
-        />
-        {/* <AppFormEntry
-          label="Daily Hours"
-          name="dailyHours"
-          placeholder="When is this space open?"
-          defaultValue={route.params.existingSpace ? route.params.existingSpace.daily_hours : ""}
-        /> */}
-        <SubmitButton title='Submit!' selectedBuilding={selectedBuilding} />
-      </AppForm>
-      {/* </View> */}
+      </View>
     </Screen>
   );
 }
@@ -218,6 +135,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
     marginBottom: 40,
+  },
+  formContainer: {
+    marginTop: 30,
+    width: '90%',
   },
   title: {
     fontSize: 48,

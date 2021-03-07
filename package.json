@@ -49,7 +49,8 @@
     "react-native-settings-screen": "^2.2.1",
     "react-native-web": "~0.13.12",
     "react-router": "^5.2.0",
-    "sync-storage": "^0.4.2"
+    "sync-storage": "^0.4.2",
+    "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
