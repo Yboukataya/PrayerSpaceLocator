@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-// import { Formik, Field, Form } from 'formik';
 
-import DropDownPicker from 'react-native-dropdown-picker';
-
-import { AppForm, AppFormField, SubmitButton } from '../components/forms';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import AppButton from '../components/AppButton';
@@ -12,6 +8,7 @@ import AppButton from '../components/AppButton';
 import { baseUrl } from '../config/backend-config.js';
 
 import t from 'tcomb-form-native';
+import ImageFactory from 'react-native-image-picker-form';
 
 // addSpace = async (
 //   bldgName,
@@ -97,26 +94,57 @@ export default function AddSpaceScreen({ navigation, route }) {
     3: 'Huntsman',
   });
 
+  let Tidiness = t.enums({
+    1: 'Not Tidy',
+    2: 'Good Enough',
+    3: 'Sparkling',
+    4: 'Immaculate',
+    5: 'Impeccable',
+  });
+
+  let Privacy = t.enums({
+    1: 'Yes',
+    2: 'People walk by occasionally',
+    3: 'Not really, people walk by often',
+    4: 'No, not at all',
+  });
+
   const Space = t.struct({
     spaceName: t.String,
     building: Building,
     capacity: t.Number,
+    passerby: Privacy,
     carpet: t.Boolean,
-    passerby: t.String,
-    passer2: t.String,
+    cleanliness: Tidiness,
     instructions: t.String,
+    image: t.String,
   });
 
   const Form = t.form.Form;
 
-  // Custom form options: placeholder, etc
+  // Custom form options: labels, placeholder, etc
   let options = {
+    order: [
+      'spaceName',
+      'building',
+      'capacity',
+      'passerby',
+      'carpet',
+      'instructions',
+      'cleanliness',
+    ],
     fields: {
       instructions: {
         placeholder: 'How do you get to this space?',
       },
       carpet: {
         label: 'Prayer rugs available?',
+      },
+      capacity: {
+        label: 'How many can pray here comfortably?',
+      },
+      passerby: {
+        label: 'Is the space relatively private?',
       },
     },
   };

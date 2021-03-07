@@ -43,6 +43,8 @@
     "react-native-dropdown-picker": "^3.8.0",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-google-maps-services": "^0.5.1",
+    "react-native-image-crop-picker": "^0.36.0",
+    "react-native-image-picker-form": "^0.2.5",
     "react-native-maps": "0.27.1",
     "react-native-reanimated": "~1.13.0",
     "react-native-screens": "~2.10.1",
