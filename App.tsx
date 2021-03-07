@@ -114,8 +114,8 @@ export default function App() {
       >
         {isSignedIn ? (
           <>
-            <Tab.Screen name='Home' component={WelcomeScreen} />
             <Tab.Screen name='Spaces' component={spaceStack} />
+            <Tab.Screen name='Home' component={WelcomeScreen} />
             <Tab.Screen name='Events' component={eventStack} />
           </>
         ) : (

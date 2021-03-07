@@ -211,6 +211,15 @@ function ViewSpacesScreen({ navigation, route }) {
           </View>
         )}
       </View>
+      <AppButton
+        title='Create New Space'
+        onPress={() =>
+          navigation.navigate('AddSpace', {
+            existingSpace: undefined,
+          })
+        }
+        customStyle={styles.editBtn}
+      ></AppButton>
       {mapVisible && !viewUnapproved ? (
         <AppButton
           title={mapVisible ? 'List View' : 'Map View'}

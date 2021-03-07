@@ -55,7 +55,7 @@ function ViewEventsScreen({ navigation, route }) {
         setEvents(json.data);
         allEventsState[1](json.data);
       });
-    console.log('yip yip');
+    // console.log('yip yip');
   }
 
   async function loadMyEvents() {
@@ -70,7 +70,7 @@ function ViewEventsScreen({ navigation, route }) {
         json.data.forEach((e) => x.push(e.event));
         myEventsState[1](x);
       });
-    console.log('okie');
+    // console.log('okie');
   }
 
   useEffect(() => {

@@ -179,6 +179,7 @@ async function findUser(userName, userEmail, isAdmin) {
   await fetch(baseUrl + `user?Email=${userEmail}`)
     .then((response) => response.json())
     .then((json) => {
+      // console.log('JSON:\n', json);
       storeObj('user', {
         is_admin: json.data[0].Isadmin,
         userEmail: json.data[0].Email,
