@@ -7,7 +7,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { AppForm, AppFormField, SubmitButton } from '../components/forms';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
-import AppFormEntry from '../components/forms/AppFormEntry';
+import AppButton from '../components/AppButton';
 
 import { baseUrl } from '../config/backend-config.js';
 
@@ -99,13 +99,14 @@ export default function AddSpaceScreen({ navigation, route }) {
 
   const Space = t.struct({
     spaceName: t.String,
+    building: Building,
     capacity: t.Number,
     instructions: t.String,
-    building: Building,
   });
 
   const Form = t.form.Form;
 
+  // Custom form options: placeholder, etc
   let options = {
     fields: {
       instructions: {
@@ -113,6 +114,13 @@ export default function AddSpaceScreen({ navigation, route }) {
       },
     },
   };
+
+  var formVar;
+
+  function onPress() {
+    console.log(formVar.getValue());
+    console.log('hi');
+  }
 
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
@@ -122,8 +130,16 @@ export default function AddSpaceScreen({ navigation, route }) {
         </AppText>
 
         <View style={styles.formContainer}>
-          <Form type={Space} options={options} />
+          <Form type={Space} ref={(c) => (formVar = c)} options={options} />
         </View>
+        <AppButton
+          title='Submit Space'
+          onPress={() => {
+            onPress();
+            // navigation.navigate('SentToApproval');
+          }}
+          customStyle={styles.editBtn}
+        ></AppButton>
       </View>
     </Screen>
   );
@@ -132,11 +148,12 @@ export default function AddSpaceScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
     marginTop: 20,
-    marginBottom: 40,
   },
   formContainer: {
+    flex: 1,
     marginTop: 30,
     width: '90%',
   },
