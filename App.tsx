@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
-import { NavigationContainer, PrivateValueStore } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
-
-import WelcomeScreen from './screens/Welcome';
-import AddSpaceScreen from './screens/AddSpaceScreen';
-import SpaceDetailScreen from './screens/SpaceDetailScreen';
-import LandingScreen from './screens/LandingPage';
-import Settings from './screens/Settings';
-import ViewSpacesScreen from './screens/ViewSpacesScreen';
-import SentToApprovalScreen from './screens/SentToApproval';
-
 import AddEventScreen from './screens/AddEventScreen.js';
+import AddSpaceScreen from './screens/AddSpaceScreen';
 import EventDetailScreen from './screens/EventDetailScreen.js';
+import LandingScreen from './screens/LandingPage';
+import SentToApprovalScreen from './screens/SentToApproval';
+import Settings from './screens/Settings';
+import SpaceDetailScreen from './screens/SpaceDetailScreen';
 import ViewEventsByBuildingScreen from './screens/ViewEventsByBuildingScreen';
 import ViewEventsScreen from './screens/ViewEventsScreen';
+import ViewSpacesScreen from './screens/ViewSpacesScreen';
+import WelcomeScreen from './screens/Welcome';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getMyObject, clearAll } from './config/async-utils';
@@ -71,17 +66,6 @@ function spaceStack() {
     </Stack.Navigator>
   );
 }
-
-// function signedOutStack() {
-//   return (
-//     <Stack.Navigator initialRouteName='Landing' screenOptions={{ headerShown: false }}>
-//       <Stack.Screen name='Landing' component={LandingScreen} />
-//       {/* <Stack.Screen name='Landing' children={() => <LandingScreen setSignedIn={setSignedIn} />} /> */}
-//       <Stack.Screen name='ViewSpaces' component={ViewSpacesScreen} />
-//       <Stack.Screen name='SpaceDetail' component={SpaceDetailScreen} />
-//     </Stack.Navigator>
-//   );
-// }
 
 export default function App() {
   let [isSignedIn, setSignedIn] = useState(false);
