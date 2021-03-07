@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 // import { Formik, Field, Form } from 'formik';
 
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -101,6 +101,9 @@ export default function AddSpaceScreen({ navigation, route }) {
     spaceName: t.String,
     building: Building,
     capacity: t.Number,
+    carpet: t.Boolean,
+    passerby: t.String,
+    passer2: t.String,
     instructions: t.String,
   });
 
@@ -111,6 +114,9 @@ export default function AddSpaceScreen({ navigation, route }) {
     fields: {
       instructions: {
         placeholder: 'How do you get to this space?',
+      },
+      carpet: {
+        label: 'Prayer rugs available?',
       },
     },
   };
@@ -129,9 +135,9 @@ export default function AddSpaceScreen({ navigation, route }) {
           {route.params.existingSpace ? 'Update Space' : 'Add Space'}
         </AppText>
 
-        <View style={styles.formContainer}>
+        <ScrollView style={styles.formContainer}>
           <Form type={Space} ref={(c) => (formVar = c)} options={options} />
-        </View>
+        </ScrollView>
         <AppButton
           title='Submit Space'
           onPress={() => {
