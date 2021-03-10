@@ -58,48 +58,51 @@ import ImageFactory from 'react-native-image-picker-form';
 // };
 
 export default function AddSpaceScreen({ navigation, route }) {
-  let [dataBuildings, setBuildings] = useState([]);
-  let buildings = [];
+  let [buildingsObj, setBuildingsObj] = useState({});
 
   useEffect(() => {
     fetch(baseUrl + 'buildings')
       .then((response) => response.json())
       .then((json) => {
-        setBuildings(json.data);
+        let unsortedBuildings = json.data;
+        unsortedBuildings.sort((a, b) => (a.Name > b.Name ? 1 : -1));
+        unsortedBuildings.forEach((b) => {
+          setBuildingsObj((prevBldgs) => {
+            let x = Object.assign({}, prevBldgs);
+            x[b.Buildingid] = b.Name;
+            return x;
+          });
+        });
       });
   }, []);
 
-  let [selectedBuilding, setBuilding] = useState('');
-
-  dataBuildings.forEach(function (b) {
-    let bldgDropdown = {
-      label: b.Name,
-      value: b.Buildingid,
-    };
-    buildings.push(bldgDropdown);
-  });
-
-  buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
-
-  let Building = t.enums({
-    1: 'DRL',
-    2: 'CA',
-    3: 'Huntsman',
-  });
+  let Building = t.enums(buildingsObj);
 
   let Tidiness = t.enums({
-    1: 'Not Tidy',
-    2: 'Good Enough',
-    3: 'Sparkling',
-    4: 'Immaculate',
-    5: 'Impeccable',
+    1: 'Not very clean',
+    2: 'Clean enough',
+    3: 'Very well-kept',
+  });
+
+  let Noise = t.enums({
+    1: 'Very quiet',
+    2: 'Not much noise',
+    3: 'A little noisy',
+    4: 'Pretty loud',
   });
 
   let Privacy = t.enums({
     1: 'Yes',
     2: 'People walk by occasionally',
-    3: 'Not really, people walk by often',
-    4: 'No, not at all',
+    3: 'Not private, people walk by often',
+    4: 'Almost public',
+  });
+
+  let Wudu = t.enums({
+    1: 'Dedicated wudu area nearby',
+    2: 'Bathroom around the corner',
+    3: 'On 1 floor above or below',
+    4: 'None nearby',
   });
 
   const Space = t.struct({
@@ -108,9 +111,10 @@ export default function AddSpaceScreen({ navigation, route }) {
     capacity: t.Number,
     passerby: Privacy,
     carpet: t.Boolean,
+    wuduNearby: Wudu,
+    noise: Noise,
     cleanliness: Tidiness,
     instructions: t.String,
-    image: t.String,
   });
 
   const Form = t.form.Form;
@@ -123,21 +127,29 @@ export default function AddSpaceScreen({ navigation, route }) {
       'capacity',
       'passerby',
       'carpet',
+      'wuduNearby',
+      'noise',
       'instructions',
       'cleanliness',
     ],
     fields: {
       instructions: {
+        label: 'Directions',
         placeholder: 'How do you get to this space?',
+        multiline: true,
       },
       carpet: {
         label: 'Prayer rugs available?',
       },
       capacity: {
         label: 'How many can pray here comfortably?',
+        placeholder: 'Capacity',
       },
       passerby: {
         label: 'Is the space relatively private?',
+      },
+      noise: {
+        label: 'Noise level',
       },
     },
   };
@@ -146,7 +158,28 @@ export default function AddSpaceScreen({ navigation, route }) {
 
   function onPress() {
     console.log(formVar.getValue());
-    console.log('hi');
+    let formValues = formVar.getValue();
+    // submit new space to db
+    let addUrl = baseUrl + 'spaces?';
+    addUrl += `Name=${encodeURIComponent(formValues.spaceName)}&`;
+    addUrl += `Capacity=${encodeURIComponent(formValues.capacity)}&`;
+    addUrl += `Passerby=${encodeURIComponent(formValues.passerby)}&`;
+    addUrl += `Cleanliness=${encodeURIComponent(formValues.cleanliness)}&`;
+    addUrl += `Accessibility=&`;
+    addUrl += `Instructions=${encodeURIComponent(formValues.instructions)}&`;
+    addUrl += `Notes=&`;
+    addUrl += `CARPET=${encodeURIComponent(formValues.carpet)}&`;
+    addUrl += `Approval=0&`;
+    addUrl += `Building=${encodeURIComponent(formValues.building)}`;
+    // TODO: add wudu nearby, noise level to database
+
+    fetch(addUrl, {
+      method: 'POST',
+    })
+      .then((response) => response.json())
+      .then((json) => console.log('Hooray! ', json));
+
+    navigation.navigate('SentToApproval');
   }
 
   return (
