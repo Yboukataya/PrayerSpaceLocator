@@ -61,13 +61,6 @@ export default function AddSpaceScreen({ navigation, route }) {
   let [dataBuildings, setBuildings] = useState([]);
   let buildings = [];
 
-  // useEffect(() => {
-  //   fetch(baseUrl + "buildings").then((response) => console.log(response)); //.json())
-  //   // .then((json) => {
-  //   //   console.log(json.data);
-  //   //   setBuildings(json.data);
-  //   // });
-  // }, []);
   useEffect(() => {
     fetch(baseUrl + 'buildings')
       .then((response) => response.json())
