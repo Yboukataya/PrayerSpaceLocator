@@ -157,7 +157,7 @@ export default function AddSpaceScreen({ navigation, route }) {
   var formVar;
 
   function onPress() {
-    console.log(formVar.getValue());
+    // console.log(formVar.getValue());
     let formValues = formVar.getValue();
     // submit new space to db
     let addUrl = baseUrl + 'spaces?';

@@ -23,7 +23,11 @@ function SentToApprovalScreen(props) {
 
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
-        <AntDesign name='checkcircleo' size={300} color='green' />
+        <AntDesign name='checkcircleo' size={250} color='green' style={{ marginBottom: 20 }} />
+        <AppText customStyle={{ textAlign: 'justify' }}>
+          Thanks for taking the time to suggest a new prayer space! Once an admin from your campus
+          double checks the details, it will be visible for everyone in the list of prayer spaces!
+        </AppText>
       </View>
       <AppButton
         title='Back to Home'
@@ -41,6 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
     marginBottom: 40,
+    textAlign: 'justify',
   },
   headingContainer: {
     alignItems: 'center',
@@ -55,6 +60,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     justifyContent: 'center',
     alignItems: 'center',
+    textAlign: 'center',
   },
 });
 
