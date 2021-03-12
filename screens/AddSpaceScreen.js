@@ -194,10 +194,7 @@ export default function AddSpaceScreen({ navigation, route }) {
         </ScrollView>
         <AppButton
           title='Submit Space'
-          onPress={() => {
-            onPress();
-            // navigation.navigate('SentToApproval');
-          }}
+          onPress={() => onPress()}
           customStyle={styles.editBtn}
         ></AppButton>
       </View>
