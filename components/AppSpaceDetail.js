@@ -12,19 +12,19 @@ import AppText from "../components/AppText";
  * word "instructions", etc)
  */
 
-function AppSpaceDetail({ space, style, detailTitle, detailKey }) {
+function AppSpaceDetail({ space, style, detailTitle, detailKey, detailFunction }) {
   return (
     <View style={styles.detailEntry}>
       <AppText>
         <AppText customStyle={styles.detailTitleStyle}>{detailTitle}: </AppText>
-        {space[detailKey]}
+        {detailFunction ? detailFunction(space[detailKey]) : space[detailKey]}
       </AppText>
     </View>
   );
 }
 const styles = StyleSheet.create({
   detailEntry: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   detailTitleStyle: {
     fontWeight: "bold",

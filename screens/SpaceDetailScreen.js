@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Image, StyleSheet, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,8 +10,11 @@ import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 
 import { baseUrl } from '../config/backend-config';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { getMyObject, storeObj } from '../config/async-utils';
+import {getTidinessDescription, getWuduDescription, getNoiseDescription, 
+    getPrivacyDescription} from '../constants/SpaceDescriptions';
+
 /**
  * This component specifies appearance of the screen that shows attributes
  * about a prayer space. For each attribute, it uses an AppSpaceDetail component
@@ -83,14 +86,23 @@ function SpaceDetailScreen({ route }) {
   }, []);
 
   const navigation = useNavigation();
-
+  console.log(route.params.space);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.container}>
         <AppTitle>{route.params.space.Name}</AppTitle>
       </View>
 
-      <View style={styles.spaceDetails}>
+      <ScrollView style={styles.spaceDetails} persistentScrollbar={true}>
+      <View style={styles.imgContainer}>
+        <Image
+          source={{
+            uri:
+              'https://images.unsplash.com/photo-1592632132538-a901188c014f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1068&q=80',
+          }}
+          style={{ width: "90%", height: 200, marginBottom: 10 }}
+        />
+      </View>
         {/* just for the building... */}
         <View style={styles.detailEntry}>
           <AppText>
@@ -108,6 +120,36 @@ function SpaceDetailScreen({ route }) {
           detailTitle='Instructions'
           detailKey='Instructions'
         />
+        <AppSpaceDetail
+          space={route.params.space}
+          detailTitle='Carpet'
+          detailKey='CARPET'
+          detailFunction={(a) => {if (a) {return "Yes"} else {return "No"} }}
+        />
+        <AppSpaceDetail
+          space={route.params.space}
+          detailTitle='Cleanliness'
+          detailKey='Cleanliness'
+          detailFunction={getTidinessDescription}
+        />
+        <AppSpaceDetail
+          space={route.params.space}
+          detailTitle='Is this space private?'
+          detailKey='Passersby'
+          detailFunction={getPrivacyDescription}
+        />
+        <AppSpaceDetail
+          space={route.params.space}
+          detailTitle='Is this space nose?'
+          detailKey='NoiseLevel'
+          detailFunction={getNoiseDescription}
+        />
+        <AppSpaceDetail
+          space={route.params.space}
+          detailTitle='Is there a Wudu space nearby?'
+          detailKey='WuduNearby'
+          detailFunction={getWuduDescription}
+        />
         <AppSpaceDetail space={route.params.space} detailTitle='Capacity' detailKey='Capacity' />
 
         {/* TODO: fix this */}
@@ -116,17 +158,9 @@ function SpaceDetailScreen({ route }) {
             detailTitle="Daily Hours"
             detailKey="daily_hours"
           />  */}
-      </View>
 
-      <View style={styles.imgContainer}>
-        <Image
-          source={{
-            uri:
-              'https://images.unsplash.com/photo-1592632132538-a901188c014f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1068&q=80',
-          }}
-          style={{ width: 350, height: 250 }}
-        />
-      </View>
+      </ScrollView>
+      
 
       <View style={styles.btnContainer}>
         {route.params.viewUnapproved ? (
@@ -179,7 +213,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   detailEntry: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   detailTitleStyle: {
     fontWeight: 'bold',

@@ -10,6 +10,8 @@ import { baseUrl } from '../config/backend-config.js';
 import t from 'tcomb-form-native';
 import ImageFactory from 'react-native-image-picker-form';
 
+import {TidinessOptions, NoiseOptions, PrivacyOptions, WuduOptions} from '../constants/SpaceDescriptions';
+
 // addSpace = async (
 //   bldgName,
 //   bldgAddress,
@@ -77,34 +79,11 @@ export default function AddSpaceScreen({ navigation, route }) {
   }, []);
 
   let Building = t.enums(buildingsObj);
-
-  let Tidiness = t.enums({
-    1: 'Not very clean',
-    2: 'Clean enough',
-    3: 'Very well-kept',
-  });
-
-  let Noise = t.enums({
-    1: 'Very quiet',
-    2: 'Not much noise',
-    3: 'A little noisy',
-    4: 'Pretty loud',
-  });
-
-  let Privacy = t.enums({
-    1: 'Yes',
-    2: 'People walk by occasionally',
-    3: 'Not private, people walk by often',
-    4: 'Almost public',
-  });
-
-  let Wudu = t.enums({
-    1: 'Dedicated wudu area nearby',
-    2: 'Bathroom around the corner',
-    3: 'On 1 floor above or below',
-    4: 'None nearby',
-  });
-
+  let Tidiness = t.enums(TidinessOptions);
+  let Noise = t.enums(NoiseOptions);
+  let Privacy = t.enums(PrivacyOptions);
+  let Wudu = t.enums(WuduOptions);
+  
   const Space = t.struct({
     spaceName: t.String,
     building: Building,
@@ -171,6 +150,8 @@ export default function AddSpaceScreen({ navigation, route }) {
     addUrl += `CARPET=${encodeURIComponent(formValues.carpet)}&`;
     addUrl += `Approval=0&`;
     addUrl += `Building=${encodeURIComponent(formValues.building)}`;
+    addUrl += `WuduNearby=${encodeURIComponent(formValues.wuduNearby)}`;
+    addUrl += `NoiseLevel=${encodeURIComponent(formValues.noise)}`;
     // TODO: add wudu nearby, noise level to database
 
     fetch(addUrl, {
