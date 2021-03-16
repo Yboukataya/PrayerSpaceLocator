@@ -89,10 +89,11 @@ function AppEventListing({ event, myEventsState }) {
           <AppText customStyle={styles.capacityStyle}>{spaceName + ' in ' + bldgName}</AppText>
           <AppText customStyle={styles.capacityStyle}>
             Time:{' '}
-            {event.Date.getHours() +
+            {(event.Date.getHours() > 12 ? event.Date.getHours() - 12 : event.Date.getHours()) +
               ':' +
               (event.Date.getMinutes() < 10 ? '0' : '') +
-              event.Date.getMinutes()}
+              event.Date.getMinutes() + ' ' +
+              (event.Date.getHours() < 12 ? "AM" : "PM")}
           </AppText>
         </View>
       </View>
@@ -116,10 +117,11 @@ function AppEventListing({ event, myEventsState }) {
                 selectedBuilding: bldgName,
                 date: event.Date.toDateString(),
                 time:
-                  event.Date.getHours() +
-                  ':' +
-                  (event.Date.getMinutes() < 10 ? '0' : '') +
-                  event.Date.getMinutes(),
+                (event.Date.getHours() > 12 ? event.Date.getHours() - 12 : event.Date.getHours()) +
+                ':' +
+                (event.Date.getMinutes() < 10 ? '0' : '') +
+                event.Date.getMinutes() + ' ' +
+                (event.Date.getHours() < 12 ? "AM" : "PM")
               },
             });
           }}
