@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, LogBox, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Formik, Field, Form } from 'formik';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import AppButton from '../components/AppButton';
+import { AppForm, AppFormField, SubmitButton } from '../components/forms';
 import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 import AppFormEntry from '../components/forms/AppFormEntry';
@@ -14,10 +14,6 @@ import { baseUrl } from '../config/backend-config';
 
 import { getMyObject, storeObj } from '../config/async-utils';
 const axios = require('axios');
-
-// LogBox.ignoreLogs(['Animated: ...', 'Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs();
-import t from 'tcomb-form-native';
 
 export default function AddEventScreen({ navigation, route }) {
   let buildings = [];
@@ -31,102 +27,24 @@ export default function AddEventScreen({ navigation, route }) {
   let [dataSpaces, setSpaces] = useState([]);
 
   let [spaceId, setSpaceId] = useState(-1);
-  let [buildingsObj, setBuildingsObj] = useState({});
-  let [spacesObj, setSpacesObj] = useState({});
-  let [formState, setFormState] = useState({});
 
   useEffect(() => {
     fetch(baseUrl + 'buildings')
       .then((response) => response.json())
       .then((json) => {
-        let unsortedBuildings = json.data;
-        unsortedBuildings.sort((a, b) => (a.Name > b.Name ? 1 : -1));
-        unsortedBuildings.forEach((b) => {
-          setBuildingsObj((prevBldgs) => {
-            let x = Object.assign({}, prevBldgs);
-            x[b.Buildingid] = b.Name;
-            return x;
-          });
-        });
+        setBuildings(json.data);
       });
   }, []);
 
-  let Building = t.enums(buildingsObj);
-  let Space = t.enums(spacesObj);
-
-  const Event = t.struct({
-    eventName: t.String,
-    building: Building,
-    space: Space,
-    // date: x,
-    // time: x,
+  dataBuildings.forEach(function (b) {
+    let bldgDropdown = {
+      label: b.Name,
+      value: b.Buildingid,
+    };
+    buildings.push(bldgDropdown);
   });
 
-  const Form = t.form.Form;
-  var formVar;
-
-  function onPress() {}
-
-  function onChange(value) {
-    // console.log('hi');
-    console.log(value);
-    if (value.building != formVar.building) {
-      // get spaces for the new building
-      fetch(baseUrl + `building-spaces?Buildingid=${value.building}`)
-        .then((response) => response.json())
-        .then((json) => {
-          setSpacesObj({});
-          if (json.data.length != 0) {
-            let unsortedSpaces = json.data;
-            unsortedSpaces.sort((a, b) => (a.Name > b.Name ? 1 : -1));
-            unsortedSpaces.forEach((b) => {
-              setSpacesObj((prevSpaces) => {
-                let x = Object.assign({}, prevSpaces);
-                x[b.Spaceid] = b.Name;
-                return x;
-              });
-            });
-          }
-        });
-      setFormState(value);
-    }
-    formVar.building = value.building;
-  }
-
-  // Custom form options: labels, placeholder, etc
-  let options = {
-    // order: [
-    //   'spaceName',
-    //   'building',
-    //   'capacity',
-    //   'passerby',
-    //   'carpet',
-    //   'wuduNearby',
-    //   'noise',
-    //   'instructions',
-    //   'cleanliness',
-    // ],
-    // fields: {
-    //   instructions: {
-    //     label: 'Directions',
-    //     placeholder: 'How do you get to this space?',
-    //     multiline: true,
-    //   },
-    //   carpet: {
-    //     label: 'Prayer rugs available?',
-    //   },
-    //   capacity: {
-    //     label: 'How many can pray here comfortably?',
-    //     placeholder: 'Capacity',
-    //   },
-    //   passerby: {
-    //     label: 'Is the space relatively private?',
-    //   },
-    //   noise: {
-    //     label: 'Noise level',
-    //   },
-    // },
-  };
+  buildings.sort((a, b) => (a.label > b.label ? 1 : -1));
 
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
@@ -134,17 +52,172 @@ export default function AddEventScreen({ navigation, route }) {
         <AppText customStyle={styles.title}>Add New Event</AppText>
       </View>
 
-      <ScrollView style={styles.formContainer}>
-        <Form
-          type={Event}
-          ref={(c) => (formVar = c)}
-          options={options}
-          onChange={onChange}
-          value={formState}
-        />
-      </ScrollView>
+      <AppForm
+        initialValues={{
+          eventName: '',
+        }}
+        onSubmit={(values) => {
+          console.log('eventName: ' + values.eventName);
+          console.log('eventBldg: ' + selectedBuilding);
+          console.log('eventSpace: ' + selectedSpace);
+          console.log('eventDate: ' + eventDate);
+          console.log('eventTime: ' + eventTime);
 
-      <AppButton title='Submit Event' customStyle={styles.editBtn}></AppButton>
+          const save_date = new Date(
+            eventDate.getFullYear(),
+            eventDate.getMonth(),
+            eventDate.getDate(),
+            eventTime.getHours(),
+            eventTime.getMinutes()
+          );
+
+          // endpoint for adding new event
+          let addUrl = baseUrl + 'events?';
+          addUrl += `Name=${encodeURIComponent(values.eventName)}&`;
+          addUrl += `Date=${encodeURIComponent(save_date.toISOString())}&`;
+          addUrl += `Space=${spaceId}`;
+
+          console.log(addUrl);
+
+          fetch(addUrl, {
+            method: 'POST',
+          })
+            .then((response) => response.json())
+            .then((json) => console.log('Hooray! ', json));
+
+          navigation.navigate('EventDetail', {
+            event: {
+              eventName: values.eventName,
+              selectedBuilding: selectedBuilding,
+              selectedSpace: selectedSpace,
+              // save_date()
+              date: eventDate.toDateString(),
+              time:
+                eventTime.getHours() +
+                ':' +
+                (eventTime.getMinutes() < 10 ? '0' : '') +
+                eventTime.getMinutes(),
+            },
+          });
+        }}
+      >
+        {/* EVENT NAME */}
+        <AppFormEntry label='Event Name' name='eventName' placeholder='Event Name' />
+
+        {/* BUILDING DROPDOWN */}
+        <View style={styles.bldgDropdownStyle}>
+          <View style={{ flex: 3 }}>
+            <AppText>Building</AppText>
+          </View>
+
+          <View style={{ flex: 7 }}>
+            {/* TODO: Fix this dropdown once the database can retrieve buildings */}
+            <DropDownPicker
+              items={buildings}
+              placeholder='Select a building'
+              // defaultValue={route.params.existingSpace ? route.params.existingSpace.bldgName : ""}
+              containerStyle={{ height: 40 }}
+              style={{ backgroundColor: '#fafafa' }}
+              itemStyle={{ justifyContent: 'flex-start' }}
+              dropDownStyle={{ backgroundColor: '#fafafa' }}
+              onChangeItem={(item) => {
+                setBuilding(item.label);
+                // console.log('ITEM: ', item);
+                // set ID of the building we're considering
+                // update eligible spaces
+                fetch(baseUrl + `building-spaces?Buildingid=${item.value}`)
+                  .then((response) => response.json())
+                  .then((json) => {
+                    spaces = [];
+                    json.data.forEach(function (s) {
+                      let spaceDropdown = {
+                        label: s.Name,
+                        value: s.Spaceid,
+                      };
+                      spaces.push(spaceDropdown);
+                    });
+                    // console.log('NewSPaces: ', spaces);
+                    setSpaces(spaces);
+                    // spaces.sort((a, b) => (a.label > b.label ? 1 : -1));
+                  });
+                console.log('Building set!');
+              }}
+            />
+          </View>
+        </View>
+
+        {/* SPACE DROPDOWN */}
+        <View style={styles.dropdownStyle}>
+          <View style={{ flex: 3 }}>
+            <AppText>Space Name</AppText>
+          </View>
+
+          <View style={{ flex: 7 }}>
+            {/* TODO: Disable this dropdown until building is selected */}
+            {/* TODO: wait for integration with database */}
+            <DropDownPicker
+              items={dataSpaces}
+              placeholder='Select a Space'
+              // defaultValue={route.params.existingSpace ? route.params.existingSpace.bldgName : ""}
+              containerStyle={{ height: 40 }}
+              style={{ backgroundColor: '#fafafa' }}
+              itemStyle={{ justifyContent: 'flex-start' }}
+              dropDownStyle={{ backgroundColor: '#fafafa' }}
+              onChangeItem={(item) => {
+                // Set space ID for event submission
+                setSpaceId(item.value);
+                setSpace(item.label);
+                // console.log('Space updated!', item.value, ' | ', spaceId);
+              }}
+            />
+          </View>
+        </View>
+
+        {/* DATE DROPDOWN */}
+        <View style={styles.dateTimePickerStyle}>
+          <View style={{ flex: 3 }}>
+            <AppText>Date</AppText>
+          </View>
+          <View style={{ flex: 7, height: 50 }}>
+            <DateTimePicker
+              value={eventDate}
+              mode='date'
+              display='compact'
+              onChange={(event, date) => {
+                const newDate = date || eventDate;
+                setEventDate(newDate);
+                console.log(new Date(newDate)); /*console.log("Date Set!");*/
+              }}
+              style={styles.dateTimePickerComponentStyle}
+            />
+          </View>
+        </View>
+
+        {/* TIME DROPDOWN */}
+        <View style={styles.dateTimePickerStyle}>
+          <View style={{ flex: 3 }}>
+            <AppText>Time</AppText>
+          </View>
+
+          <View style={{ flex: 7, height: 50 }}>
+            <DateTimePicker
+              value={eventTime}
+              mode='time'
+              display='compact'
+              minuteInterval={5}
+              onChange={(event, time) => {
+                const newTime = time || eventTime;
+                setEventTime(newTime);
+                console.log(new Date(newTime)); /*console.log("Date Set!");*/
+              }}
+              style={styles.dateTimePickerComponentStyle}
+            />
+          </View>
+        </View>
+
+        {/* TODO: make this one bigger */}
+        <SubmitButton title='Submit!' />
+      </AppForm>
     </Screen>
   );
 }
