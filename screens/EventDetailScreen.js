@@ -10,8 +10,6 @@ import AppText from '../components/AppText';
 import Screen from '../components/Screen';
 
 export default function EventDetailScreen({ route }) {
-  // console.log('CHECK EVENT OBJECT: \n', route.params.event);
-
   const navigation = useNavigation();
 
   return (
