@@ -10,59 +10,37 @@ import {
   Switch,
 } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
-import * as Device from "expo-device";
 
 import { SettingsScreen, SettingsData, Chevron } from "../components/lib";
-import * as Google from "expo-google-app-auth";
-import * as GoogleSignIn from "expo-google-sign-in";
-import getMyObject from "../config/async-utils";
 
 const fontFamily = Platform.OS === "ios" ? "Avenir" : "sans-serif";
 
-const IOS_AUTH_ID =
-  "86332169337-nagmpq99r18ib493bnegn2roilg7kcqg.apps.googleusercontent.com";
-const ANDROID_AUTH_ID =
-  "86332169337-1vfr1qn2eqr4m0h0jh9a0pp1q5d97a7k.apps.googleusercontent.com";
-
-async function logOutGoogle(theAccessToken) {
-  // test when DB is up...
-  console.log(theAccessToken);
-  if (Device.isDevice && Device.osName === "iOS") {
-    // todo: finish this
-    await GoogleSignIn.signOutAsync();
-  } else {
-    // Android or iOS simulator
-    console.log("we in the simulator, boys!");
-    const result = await Google.logOutAsync({
-      androidClientId: ANDROID_AUTH_ID,
-      iosClientId: IOS_AUTH_ID,
-      accessToken: theAccessToken,
-    });
-  }
-}
+let user = {
+  userName: "Mr Ozer",
+  userEmail: "ozer@upenn.edu",
+  is_admin: false,
+};
 
 const renderHero = () => (
   <View style={styles.heroContainer}>
+    {/* TODO: Google Account image */}
     <Image
       source={require("../components/imgs/jan.jpg")}
       style={styles.heroImage}
     />
     <View style={{ flex: 1 }}>
-      <Text style={styles.heroTitle}>Jan Söndermann</Text>
-      <Text style={styles.heroSubtitle}>jan+git@primlo.com</Text>
+      <Text style={styles.heroTitle}>{user.userName}</Text>
+      <Text style={styles.heroSubtitle}>{user.userEmail}</Text>
     </View>
     <Chevron />
   </View>
 );
 
 export default class Settings extends React.Component {
-  async componentDidMount() {
-    const user = await getMyObject("user");
-    this.setState({ accessToken: user.accessToken });
-  }
+  // based on demo code here: https://github.com/jsoendermann/react-native-settings-screen
 
   state = {
-    accessToken: null,
+    refreshing: false,
   };
 
   settingsData: SettingsData = [
@@ -73,24 +51,25 @@ export default class Settings extends React.Component {
       footer:
         "Donec sed odio dui. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
       rows: [
+        // {
+        //   title: 'A row',
+        //   showDisclosureIndicator: true,
+        // },
         {
-          title: "A row",
-          showDisclosureIndicator: true,
+          title: "Event Notifications",
+          renderAccessory: () => <Switch value onValueChange={() => {}} />,
         },
-        { title: "A non-tappable row" },
+        {
+          title: "Connect Google Calendar",
+          showDisclosureIndicator: false,
+          // renderAccessory: () => <Switch value onValueChange={() => {}} />,
+        },
+        // { title: 'A non-tappable row' },
         {
           title: "This row has a",
           subtitle: "Subtitle",
           showDisclosureIndicator: true,
-        },
-        {
-          title: "Long title. So long long long long long long long",
-          subtitle:
-            "And so is the subtitle. Even longer longer longer longer longer",
-        },
-        {
-          title: "Switch",
-          renderAccessory: () => <Switch value onValueChange={() => {}} />,
+          onPress: console.log("Hello"),
         },
         {
           title: "Text",
@@ -161,14 +140,10 @@ export default class Settings extends React.Component {
       rows: [
         {
           title: "Logout",
-          onPress: () => {
-            console.log(this.state);
-            logOutGoogle(this.state.accessToken);
-          },
-          showDisclosureIndicator: true,
           titleStyle: {
             color: "red",
           },
+          onPress: console.log("Hello"),
         },
       ],
     },

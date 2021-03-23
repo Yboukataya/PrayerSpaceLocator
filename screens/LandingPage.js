@@ -1,24 +1,26 @@
-import React from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import AppText from '../components/AppText';
-import AppButton from '../components/AppButton';
-import 'localstorage-polyfill';
+import React from "react";
+import { Alert, StyleSheet, View } from "react-native";
+import AppText from "../components/AppText";
+import AppButton from "../components/AppButton";
+import "localstorage-polyfill";
 
-import * as Google from 'expo-google-app-auth';
-import * as GoogleSignIn from 'expo-google-sign-in';
+import * as Google from "expo-google-app-auth";
+import * as GoogleSignIn from "expo-google-sign-in";
 // import getEnvVars from '../environment';
 
-import * as Device from 'expo-device';
+import * as Device from "expo-device";
 
-import { getMyObject, storeObj, storeData } from '../config/async-utils';
-import { useNavigation } from '@react-navigation/native';
+import { getMyObject, storeObj, storeData } from "../config/async-utils";
+import { useNavigation } from "@react-navigation/native";
 
-const IOS_AUTH_ID = '86332169337-nagmpq99r18ib493bnegn2roilg7kcqg.apps.googleusercontent.com';
-const ANDROID_AUTH_ID = '86332169337-1vfr1qn2eqr4m0h0jh9a0pp1q5d97a7k.apps.googleusercontent.com';
+const IOS_AUTH_ID =
+  "86332169337-nagmpq99r18ib493bnegn2roilg7kcqg.apps.googleusercontent.com";
+const ANDROID_AUTH_ID =
+  "86332169337-1vfr1qn2eqr4m0h0jh9a0pp1q5d97a7k.apps.googleusercontent.com";
 // TODO: set android in environment.js
-let userName = '';
-let userEmail = '';
-let accessToken = '';
+let userName = "";
+let userEmail = "";
+let accessToken = "";
 // MOVE THIS TO THE LOCATION SCREEN WITH NABEEL TOMORROW ET.
 // const get_user_location = async () => {
 //   if ("geolocation" in navigator) {
@@ -166,49 +168,52 @@ let accessToken = '';
 //       console.log(err);
 //     });
 // };
-import { baseUrl } from '../config/backend-config';
+import { baseUrl } from "../config/backend-config";
 
 async function signOutWithGoogleAsync() {
-  userName = '';
-  userEmail = '';
-  accessToken = '';
+  userName = "";
+  userEmail = "";
+  accessToken = "";
   await Google.logOutAsync();
 }
 
-async function findUser(userName, userEmail, isAdmin) {
+async function findUser(userName, userEmail, accessToken) {
   await fetch(baseUrl + `user?Email=${userEmail}`)
     .then((response) => response.json())
     .then((json) => {
       // console.log('JSON:\n', json);
-      storeObj('user', {
+      storeObj("user", {
         is_admin: json.data[0].Isadmin,
         userEmail: json.data[0].Email,
         userId: json.data[0].Userid,
         userName: json.data[0].Name,
+        accessToken: accessToken,
       });
     })
     .catch((e) => {
-      console.log('ERRERRERR:\n', e);
+      console.log("ERRERRERR:\n", e);
     });
 }
 
 async function addUser(userName, userEmail) {
-  await fetch(baseUrl + `users?Name=${userName}&Email=${userEmail}&Photo=&Isadmin=0`, {
-    method: 'POST',
-  })
+  await fetch(
+    baseUrl + `users?Name=${userName}&Email=${userEmail}&Photo=&Isadmin=0`,
+    {
+      method: "POST",
+    }
+  )
     .then((response) => response.json())
     .then((json) => {
-      console.log('okie dokie');
+      console.log("okie dokie");
     })
     .catch((e) => {
-      console.log('ERRERRERR:\n', e);
+      console.log("ERRERRERR:\n", e);
     });
 }
 
 async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
   try {
-    // on iOS
-    if (Device.isDevice && Device.osName === 'iOS') {
+    if (Device.isDevice && Device.osName === "iOS") {
       await GoogleSignIn.initAsync({
         clientId: IOS_AUTH_ID,
       });
@@ -216,40 +221,42 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
       await GoogleSignIn.askForPlayServicesAsync();
       const { type, user } = await GoogleSignIn.signInAsync();
 
-      if (type === 'success') {
+      if (type === "success") {
         console.log(user);
-        if (!user.email.endsWith('upenn.edu')) {
-          console.log('error');
+        if (!user.email.endsWith("upenn.edu")) {
+          console.log("error");
           // signOutWithGoogleAsync();
-          throw 'Not a Penn email';
+          throw "Not a Penn email";
         }
 
-        console.log('USER:\n', user);
+        console.log("USER:\n", user);
         userName = user.firstName;
         userEmail = user.email;
         accessToken = user.accessToken;
       } else {
         // login didn't succeed
-        Alert.alert('Login Error', "Hmm, looks like your login didn't go through :(", [
-          { text: 'OK' },
-        ]);
+        Alert.alert(
+          "Login Error",
+          "Hmm, looks like your login didn't go through :(",
+          [{ text: "OK" }]
+        );
         return { cancelled: true };
       }
     } else {
       // Android or iOS simulator
-      console.log('we in the simulator, boys!');
+      console.log("we in the simulator, boys!");
       const result = await Google.logInAsync({
         androidClientId: ANDROID_AUTH_ID,
         iosClientId: IOS_AUTH_ID,
-        behavior: 'web',
-        scopes: ['profile', 'email'],
+        behavior: "web",
+        scopes: ["profile", "email"],
       });
 
-      if (result.type === 'success') {
-        console.log('accessToken: ' + result.accessToken);
-        console.log('name: ' + result.user.name);
-        console.log('fName: ' + result.user.givenName);
-        console.log('email: ' + result.user.email + '\n');
+      if (result.type === "success") {
+        console.log("accessToken: " + result.accessToken);
+        console.log("name: " + result.user.name);
+        console.log("fName: " + result.user.givenName);
+        console.log("email: " + result.user.email + "\n");
 
         // Temporarily disable Penn check
         /*
@@ -265,30 +272,38 @@ async function signInWithGoogleAsync(navigation, isExistingUser, setSignedIn) {
         accessToken = result.user.accessToken;
       } else {
         // login didn't succeed
-        Alert.alert('Login Error', "Hmm, looks like your login didn't go through :(", [
-          { text: 'OK' },
-        ]);
+        Alert.alert(
+          "Login Error",
+          "Hmm, looks like your login didn't go through :(",
+          [{ text: "OK" }]
+        );
         return { cancelled: true };
       }
     }
 
     // is this a user logging in?
     if (isExistingUser) {
-      await findUser(userName, userEmail);
+      await findUser(userName, userEmail, accessToken);
       setSignedIn(true);
       // let the navigator useEffect handle updating the stack, don't navigate here
     } else {
       await addUser(userName, userEmail);
       // popup: great, go ahead and sign in
-      Alert.alert('Good to go!', 'You are all set - go ahead and sign in now!', [{ text: 'OK' }]);
+      Alert.alert(
+        "Good to go!",
+        "You are all set - go ahead and sign in now!",
+        [{ text: "OK" }]
+      );
     }
     return result.accessToken;
   } catch (e) {
-    if (e == 'Not a Penn email') {
-      Alert.alert('Login Error', 'Whoops! This service is only for Penn students.', [
-        { text: 'Ok' },
-      ]);
-      console.log('Nice try, sucker');
+    if (e == "Not a Penn email") {
+      Alert.alert(
+        "Login Error",
+        "Whoops! This service is only for Penn students.",
+        [{ text: "Ok" }]
+      );
+      console.log("Nice try, sucker");
     } else {
       return { error: true };
     }
@@ -306,21 +321,25 @@ function LandingScreen(props) {
       <AppText customStyle={styles.titleOne}>Musallah</AppText>
 
       <AppButton
-        title='Login'
-        onPress={() => signInWithGoogleAsync(navigation, true, props.setSignedIn)}
+        title="Login"
+        onPress={() =>
+          signInWithGoogleAsync(navigation, true, props.setSignedIn)
+        }
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
-        title='Sign up!'
-        onPress={() => signInWithGoogleAsync(navigation, false, props.setSignedIn)}
+        title="Sign up!"
+        onPress={() =>
+          signInWithGoogleAsync(navigation, false, props.setSignedIn)
+        }
         customStyle={styles.editBtn}
       ></AppButton>
 
       <AppButton
-        title='Continue as Guest'
+        title="Continue as Guest"
         onPress={() => {
-          navigation.navigate('ViewSpaces', {
+          navigation.navigate("ViewSpaces", {
             viewUnapproved: false,
           });
         }}
@@ -333,25 +352,25 @@ function LandingScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 40,
-    fontWeight: '600',
-    alignItems: 'center',
-    justifyContent: 'center',
+    fontWeight: "600",
+    alignItems: "center",
+    justifyContent: "center",
   },
   titleOne: {
     fontSize: 48,
-    fontWeight: '600',
-    alignItems: 'center',
-    justifyContent: 'center',
+    fontWeight: "600",
+    alignItems: "center",
+    justifyContent: "center",
   },
   editBtn: {
-    width: '80%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "80%",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
