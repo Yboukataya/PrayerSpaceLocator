@@ -77,7 +77,7 @@ export default function AddEventScreen({ navigation, route }) {
           addUrl += `Date=${encodeURIComponent(save_date.toISOString())}&`;
           addUrl += `Space=${spaceId}`;
 
-          console.log(addUrl);
+          // console.log(addUrl);
 
           fetch(addUrl, {
             method: 'POST',
@@ -93,10 +93,11 @@ export default function AddEventScreen({ navigation, route }) {
               // save_date()
               date: eventDate.toDateString(),
               time:
-                eventTime.getHours() +
-                ':' +
-                (eventTime.getMinutes() < 10 ? '0' : '') +
-                eventTime.getMinutes(),
+              (eventDate.getHours() > 12 ? eventDate.getHours() - 12 : eventDate.getHours()) +
+              ':' +
+              (eventDate.getMinutes() < 10 ? '0' : '') +
+              eventDate.getMinutes() + ' ' +
+              (eventDate.getHours() < 12 ? "AM" : "PM")
             },
           });
         }}

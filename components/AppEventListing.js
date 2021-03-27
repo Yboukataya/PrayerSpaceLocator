@@ -33,7 +33,7 @@ async function createEvent(event) {
     title: event.Name,
     startDate: event.Date,
     endDate: new Date(event.Date.getTime() + 15 * 60000),
-    location: event.selectedSpace + " in " + event.selectedBuilding,
+    location: event.selectedSpace + " in " + event.selectedBldg,
   });
 }
 
@@ -59,7 +59,6 @@ function AppEventListing({ event, myEventsState }) {
     fetch(baseUrl + `eventAttendeesPerEvent?Eventid=${event.Eventid}`)
       .then((response) => response.json())
       .then((json) => {
-        // console.log(json);
         setNumGoing(json.data.length);
       });
 
@@ -95,24 +94,14 @@ function AppEventListing({ event, myEventsState }) {
         <View style={styles.eventDetailTextStyle}>
           <AppText>{event.Name}</AppText>
           <AppText customStyle={styles.capacityStyle}>
-<<<<<<< HEAD
             Time:{' '}
             {(event.Date.getHours() > 12 ? event.Date.getHours() - 12 : event.Date.getHours()) +
               ':' +
               (event.Date.getMinutes() < 10 ? '0' : '') +
               event.Date.getMinutes() + ' ' +
               (event.Date.getHours() < 12 ? "AM" : "PM")}
-=======
-            {spaceName + " in " + bldgName}
           </AppText>
-          <AppText customStyle={styles.capacityStyle}>
-            Time:{" "}
-            {event.Date.getHours() +
-              ":" +
-              (event.Date.getMinutes() < 10 ? "0" : "") +
-              event.Date.getMinutes()}
->>>>>>> 3eff92cacb9684f74225a2117894fc8da52b476a
-          </AppText>
+          <AppText>{spaceName} @ {bldgName}</AppText>
         </View>
       </View>
 
@@ -135,18 +124,11 @@ function AppEventListing({ event, myEventsState }) {
                 selectedBuilding: bldgName,
                 date: event.Date.toDateString(),
                 time:
-<<<<<<< HEAD
                 (event.Date.getHours() > 12 ? event.Date.getHours() - 12 : event.Date.getHours()) +
                 ':' +
                 (event.Date.getMinutes() < 10 ? '0' : '') +
                 event.Date.getMinutes() + ' ' +
                 (event.Date.getHours() < 12 ? "AM" : "PM")
-=======
-                  event.Date.getHours() +
-                  ":" +
-                  (event.Date.getMinutes() < 10 ? "0" : "") +
-                  event.Date.getMinutes(),
->>>>>>> 3eff92cacb9684f74225a2117894fc8da52b476a
               },
             });
           }}
