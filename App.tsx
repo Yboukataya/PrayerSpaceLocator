@@ -16,13 +16,16 @@ import ViewEventsByBuildingScreen from "./screens/ViewEventsByBuildingScreen";
 import ViewEventsScreen from "./screens/ViewEventsScreen";
 import ViewSpacesScreen from "./screens/ViewSpacesScreen";
 import WelcomeScreen from "./screens/Welcome";
+import WalkthroughScreen from "./screens/WalkthroughScreen";
+
+// import Screen from "./components/Screen.js"
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { getMyObject, clearAll } from "./config/async-utils";
 
-import AppIntroSlider from "react-native-app-intro-slider";
 
-import slides from "./constants/tutorial.js";
+
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -93,6 +96,16 @@ on_Skip_slides = () => {
   this.setState({ show_Main_App: true });
 };
 
+// function _renderItem = ({ item }) => {
+//   return (
+//     <View style={styles.slide}>
+//       <Text style={styles.title}>{item.title}</Text>
+//       <Image source={item.image} />
+//       <Text style={styles.text}>{item.text}</Text>
+//     </View>
+//   );
+// }
+
 export default function App() {
   let [isSignedIn, setSignedIn] = useState(false);
   let [isFirstTime, setFirstTime] = useState(true);
@@ -106,7 +119,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    // clearAll();
+    clearAll();
     async function checkSignin() {
       await getMyObject("user").then(function (value) {
         setSignedIn(value !== null);
@@ -165,7 +178,8 @@ export default function App() {
             <Tab.Screen name="Settings" component={Settings} />
           </>
         ) : (
-          <Tab.Screen name="Home" component={signedOutStack} />
+          // <Tab.Screen name="Home" component={signedOutStack} />
+          <Tab.Screen name='hi' component={WalkthroughScreen}/>
         )}
       </Tab.Navigator>
     </NavigationContainer>
