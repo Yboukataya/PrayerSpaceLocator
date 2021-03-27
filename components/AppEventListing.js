@@ -1,47 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
-import { useNavigation, useScrollToTop } from '@react-navigation/native';
-import * as Calendar from 'expo-calendar';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { useNavigation, useScrollToTop } from "@react-navigation/native";
+import * as Calendar from "expo-calendar";
 
-import AppButton from './AppButton';
-import AppText from './AppText';
+import AppButton from "./AppButton";
+import AppText from "./AppText";
 
-import { baseUrl } from '../config/backend-config.js';
-import { getMyObject } from '../config/async-utils';
+import { baseUrl } from "../config/backend-config.js";
+import { getMyObject } from "../config/async-utils";
+
+// import ApiCalendar from "react-google-calendar-api";
 
 async function getDefaultCalendarSource() {
-  const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-  const defaultCalendars = calendars.filter((each) => each.title === 'Calendar');
+  const calendars = await Calendar.getCalendarsAsync(
+    Calendar.EntityTypes.EVENT
+  );
+  const defaultCalendars = calendars.filter(
+    (each) => each.title === "Calendar"
+  );
   return defaultCalendars[0];
 }
 
 async function createEvent(event) {
   const defaultCalendarSource =
-    Platform.OS === 'ios'
+    Platform.OS === "ios"
       ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: 'YeRubbishCalendar' };
-
+      : { isLocalAccount: true, name: "YeRubbishCalendar" };
+  // TEST this when DB is up
   await Calendar.createEventAsync(defaultCalendarSource.id, {
     title: event.Name,
     startDate: event.Date,
     endDate: new Date(event.Date.getTime() + 15 * 60000),
-    location: event.selectedSpace + ' in ' + event.selectedBuilding,
+    location: event.selectedSpace + " in " + event.selectedBuilding,
   });
 }
 
 function AppEventListing({ event, myEventsState }) {
-  let [spaceName, setSpaceName] = useState('');
-  let [bldgName, setBldgName] = useState('');
+  let [spaceName, setSpaceName] = useState("");
+  let [bldgName, setBldgName] = useState("");
   let [userId, setUserId] = useState(-1);
   let [numGoing, setNumGoing] = useState(-1);
 
   useEffect(() => {
     const getCal = async () => {
       const { status } = await Calendar.requestCalendarPermissionsAsync();
-      if (status === 'granted') {
-        const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+      if (status === "granted") {
+        const calendars = await Calendar.getCalendarsAsync(
+          Calendar.EntityTypes.EVENT
+        );
       }
     };
     getCal();
@@ -72,7 +80,7 @@ function AppEventListing({ event, myEventsState }) {
           });
       });
 
-    getMyObject('user').then(function (value) {
+    getMyObject("user").then(function (value) {
       setUserId(value.userId);
     });
   }, []);
@@ -86,14 +94,24 @@ function AppEventListing({ event, myEventsState }) {
         {/* for the text information */}
         <View style={styles.eventDetailTextStyle}>
           <AppText>{event.Name}</AppText>
-          <AppText customStyle={styles.capacityStyle}>{spaceName + ' in ' + bldgName}</AppText>
           <AppText customStyle={styles.capacityStyle}>
+<<<<<<< HEAD
             Time:{' '}
             {(event.Date.getHours() > 12 ? event.Date.getHours() - 12 : event.Date.getHours()) +
               ':' +
               (event.Date.getMinutes() < 10 ? '0' : '') +
               event.Date.getMinutes() + ' ' +
               (event.Date.getHours() < 12 ? "AM" : "PM")}
+=======
+            {spaceName + " in " + bldgName}
+          </AppText>
+          <AppText customStyle={styles.capacityStyle}>
+            Time:{" "}
+            {event.Date.getHours() +
+              ":" +
+              (event.Date.getMinutes() < 10 ? "0" : "") +
+              event.Date.getMinutes()}
+>>>>>>> 3eff92cacb9684f74225a2117894fc8da52b476a
           </AppText>
         </View>
       </View>
@@ -108,20 +126,27 @@ function AppEventListing({ event, myEventsState }) {
           style={styles.btnViewEvent}
           onPress={() => {
             fetch(baseUrl + `incrementEventViews?Eventid=${event.Eventid}`, {
-              method: 'PUT',
+              method: "PUT",
             });
-            navigation.navigate('EventDetail', {
+            navigation.navigate("EventDetail", {
               event: {
                 eventName: event.Name,
                 selectedSpace: spaceName,
                 selectedBuilding: bldgName,
                 date: event.Date.toDateString(),
                 time:
+<<<<<<< HEAD
                 (event.Date.getHours() > 12 ? event.Date.getHours() - 12 : event.Date.getHours()) +
                 ':' +
                 (event.Date.getMinutes() < 10 ? '0' : '') +
                 event.Date.getMinutes() + ' ' +
                 (event.Date.getHours() < 12 ? "AM" : "PM")
+=======
+                  event.Date.getHours() +
+                  ":" +
+                  (event.Date.getMinutes() < 10 ? "0" : "") +
+                  event.Date.getMinutes(),
+>>>>>>> 3eff92cacb9684f74225a2117894fc8da52b476a
               },
             });
           }}
@@ -133,15 +158,24 @@ function AppEventListing({ event, myEventsState }) {
             style={styles.btnJoinEvent}
             onPress={() => {
               // Create the event on user's calendar
-              createEvent(event);
+              createEvent({
+                ...event,
+                selectedSpace: spaceName,
+                selectedBldg: bldgName,
+              });
 
               // Notify database that a new attendee is going
-              fetch(`${baseUrl}rsvp?Userid=${userId}&Eventid=${event.Eventid}`, {
-                method: 'POST',
-              });
+              fetch(
+                `${baseUrl}rsvp?Userid=${userId}&Eventid=${event.Eventid}`,
+                {
+                  method: "POST",
+                }
+              );
               // call setState for myEvents: update list of my events
               myEventsState[1]((oldArray) =>
-                oldArray.includes(event.Eventid) ? oldArray : [...oldArray, event.Eventid]
+                oldArray.includes(event.Eventid)
+                  ? oldArray
+                  : [...oldArray, event.Eventid]
               );
             }}
           >
@@ -154,7 +188,7 @@ function AppEventListing({ event, myEventsState }) {
               onPress={() => {
                 // TODO: remove the event from the array
                 // myEventsState[1]((oldArray) => oldArray.splice(oldArray.indexOf(event.Eventid), 1));
-                console.log('not goin no more!');
+                console.log("not goin no more!");
               }}
             >
               <Text style={styles.btnText}>Going!</Text>
@@ -168,46 +202,46 @@ function AppEventListing({ event, myEventsState }) {
 
 const styles = StyleSheet.create({
   btnText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   btnJoinEvent: {
-    backgroundColor: '#46D811',
+    backgroundColor: "#46D811",
     borderRadius: 10,
     marginBottom: 10,
     padding: 5,
   },
   btnViewEvent: {
-    backgroundColor: '#00BCFF',
+    backgroundColor: "#00BCFF",
     borderRadius: 10,
     marginBottom: 10,
     padding: 5,
   },
   buttonsContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     // width: 100,
     flex: 3,
   },
   capacityStyle: {
-    color: 'goldenrod',
+    color: "goldenrod",
   },
   detailContainer: {
     flex: 7,
   },
   distStyle: {
-    color: 'green',
+    color: "green",
   },
   eventDetailTextStyle: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    flexDirection: "column",
+    justifyContent: "flex-start",
   },
   listingContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginTop: 10,
     marginBottom: 10,
   },
