@@ -14,22 +14,35 @@ import { getMyObject } from "../config/async-utils";
 // import ApiCalendar from "react-google-calendar-api";
 
 async function getDefaultCalendarSource() {
-  const calendars = await Calendar.getCalendarsAsync(
-    Calendar.EntityTypes.EVENT
-  );
-  const defaultCalendars = calendars.filter(
-    (each) => each.title === "Calendar"
-  );
-  return defaultCalendars[0];
+  const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+  const defaultCalendars = calendars.filter((each) => each.title === 'Musallah');
+  if (defaultCalendars.length > 0) {
+  return defaultCalendars[0].id;
+  } else {
+    const newCalendarID = await Calendar.createCalendarAsync({
+      title: 'Musallah',
+      color: 'blue',
+      entityType: Calendar.EntityTypes.EVENT,
+      // sourceId: Calendar.defaultCalendarSource.id,
+      sourceId: undefined,
+      source: { isLocalAccount: true, name: 'Musallah' },
+      name: 'Musallah',
+      ownerAccount: 'personal',
+      accessLevel: Calendar.CalendarAccessLevel.OWNER,
+    });
+    return newCalendarID;
+  }
 }
 
 async function createEvent(event) {
-  const defaultCalendarSource =
-    Platform.OS === "ios"
+  console.log(event);
+  // const defaultCalendarSource ={ isLocalAccount: true, name: 'YeRubbishCalendar' }
+  const defaultCalendarID =
+    Platform.OS === 'ios' 
       ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: "YeRubbishCalendar" };
-  // TEST this when DB is up
-  await Calendar.createEventAsync(defaultCalendarSource.id, {
+      : { isLocalAccount: true, name: 'YeRubbishCalendar' };
+
+  await Calendar.createEventAsync(defaultCalendarID, {
     title: event.Name,
     startDate: event.Date,
     endDate: new Date(event.Date.getTime() + 15 * 60000),
