@@ -115,7 +115,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    clearAll();
+    // clearAll();
     async function checkSignin() {
       await getMyObject("user").then(function (value) {
         setSignedIn(value !== null);

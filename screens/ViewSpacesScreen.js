@@ -178,6 +178,7 @@ initMap = async () => {
 
 function ViewSpacesScreen({ navigation, route }) {
   let [spaces, setSpaces] = useState([]);
+  let [buildings, setBuildings] = useState([]);
   // let [isAdmin, setIsAdmin] = useState(false);
   let viewUnapproved = route.params.viewUnapproved;
 
@@ -190,10 +191,15 @@ function ViewSpacesScreen({ navigation, route }) {
     fetch(baseUrl + "buildings")
       .then((response) => response.json())
       // .then((json) => console.log(json.data));
-      .then((json) => storeObj("buildings", JSON.stringify(json.data)));
+      .then(
+        (json) => {
+          console.log("BLDG JSON: \n", json.data);
+          setBuildings(json.data);
+        } /*storeObj("buildings", JSON.stringify(json.data))*/
+      );
   }, []);
 
-  const [mapVisible, setMapVisible] = useState(false);
+  const [mapVisible, setMapVisible] = useState(true);
   return (
     <Screen style={{ flex: 1, padding: 20 }}>
       <View style={styles.headingContainer}>
@@ -207,7 +213,7 @@ function ViewSpacesScreen({ navigation, route }) {
         {/* Always hide map view if an admin is here to look at unapproved */}
         {mapVisible && !viewUnapproved ? (
           // <AppMapView locations={locationsMap} props={(navigation, route)} />
-          <AppMapView locations={spaces} props={(navigation, route)} />
+          <AppMapView locations={buildings} /*props={(navigation, route)}*/ />
         ) : (
           <View style={styles.spaceListContainer}>
             <AppSpaceList locations={spaces} viewUnapproved={viewUnapproved} />
@@ -223,7 +229,7 @@ function ViewSpacesScreen({ navigation, route }) {
         }
         customStyle={styles.editBtn}
       ></AppButton>
-      {mapVisible && !viewUnapproved ? (
+      {!viewUnapproved ? (
         <AppButton
           title={mapVisible ? "List View" : "Map View"}
           onPress={() => setMapVisible(!mapVisible)}

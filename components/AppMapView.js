@@ -9,62 +9,27 @@ function AppMapView({ locations, props }) {
   // TODO Can't figure out how to define this dummy data in a separate
   //  file and import, unfortunately
   let closedSpacesList = locations;
-  console.log(" APP MAP VIEW HELLO: " + JSON.stringify(locations));
-  // [
-  //   {
-  //     building_address_city: "Philadelphia",
-  //     building_address_street: "3417 Spruce Street",
-  //     building_address_zip: "19104",
-  //     building_name: "Houston Hall",
-  //     bldgName: "Houston Hall",
-  //     bldgAddress: "3417 Spruce Street, Philadelphia, PA 19104",
-  //     latitude: "39.95052",
-  //     longitude: "-75.192920",
-  //     capacity: "2",
-  //     dailyHours: "2PM - 5PM",
-  //     instructions:
-  //       "Inside Houston Hall, go up to the second floor and you will see SPARC.",
-  //     spaceName: "SPARC",
-  //   },
-  // ];
+  console.log("APP MAP VIEW HELLO:\n" + JSON.stringify(locations));
 
   function mapMarkersClosed(spaceList, navigation) {
+    console.log(spaceList);
     return spaceList.map((report) => (
       <Marker
-        key={report.spaceName}
+        key={report.Name}
         coordinate={{
-          latitude: Number(report.latitude),
-          longitude: Number(report.longitude),
+          latitude: Number(report.Latitide),
+          longitude: Number(report.Longitude),
         }}
         pinColor={"green"}
-        title={report.building_name}
-        description={"Open"}
+        title={report.Name}
+        // description={"Open"}
         // onCalloutPress={this.state.navigation.navigate("SpaceDetail", {
         // values: arr2[0],
         // })}
         // onPress={console.log("WHAT's GOOD")}
-      >
-        <Callout tooltip>
-          <CalloutSubview
-            onPress={() =>
-              navigation.navigate("SpaceDetail", {
-                // TODO: fix this "arr2" here?
-                values: closedSpacesList[0],
-                source: "map",
-              })
-            }
-          >
-            <View>
-              <View style={styles.callout}>
-                <Text>{report.building_name}</Text>
-              </View>
-            </View>
-          </CalloutSubview>
-        </Callout>
-      </Marker>
+      ></Marker>
     ));
   }
-  console.log("MapProps: ", props);
   return (
     <MapView
       style={styles.mapStyle}
@@ -76,7 +41,7 @@ function AppMapView({ locations, props }) {
       }}
       showsUserLocation={true}
     >
-      {mapMarkersClosed(closedSpacesList, props.navigation)}
+      {mapMarkersClosed(locations)}
     </MapView>
   );
 }
@@ -87,5 +52,23 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 });
+
+const marker = (
+  <Callout tooltip>
+    <CalloutSubview
+    // onPress={() =>
+    //   navigation.navigate("SpaceDetail", {
+    //     // TODO: fix this "arr2" here?
+    //     values: closedSpacesList[0],
+    //     source: "map",
+    //   })
+    // }
+    >
+      <View>
+        <View style={styles.callout}>{/* <Text>{report.Name}</Text> */}</View>
+      </View>
+    </CalloutSubview>
+  </Callout>
+);
 
 export default AppMapView;
