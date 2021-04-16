@@ -14,20 +14,24 @@ import { getMyObject } from "../config/async-utils";
 // import ApiCalendar from "react-google-calendar-api";
 
 async function getDefaultCalendarSource() {
-  const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-  const defaultCalendars = calendars.filter((each) => each.title === 'Musallah');
+  const calendars = await Calendar.getCalendarsAsync(
+    Calendar.EntityTypes.EVENT
+  );
+  const defaultCalendars = calendars.filter(
+    (each) => each.title === "Musallah"
+  );
   if (defaultCalendars.length > 0) {
-  return defaultCalendars[0].id;
+    return defaultCalendars[0].id;
   } else {
     const newCalendarID = await Calendar.createCalendarAsync({
-      title: 'Musallah',
-      color: 'blue',
+      title: "Musallah",
+      color: "blue",
       entityType: Calendar.EntityTypes.EVENT,
       // sourceId: Calendar.defaultCalendarSource.id,
       sourceId: undefined,
-      source: { isLocalAccount: true, name: 'Musallah' },
-      name: 'Musallah',
-      ownerAccount: 'personal',
+      source: { isLocalAccount: true, name: "Musallah" },
+      name: "Musallah",
+      ownerAccount: "personal",
       accessLevel: Calendar.CalendarAccessLevel.OWNER,
     });
     return newCalendarID;
@@ -38,9 +42,9 @@ async function createEvent(event) {
   console.log(event);
   // const defaultCalendarSource ={ isLocalAccount: true, name: 'YeRubbishCalendar' }
   const defaultCalendarID =
-    Platform.OS === 'ios' 
+    Platform.OS === "ios"
       ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: 'YeRubbishCalendar' };
+      : { isLocalAccount: true, name: "YeRubbishCalendar" };
 
   await Calendar.createEventAsync(defaultCalendarID, {
     title: event.Name,
@@ -55,6 +59,7 @@ function AppEventListing({ event, myEventsState }) {
   let [bldgName, setBldgName] = useState("");
   let [userId, setUserId] = useState(-1);
   let [numGoing, setNumGoing] = useState(-1);
+  let [comments, setComments] = useState([]);
 
   useEffect(() => {
     const getCal = async () => {
@@ -107,14 +112,19 @@ function AppEventListing({ event, myEventsState }) {
         <View style={styles.eventDetailTextStyle}>
           <AppText>{event.Name}</AppText>
           <AppText customStyle={styles.capacityStyle}>
-            Time:{' '}
-            {(event.Date.getHours() > 12 ? event.Date.getHours() - 12 : event.Date.getHours()) +
-              ':' +
-              (event.Date.getMinutes() < 10 ? '0' : '') +
-              event.Date.getMinutes() + ' ' +
+            Time:{" "}
+            {(event.Date.getHours() > 12
+              ? event.Date.getHours() - 12
+              : event.Date.getHours()) +
+              ":" +
+              (event.Date.getMinutes() < 10 ? "0" : "") +
+              event.Date.getMinutes() +
+              " " +
               (event.Date.getHours() < 12 ? "AM" : "PM")}
           </AppText>
-          <AppText>{spaceName} @ {bldgName}</AppText>
+          <AppText>
+            {spaceName} @ {bldgName}
+          </AppText>
         </View>
       </View>
 
@@ -130,18 +140,28 @@ function AppEventListing({ event, myEventsState }) {
             fetch(baseUrl + `incrementEventViews?Eventid=${event.Eventid}`, {
               method: "PUT",
             });
+            fetch(`http://localhost:3000/comment?` + `Eventid=${event.Eventid}`)
+              .then((response) => response.json())
+              .then((json) => {
+                setComments(json.data);
+                console.log(json.data);
+              });
             navigation.navigate("EventDetail", {
               event: {
                 eventName: event.Name,
                 selectedSpace: spaceName,
                 selectedBuilding: bldgName,
+                comment: comments ? comments : [],
                 date: event.Date.toDateString(),
                 time:
-                (event.Date.getHours() > 12 ? event.Date.getHours() - 12 : event.Date.getHours()) +
-                ':' +
-                (event.Date.getMinutes() < 10 ? '0' : '') +
-                event.Date.getMinutes() + ' ' +
-                (event.Date.getHours() < 12 ? "AM" : "PM")
+                  (event.Date.getHours() > 12
+                    ? event.Date.getHours() - 12
+                    : event.Date.getHours()) +
+                  ":" +
+                  (event.Date.getMinutes() < 10 ? "0" : "") +
+                  event.Date.getMinutes() +
+                  " " +
+                  (event.Date.getHours() < 12 ? "AM" : "PM"),
               },
             });
           }}

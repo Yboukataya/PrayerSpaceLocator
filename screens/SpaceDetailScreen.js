@@ -1,19 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Alert, Image, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Alert, Image, ScrollView, StyleSheet, View } from "react-native";
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
-import AppButton from '../components/AppButton';
-import AppSpaceDetail from '../components/AppSpaceDetail';
-import AppTitle from '../components/AppTitle.js';
-import AppText from '../components/AppText';
-import Screen from '../components/Screen';
+import AppButton from "../components/AppButton";
+import AppSpaceDetail from "../components/AppSpaceDetail";
+import AppTitle from "../components/AppTitle.js";
+import AppText from "../components/AppText";
+import Screen from "../components/Screen";
 
-import { baseUrl } from '../config/backend-config';
+import { baseUrl } from "../config/backend-config";
 
-import { getMyObject, storeObj } from '../config/async-utils';
-import {getTidinessDescription, getWuduDescription, getNoiseDescription, 
-    getPrivacyDescription} from '../constants/SpaceDescriptions';
+import { getMyObject, storeObj } from "../config/async-utils";
+import {
+  getTidinessDescription,
+  getWuduDescription,
+  getNoiseDescription,
+  getPrivacyDescription,
+} from "../constants/SpaceDescriptions";
+import StarRating from "react-native-star-rating";
+import { setStatusBarStyle } from "expo-status-bar";
 
 /**
  * This component specifies appearance of the screen that shows attributes
@@ -24,57 +30,64 @@ import {getTidinessDescription, getWuduDescription, getNoiseDescription,
 
 const acceptOnPress = (spaceId) =>
   Alert.alert(
-    'Accept Space',
-    'I verify that I have visited this space and that I believe Muslim students would be safe praying here.',
+    "Accept Space",
+    "I verify that I have visited this space and that I believe Muslim students would be safe praying here.",
     [
       {
-        text: 'Go Back',
+        text: "Go Back",
         onPress: () => {},
-        style: 'cancel',
+        style: "cancel",
       },
       {
-        text: 'Yes, Approve!',
+        text: "Yes, Approve!",
         onPress: () => {
           // console.log("Accepting..");
           /* update database approval value */
           fetch(baseUrl + `approval?Spaceid=${spaceId}`, {
-            method: 'POST',
+            method: "POST",
           })
             .then((response) => response.json())
-            .then((json) => console.log('Hooray! ', json));
+            .then((json) => console.log("Hooray! ", json));
         },
       },
     ]
   );
 
 const rejectOnPress = () =>
-  Alert.alert('Reject Space', 'Are you sure you want to reject this space?', [
+  Alert.alert("Reject Space", "Are you sure you want to reject this space?", [
     {
-      text: 'Cancel',
+      text: "Cancel",
       onPress: () => {},
-      style: 'cancel',
+      style: "cancel",
     },
     {
-      text: 'Yes, Reject',
+      text: "Yes, Reject",
       onPress: () =>
         console.log(
-          'Rejecting!'
+          "Rejecting!"
         ) /* make DELETE request for spaces table, ADD request for rejected table */,
     },
   ]);
 
+const onStarRatingPress = (rating) => {
+  // post command here!
+};
+
 function SpaceDetailScreen({ route }) {
-  let [selectedBuilding, setBuilding] = useState('');
+  let [selectedBuilding, setBuilding] = useState("");
+  let [stars, setStars] = useState(
+    (route.params.space.RatTot * 1.0) / (route.params.space.NumRat * 1.0)
+  );
   let [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     // check async storage for is_admin
-    getMyObject('user').then(function (value) {
+    getMyObject("user").then(function (value) {
       setIsAdmin(value.is_admin == 1);
     });
 
     // get building name using asyncStorage
-    getMyObject('buildings').then(function (value) {
+    getMyObject("buildings").then(function (value) {
       let bldgs = JSON.parse(value);
       // find the building whose ID matches this space's Building id
       bldgs.forEach((b) => {
@@ -83,6 +96,15 @@ function SpaceDetailScreen({ route }) {
         }
       });
     });
+
+    // fetch(baseUrl + `rating?Spaceid=${route.params.space.Spaceid}`)
+    //   .then((response) => response.json())
+    //   .then((json) => {
+    //     console.log(((json.data.RatTot * 1.0) / NumRat) * 1.0);
+    //     setStars(json.data);
+    //   });
+
+    // get command here.
   }, []);
 
   const navigation = useNavigation();
@@ -94,15 +116,15 @@ function SpaceDetailScreen({ route }) {
       </View>
 
       <ScrollView style={styles.spaceDetails} persistentScrollbar={true}>
-      <View style={styles.imgContainer}>
-        <Image
-          source={{
-            uri:
-              'https://images.unsplash.com/photo-1592632132538-a901188c014f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1068&q=80',
-          }}
-          style={{ width: "90%", height: 200, marginBottom: 10 }}
-        />
-      </View>
+        {/* <View style={styles.imgContainer}>
+          <Image
+            source={{
+              uri:
+                "https://images.unsplash.com/photo-1592632132538-a901188c014f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1068&q=80",
+            }}
+            style={{ width: "90%", height: 200, marginBottom: 10 }}
+          />
+        </View> */}
         {/* just for the building... */}
         <View style={styles.detailEntry}>
           <AppText>
@@ -117,40 +139,50 @@ function SpaceDetailScreen({ route }) {
           /> */}
         <AppSpaceDetail
           space={route.params.space}
-          detailTitle='Instructions'
-          detailKey='Instructions'
+          detailTitle="Instructions"
+          detailKey="Instructions"
         />
         <AppSpaceDetail
           space={route.params.space}
-          detailTitle='Carpet'
-          detailKey='CARPET'
-          detailFunction={(a) => {if (a) {return "Yes"} else {return "No"} }}
+          detailTitle="Carpet"
+          detailKey="CARPET"
+          detailFunction={(a) => {
+            if (a) {
+              return "Yes";
+            } else {
+              return "No";
+            }
+          }}
         />
         <AppSpaceDetail
           space={route.params.space}
-          detailTitle='Cleanliness'
-          detailKey='Cleanliness'
+          detailTitle="Cleanliness"
+          detailKey="Cleanliness"
           detailFunction={getTidinessDescription}
         />
         <AppSpaceDetail
           space={route.params.space}
-          detailTitle='Is this space private?'
-          detailKey='Passersby'
+          detailTitle="Is this space private?"
+          detailKey="Passersby"
           detailFunction={getPrivacyDescription}
         />
         <AppSpaceDetail
           space={route.params.space}
-          detailTitle='Is this space nose?'
-          detailKey='NoiseLevel'
+          detailTitle="Is this space nose?"
+          detailKey="NoiseLevel"
           detailFunction={getNoiseDescription}
         />
         <AppSpaceDetail
           space={route.params.space}
-          detailTitle='Is there a Wudu space nearby?'
-          detailKey='WuduNearby'
+          detailTitle="Is there a Wudu space nearby?"
+          detailKey="WuduNearby"
           detailFunction={getWuduDescription}
         />
-        <AppSpaceDetail space={route.params.space} detailTitle='Capacity' detailKey='Capacity' />
+        <AppSpaceDetail
+          space={route.params.space}
+          detailTitle="Capacity"
+          detailKey="Capacity"
+        />
 
         {/* TODO: fix this */}
         {/* <AppSpaceDetail
@@ -158,20 +190,47 @@ function SpaceDetailScreen({ route }) {
             detailTitle="Daily Hours"
             detailKey="daily_hours"
           />  */}
-
       </ScrollView>
-      
+
+      <StarRating
+        disabled={false}
+        maxStars={5}
+        rating={stars}
+        selectedStar={(rating) => {
+          console.log(rating);
+          fetch(
+            baseUrl +
+              `rating?Rating=${rating}&Spaceid=${route.params.space.Spaceid}`,
+            {
+              method: "POST",
+            }
+          )
+            .then((response) => response.json())
+            .then((json) => console.log("Hooray! ", json));
+          fetch(baseUrl + `space?Spaceid=${route.params.space.Spaceid}`)
+            .then((response) => response.json())
+            .then((json) => {
+              console.log(json.data[0]);
+              console.log(json.data[0].RatTot / json.data[0].NumRat);
+              setStars(json.data[0].RatTot / json.data[0].NumRat);
+            });
+        }}
+      />
 
       <View style={styles.btnContainer}>
         {route.params.viewUnapproved ? (
           <AppButton
-            title='Approve'
+            title="Approve"
             customStyle={styles.btnStyle}
             onPress={() => acceptOnPress(route.params.space.Spaceid)}
           />
         ) : null}
         {route.params.viewUnapproved ? (
-          <AppButton title='Reject' customStyle={styles.btnStyle} onPress={rejectOnPress} />
+          <AppButton
+            title="Reject"
+            customStyle={styles.btnStyle}
+            onPress={rejectOnPress}
+          />
         ) : null}
         {/* {route.params.viewUnapproved ? (<AppButton title="Update"/>) : (<AppButton title="Bye"/>)}
           {route.params.viewUnapproved ? (<AppButton title="Go Back"/>) : (<AppButton title="Bye"/>)} */}
@@ -179,20 +238,27 @@ function SpaceDetailScreen({ route }) {
       {isAdmin && (
         <>
           <AppButton
-            title='Update'
-            onPress={() => navigation.navigate('AddSpace', { existingSpace: route.params.space })}
+            title="Update"
+            onPress={() =>
+              navigation.navigate("AddSpace", {
+                existingSpace: route.params.space,
+              })
+            }
           />
         </>
       )}
-      <AppButton title='Go Back' onPress={() => navigation.navigate('ViewSpaces')} />
+      <AppButton
+        title="Go Back"
+        onPress={() => navigation.navigate("ViewSpaces")}
+      />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   btnContainer: {
-    flexDirection: 'row',
-    width: '50%',
+    flexDirection: "row",
+    width: "50%",
     paddingRight: 10,
     paddingLeft: 10,
   },
@@ -200,15 +266,15 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   imgContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingTop: 5,
-    width: '100%',
+    width: "100%",
   },
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 20,
     marginBottom: 10,
   },
@@ -216,12 +282,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   detailTitleStyle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   editBtn: {
-    width: '50%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "50%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   spaceDetails: {
     flex: 1,

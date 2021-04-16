@@ -178,6 +178,7 @@ initMap = async () => {
 
 function ViewSpacesScreen({ navigation, route }) {
   let [spaces, setSpaces] = useState([]);
+  let [unapproved, setUnapproved] = useState([]);
   let [buildings, setBuildings] = useState([]);
   // let [isAdmin, setIsAdmin] = useState(false);
   let viewUnapproved = route.params.viewUnapproved;
@@ -186,7 +187,14 @@ function ViewSpacesScreen({ navigation, route }) {
     // get all spaces
     fetch(baseUrl + "spaces")
       .then((response) => response.json())
-      .then((json) => setSpaces(json.data));
+      .then((json) => {
+        setSpaces(json.data);
+        console.log(json.data);
+      });
+
+    fetch(baseUrl + "spaced")
+      .then((response) => response.json())
+      .then((json) => setUnapproved(json.data));
 
     fetch(baseUrl + "buildings")
       .then((response) => response.json())
@@ -211,9 +219,19 @@ function ViewSpacesScreen({ navigation, route }) {
       <View style={styles.container}>
         {/* Render map or list of spaces, based on mapVisible */}
         {/* Always hide map view if an admin is here to look at unapproved */}
+        {viewUnapproved ? (
+          <View style={styles.spaceListContainer}>
+            <AppSpaceList
+              locations={unapproved}
+              viewUnapproved={viewUnapproved}
+            />
+          </View>
+        ) : (
+          <></>
+        )}
         {mapVisible && !viewUnapproved ? (
           // <AppMapView locations={locationsMap} props={(navigation, route)} />
-          <AppMapView locations={buildings} /*props={(navigation, route)}*/ />
+          <AppMapView locations={buildings} props={(navigation, route)} />
         ) : (
           <View style={styles.spaceListContainer}>
             <AppSpaceList locations={spaces} viewUnapproved={viewUnapproved} />

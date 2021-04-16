@@ -22,12 +22,30 @@ function AppMapView({ locations, props }) {
         }}
         pinColor={"green"}
         title={report.Name}
-        // description={"Open"}
+        description={"Open"}
         // onCalloutPress={this.state.navigation.navigate("SpaceDetail", {
         // values: arr2[0],
         // })}
         // onPress={console.log("WHAT's GOOD")}
-      ></Marker>
+      >
+        <Callout tooltip={false}>
+          <CalloutSubview
+          // onPress={() =>
+          //   navigation.navigate("SpaceDetail", {
+          //     // TODO: fix this "arr2" here?
+          //     values: closedSpacesList[0],
+          //     source: "map",
+          //   })
+          // }
+          >
+            <View>
+              <View style={styles.callout}>
+                <Text>{report.Name}</Text>
+              </View>
+            </View>
+          </CalloutSubview>
+        </Callout>
+      </Marker>
     ));
   }
   return (
@@ -41,7 +59,7 @@ function AppMapView({ locations, props }) {
       }}
       showsUserLocation={true}
     >
-      {mapMarkersClosed(locations)}
+      {mapMarkersClosed(locations, props.navigation)}
     </MapView>
   );
 }
