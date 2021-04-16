@@ -44,76 +44,83 @@ export default function EventDetailScreen({ route }) {
         <AppTitle>{route.params.event.eventName}</AppTitle>
       </View>
 
-      <ScrollView style={styles.spaceDetails} persistentScrollbar={true}>
-        <View style={styles.spaceDetails}>
-          <AppSpaceDetail
-            space={route.params.event}
-            detailTitle="Building"
-            detailKey="selectedBuilding"
-          />
-          <AppSpaceDetail
-            space={route.params.event}
-            detailTitle="Space"
-            detailKey="selectedSpace"
-          />
-          {/* TODO: combine date/time into one entry below */}
-          <AppSpaceDetail
-            space={route.params.event}
-            detailTitle="Date"
-            detailKey="date"
-          />
+      <View style={styles.spaceDetails}>
+        <AppSpaceDetail
+          space={route.params.event}
+          detailTitle="Building"
+          detailKey="selectedBuilding"
+        />
+        <AppSpaceDetail
+          space={route.params.event}
+          detailTitle="Space"
+          detailKey="selectedSpace"
+        />
+        {/* TODO: combine date/time into one entry below */}
+        <AppSpaceDetail
+          space={route.params.event}
+          detailTitle="Date"
+          detailKey="date"
+        />
 
-          <View style={styles.detailEntry}>
-            <AppText>
-              <AppText customStyle={styles.detailTitleStyle}>Time: </AppText>
-              {route.params.event.time}
-            </AppText>
-          </View>
-
-          <View
-            style={{
-              // backgroundColor: "#0078fe",
-              padding: 10,
-              marginLeft: "45%",
-              borderRadius: 5,
-              marginTop: 5,
-              marginRight: "5%",
-              minWidth: "90%",
-              alignSelf: "flex-end",
-              borderColor: "#000000",
-              borderWidth: 2,
-              borderRadius: 20,
-            }}
-          >
-            <FlatList
-              data={route.params.event.comment}
-              keyExtractor={(listing) => listing.Commentid}
-              renderItem={({ item }) => (
-                <View
-                  style={{
-                    backgroundColor: "#0078fe",
-                    padding: 10,
-                    borderRadius: 20,
-                    marginBottom: 5,
-
-                    // maxWidth: "50%",
-                  }}
-                >
-                  <AppText customStyle={{ color: "white" }}>
-                    {item.Content}
-                  </AppText>
-                </View>
-              )}
-              // ItemSeparatorComponent={ListItemSeparator}
-              // refreshing={false}
-              // onRefresh={() => {
-              //   // refreshEvents();
-              // }}
-            />
-          </View>
-          {/* <AppText>Comments: {route.params.comments[0].Content}</AppText> */}
+        <View style={styles.detailEntry}>
+          <AppText>
+            <AppText customStyle={styles.detailTitleStyle}>Time: </AppText>
+            {route.params.event.time}
+          </AppText>
         </View>
-      </ScrollView>
+        {route.params.event.comment.length != 0 ? (
+          <ScrollView style={styles.spaceDetails} persistentScrollbar={true}>
+            <View
+              style={{
+                // backgroundColor: "#0078fe",
+                padding: 10,
+                marginLeft: "45%",
+                borderRadius: 5,
+                marginTop: 5,
+                marginRight: "5%",
+                minWidth: "50%",
+                alignSelf: "flex-end",
+                borderColor: "#000000",
+                borderWidth: 2,
+                borderRadius: 20,
+              }}
+            >
+              <FlatList
+                data={route.params.event.comment}
+                inverted={true}
+                keyExtractor={(listing) => listing.Commentid}
+                renderItem={({ item }) => (
+                  <View
+                    style={{
+                      backgroundColor: "#0078fe",
+                      padding: 10,
+                      borderRadius: 20,
+                      marginBottom: 5,
+
+                      // maxWidth: "50%",
+                    }}
+                  >
+                    <AppText customStyle={{ color: "white" }}>
+                      {item.Content}
+                    </AppText>
+                    {/* <AppText customStyle={{ color: "white" }}>
+                    {item.Date}
+                  </AppText> */}
+                  </View>
+                )}
+                // ItemSeparatorComponent={ListItemSeparator}
+                // refreshing={false}
+                // onRefresh={() => {
+                //   // refreshEvents();
+                // }}
+              />
+            </View>
+          </ScrollView>
+        ) : (
+          <></>
+        )}
+        {/* <AppText>Comments: {route.params.comments[0].Content}</AppText> */}
+      </View>
       <View style={styles.btnContainer}></View>
 
       <TextInput
@@ -127,7 +134,11 @@ export default function EventDetailScreen({ route }) {
       <TouchableOpacity
         style={styles.submitButton}
         onPress={() => {
-          route.params.event.comment.push({ Content: comments, Commentid: 5 });
+          route.params.event.comment.push({
+            Content: comments,
+            // Date: Date.now().getHours() + ":" + Date.now().getMinutes(),
+            Commentid: 5,
+          });
           setComments("");
         }}
       >
