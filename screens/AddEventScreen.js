@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Formik, Field, Form } from 'formik';
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Formik, Field, Form } from "formik";
 
-import DropDownPicker from 'react-native-dropdown-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DropDownPicker from "react-native-dropdown-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-import { AppForm, AppFormField, SubmitButton } from '../components/forms';
-import AppText from '../components/AppText';
-import Screen from '../components/Screen';
-import AppFormEntry from '../components/forms/AppFormEntry';
+import { AppForm, AppFormField, SubmitButton } from "../components/forms";
+import AppText from "../components/AppText";
+import Screen from "../components/Screen";
+import AppFormEntry from "../components/forms/AppFormEntry";
 // import { PennBuildings } from '../constants/Buildings.js';
-import { baseUrl } from '../config/backend-config';
+import { baseUrl } from "../config/backend-config";
 
-import { getMyObject, storeObj } from '../config/async-utils';
-const axios = require('axios');
+import { getMyObject, storeObj } from "../config/async-utils";
+const axios = require("axios");
 
 export default function AddEventScreen({ navigation, route }) {
   let buildings = [];
   let spaces = [];
-  let [selectedBuilding, setBuilding] = useState('');
-  let [selectedSpace, setSpace] = useState('');
+  let [selectedBuilding, setBuilding] = useState("");
+  let [selectedSpace, setSpace] = useState("");
   const [eventDate, setEventDate] = useState(new Date(Date.now()));
   const [eventTime, setEventTime] = useState(new Date(Date.now()));
   let [dataBuildings, setBuildings] = useState([]);
@@ -29,7 +29,7 @@ export default function AddEventScreen({ navigation, route }) {
   let [spaceId, setSpaceId] = useState(-1);
 
   useEffect(() => {
-    fetch(baseUrl + 'buildings')
+    fetch(baseUrl + "buildings")
       .then((response) => response.json())
       .then((json) => {
         setBuildings(json.data);
@@ -54,14 +54,14 @@ export default function AddEventScreen({ navigation, route }) {
 
       <AppForm
         initialValues={{
-          eventName: '',
+          eventName: "",
         }}
         onSubmit={(values) => {
-          console.log('eventName: ' + values.eventName);
-          console.log('eventBldg: ' + selectedBuilding);
-          console.log('eventSpace: ' + selectedSpace);
-          console.log('eventDate: ' + eventDate);
-          console.log('eventTime: ' + eventTime);
+          console.log("eventName: " + values.eventName);
+          console.log("eventBldg: " + selectedBuilding);
+          console.log("eventSpace: " + selectedSpace);
+          console.log("eventDate: " + eventDate);
+          console.log("eventTime: " + eventTime);
 
           const save_date = new Date(
             eventDate.getFullYear(),
@@ -72,7 +72,7 @@ export default function AddEventScreen({ navigation, route }) {
           );
 
           // endpoint for adding new event
-          let addUrl = baseUrl + 'events?';
+          let addUrl = baseUrl + "events?";
           addUrl += `Name=${encodeURIComponent(values.eventName)}&`;
           addUrl += `Date=${encodeURIComponent(save_date.toISOString())}&`;
           addUrl += `Space=${spaceId}`;
@@ -80,30 +80,38 @@ export default function AddEventScreen({ navigation, route }) {
           // console.log(addUrl);
 
           fetch(addUrl, {
-            method: 'POST',
+            method: "POST",
           })
             .then((response) => response.json())
-            .then((json) => console.log('Hooray! ', json));
+            .then((json) => console.log("Hooray! ", json));
 
-          navigation.navigate('EventDetail', {
+          navigation.navigate("EventDetail", {
             event: {
               eventName: values.eventName,
               selectedBuilding: selectedBuilding,
               selectedSpace: selectedSpace,
               // save_date()
               date: eventDate.toDateString(),
+              comment: [],
               time:
-              (eventDate.getHours() > 12 ? eventDate.getHours() - 12 : eventDate.getHours()) +
-              ':' +
-              (eventDate.getMinutes() < 10 ? '0' : '') +
-              eventDate.getMinutes() + ' ' +
-              (eventDate.getHours() < 12 ? "AM" : "PM")
+                (eventDate.getHours() > 12
+                  ? eventDate.getHours() - 12
+                  : eventDate.getHours()) +
+                ":" +
+                (eventDate.getMinutes() < 10 ? "0" : "") +
+                eventDate.getMinutes() +
+                " " +
+                (eventDate.getHours() < 12 ? "AM" : "PM"),
             },
           });
         }}
       >
         {/* EVENT NAME */}
-        <AppFormEntry label='Event Name' name='eventName' placeholder='Event Name' />
+        <AppFormEntry
+          label="Event Name"
+          name="eventName"
+          placeholder="Event Name"
+        />
 
         {/* BUILDING DROPDOWN */}
         <View style={styles.bldgDropdownStyle}>
@@ -115,12 +123,12 @@ export default function AddEventScreen({ navigation, route }) {
             {/* TODO: Fix this dropdown once the database can retrieve buildings */}
             <DropDownPicker
               items={buildings}
-              placeholder='Select a building'
+              placeholder="Select a building"
               // defaultValue={route.params.existingSpace ? route.params.existingSpace.bldgName : ""}
               containerStyle={{ height: 40 }}
-              style={{ backgroundColor: '#fafafa' }}
-              itemStyle={{ justifyContent: 'flex-start' }}
-              dropDownStyle={{ backgroundColor: '#fafafa' }}
+              style={{ backgroundColor: "#fafafa" }}
+              itemStyle={{ justifyContent: "flex-start" }}
+              dropDownStyle={{ backgroundColor: "#fafafa" }}
               onChangeItem={(item) => {
                 setBuilding(item.label);
                 // console.log('ITEM: ', item);
@@ -141,7 +149,7 @@ export default function AddEventScreen({ navigation, route }) {
                     setSpaces(spaces);
                     // spaces.sort((a, b) => (a.label > b.label ? 1 : -1));
                   });
-                console.log('Building set!');
+                console.log("Building set!");
               }}
             />
           </View>
@@ -158,12 +166,12 @@ export default function AddEventScreen({ navigation, route }) {
             {/* TODO: wait for integration with database */}
             <DropDownPicker
               items={dataSpaces}
-              placeholder='Select a Space'
+              placeholder="Select a Space"
               // defaultValue={route.params.existingSpace ? route.params.existingSpace.bldgName : ""}
               containerStyle={{ height: 40 }}
-              style={{ backgroundColor: '#fafafa' }}
-              itemStyle={{ justifyContent: 'flex-start' }}
-              dropDownStyle={{ backgroundColor: '#fafafa' }}
+              style={{ backgroundColor: "#fafafa" }}
+              itemStyle={{ justifyContent: "flex-start" }}
+              dropDownStyle={{ backgroundColor: "#fafafa" }}
               onChangeItem={(item) => {
                 // Set space ID for event submission
                 setSpaceId(item.value);
@@ -182,8 +190,8 @@ export default function AddEventScreen({ navigation, route }) {
           <View style={{ flex: 7, height: 50 }}>
             <DateTimePicker
               value={eventDate}
-              mode='date'
-              display='compact'
+              mode="date"
+              display="compact"
               onChange={(event, date) => {
                 const newDate = date || eventDate;
                 setEventDate(newDate);
@@ -203,8 +211,8 @@ export default function AddEventScreen({ navigation, route }) {
           <View style={{ flex: 7, height: 50 }}>
             <DateTimePicker
               value={eventTime}
-              mode='time'
-              display='compact'
+              mode="time"
+              display="compact"
               minuteInterval={5}
               onChange={(event, time) => {
                 const newTime = time || eventTime;
@@ -217,7 +225,7 @@ export default function AddEventScreen({ navigation, route }) {
         </View>
 
         {/* TODO: make this one bigger */}
-        <SubmitButton title='Submit!' />
+        <SubmitButton title="Submit!" />
       </AppForm>
     </Screen>
   );
@@ -225,36 +233,36 @@ export default function AddEventScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 20,
     marginBottom: 40,
   },
   title: {
     fontSize: 48,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   dateTimePickerComponentStyle: {
     height: 100,
   },
   dateTimePickerStyle: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
-    flexDirection: 'row',
-    width: '100%',
+    flexDirection: "row",
+    width: "100%",
   },
   dropdownStyle: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
-    flexDirection: 'row',
-    width: '100%',
+    flexDirection: "row",
+    width: "100%",
     zIndex: 50,
   },
   bldgDropdownStyle: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
-    flexDirection: 'row',
-    width: '100%',
+    flexDirection: "row",
+    width: "100%",
     zIndex: 100,
   },
 });

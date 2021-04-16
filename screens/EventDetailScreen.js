@@ -72,22 +72,38 @@ export default function EventDetailScreen({ route }) {
 
           <View
             style={{
-              backgroundColor: "#0078fe",
+              // backgroundColor: "#0078fe",
               padding: 10,
               marginLeft: "45%",
               borderRadius: 5,
               marginTop: 5,
               marginRight: "5%",
-              maxWidth: "50%",
+              minWidth: "90%",
               alignSelf: "flex-end",
-
+              borderColor: "#000000",
+              borderWidth: 2,
               borderRadius: 20,
             }}
           >
             <FlatList
               data={route.params.event.comment}
               keyExtractor={(listing) => listing.Commentid}
-              renderItem={({ item }) => <AppText>{item.Content}</AppText>}
+              renderItem={({ item }) => (
+                <View
+                  style={{
+                    backgroundColor: "#0078fe",
+                    padding: 10,
+                    borderRadius: 20,
+                    marginBottom: 5,
+
+                    // maxWidth: "50%",
+                  }}
+                >
+                  <AppText customStyle={{ color: "white" }}>
+                    {item.Content}
+                  </AppText>
+                </View>
+              )}
               // ItemSeparatorComponent={ListItemSeparator}
               // refreshing={false}
               // onRefresh={() => {
@@ -103,7 +119,7 @@ export default function EventDetailScreen({ route }) {
       <TextInput
         style={styles.input}
         underlineColorAndroid="transparent"
-        placeholder="Email"
+        placeholder="comment"
         placeholderTextColor="#9a73ef"
         autoCapitalize="none"
         onChangeText={(text) => setComments(text)}

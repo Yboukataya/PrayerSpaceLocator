@@ -168,7 +168,7 @@ function SpaceDetailScreen({ route }) {
         />
         <AppSpaceDetail
           space={route.params.space}
-          detailTitle="Is this space nose?"
+          detailTitle="Is this space noisy?"
           detailKey="NoiseLevel"
           detailFunction={getNoiseDescription}
         />
